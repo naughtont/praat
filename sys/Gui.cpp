@@ -75,10 +75,22 @@ void GuiGtk_initialize () {
 
 void Gui_getWindowPositioningBounds (double *x, double *y, double *width, double *height) {
 	#if defined (macintosh)
-		HIRect rect;
 		#if useCarbon
+            HIRect rect;
 			HIWindowGetAvailablePositioningBounds (kCGNullDirectDisplay, kHICoordSpaceScreenPixel, & rect);
 		#else
+    
+            NSRect rect;
+            NSArray *screenArray = [NSScreen screens];
+            NSInteger screenCount = [screenArray count];
+            NSInteger index  = 0;
+            
+            for (index = 0; index < screenCount; index++)
+            {
+                NSScreen *screen = [screenArray objectAtIndex: index];
+                rect = [screen visibleFrame];
+            }
+        
 		#endif
 		if (x) *x = rect. origin. x;
 		if (y) *y = rect. origin. y;
