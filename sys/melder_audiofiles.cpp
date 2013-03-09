@@ -44,7 +44,12 @@
 #include "flac_FLAC_stream_encoder.h"
 #include "mp3.h"
 #if defined (macintosh)
-	#include <Resources.h>
+
+    #if useCarbon
+        #include <Carbon/Carbon.h>
+    #else
+    #endif
+
 #endif
 
 /***** WRITING *****/
@@ -627,6 +632,9 @@ static void Melder_checkNistFile (FILE *f, int *numberOfChannels, int *encoding,
 	}
 }
 #ifdef macintosh
+
+#if useCarbon
+
 static double Melder_getNumberFromStrResource (int resourceID) {
 	Handle han = Get1Resource ('STR ', resourceID);
 	if (! han)
@@ -686,6 +694,9 @@ static void MelderFile_checkSoundDesignerTwoFile (MelderFile file, int *numberOf
 		Melder_throw (L"Sound Designer II file not read.");
 	}
 }
+#else
+
+#endif
 #endif
 
 static void Melder_checkFlacFile (MelderFile file, int *numberOfChannels, int *encoding,
@@ -760,10 +771,15 @@ int MelderFile_checkSoundFile (MelderFile file, int *numberOfChannels, int *enco
 		return Melder_MP3;
 	}
 	#ifdef macintosh
-		if (MelderFile_getMacType (file) == 'Sd2f') {
-			MelderFile_checkSoundDesignerTwoFile (file, numberOfChannels, encoding, sampleRate, startOfData, numberOfSamples);
-			return Melder_SOUND_DESIGNER_TWO;
-		}
+    
+#if useCarbon
+    if (MelderFile_getMacType (file) == 'Sd2f') {
+        MelderFile_checkSoundDesignerTwoFile (file, numberOfChannels, encoding, sampleRate, startOfData, numberOfSamples);
+        return Melder_SOUND_DESIGNER_TWO;
+    }
+#else
+#endif
+
 	#endif
 	return 0;   // not a recognized sound file
 }
