@@ -7,26 +7,39 @@
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "sys/Gui.cpp"
-         timestampString = "383955089.914925"
+         filePath = "sys/GuiList.cpp"
+         timestampString = "384546791.18866"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "45"
-         endingLineNumber = "45"
-         landmarkName = "Gui_getResolution (GuiObject widget)"
+         startingLineNumber = "171"
+         endingLineNumber = "171"
+         landmarkName = "mac_listDefinition (short message, Boolean select, Rect *rect, Cell cell, short dataOffset, short dataLength, ListHandle handle)"
          landmarkType = "7">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "sys/Gui.cpp"
-         timestampString = "383955115.381218"
+         filePath = "sys/GuiList.cpp"
+         timestampString = "384546791.18866"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "78"
-         endingLineNumber = "78"
-         landmarkName = "Gui_getWindowPositioningBounds (double *x, double *y, double *width, double *height)"
+         startingLineNumber = "438"
+         endingLineNumber = "438"
+         landmarkName = "structGuiList :: f_deselectItem (long position)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "sys/GuiList.cpp"
+         timestampString = "384547085.385538"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "349"
+         endingLineNumber = "349"
+         landmarkName = "GuiList_create (GuiForm parent, int left, int right, int top, int bottom, bool allowMultipleSelection, const wchar_t *header)"
          landmarkType = "7">
       </FileBreakpoint>
    </FileBreakpoints>

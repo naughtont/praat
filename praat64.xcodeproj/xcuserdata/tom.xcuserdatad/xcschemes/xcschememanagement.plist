@@ -4,7 +4,12 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>praat64_mac.xcscheme</key>
+		<key>praatCarbon.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
+		<key>praatCocoa.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
@@ -13,6 +18,16 @@
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>23E5C91D09A228F9004E41D5</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E23EEE8816EA492F00081257</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E2DCE22C16E7ABD400C6CA97</key>
 		<dict>
 			<key>primary</key>
 			<true/>

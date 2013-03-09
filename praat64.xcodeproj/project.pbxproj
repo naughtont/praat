@@ -6925,9 +6925,6 @@
 		23E5C91109A228F6004E41D5 = {
 			isa = PBXGroup;
 			children = (
-				E22CEF3216EA4BF400D189BF /* Carbon.framework */,
-				E2DCE9A416E7AF5000C6CA97 /* Foundation.framework */,
-				E2DCE9A216E7AF3900C6CA97 /* CoreFoundation.framework */,
 				2347C10416E1EBAF006B83AD /* Praat.icns */,
 				23E5C92F09A228FB004E41D5 /* main */,
 				23E78E4B0E23A8F900213CD7 /* contrib */,
@@ -7880,10 +7877,13 @@
 		23E5CF3409A22A55004E41D5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				23BB67CE1534C3E500AA4597 /* Cocoa.framework */,
 				2300228A0B33473600A7FE19 /* AudioToolbox.framework */,
 				2300229C0B33474000A7FE19 /* AudioUnit.framework */,
+				E22CEF3216EA4BF400D189BF /* Carbon.framework */,
+				23BB67CE1534C3E500AA4597 /* Cocoa.framework */,
 				230022B00B33476C00A7FE19 /* CoreAudio.framework */,
+				E2DCE9A216E7AF3900C6CA97 /* CoreFoundation.framework */,
+				E2DCE9A416E7AF5000C6CA97 /* Foundation.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
