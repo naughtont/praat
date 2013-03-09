@@ -58,7 +58,11 @@ using namespace std;
 #endif
 #if defined (macintosh)
 	#include "macport_on.h"
-	#include <Folders.h>
+    #if useCarbon
+        #include <Carbon/Carbon.h>
+    #else
+        #include <CoreFoundation/CoreFoundation.h>
+    #endif
 	#include "macport_off.h"
 #endif
 #include <errno.h>
@@ -153,6 +157,9 @@ void Melder_8bitFileRepresentationToWcs_inline (const char *path, wchar_t *wpath
 #endif
 
 #if defined (macintosh)
+
+#if useCarbon
+
 void Melder_machToFile (void *void_fsref, MelderFile file) {
 	FSRef *fsref = (FSRef *) void_fsref;
 	char path [kMelder_MAXPATH+1];
@@ -179,6 +186,7 @@ void Melder_dirToMach (MelderDir dir, void *void_fsref) {
 	if (err != noErr && err != fnfErr)
 		Melder_throw ("Error #", err, " translating dir name ", dir -> path, ".");
 }
+#endif
 #endif
 
 const wchar_t * MelderFile_name (MelderFile file) {
@@ -506,9 +514,21 @@ void Melder_getHomeDir (MelderDir homeDir) {
 
 void Melder_getPrefDir (MelderDir prefDir) {
 	#if defined (macintosh)
+#if useCarbon
 		FSRef macFileReference;
 		FSFindFolder (kOnSystemDisk, kPreferencesFolderType, kCreateFolder, & macFileReference);
 		Melder_machToDir (& macFileReference, prefDir);
+#else
+    CFStringRef  homePath  = CFStringCreateWithCString(kCFAllocatorDefault, getenv("HOME"), kCFStringEncodingUTF8);
+    CFStringRef  prefRelPath = CFSTR("/Library/Preferences/");
+    CFMutableStringRef prefPath   = CFStringCreateMutable(kCFAllocatorDefault, CFStringGetLength( homePath ) + CFStringGetLength( prefRelPath ));
+    CFStringAppend(prefPath, homePath);
+    CFStringAppend(prefPath, prefRelPath);
+    CFShow(prefPath);
+    CFStringGetCString(prefPath, (char*)&prefDir -> path, kMelder_MAXPATH, kCFStringEncodingUTF32);
+    CFRelease(homePath);
+    CFRelease(prefPath);
+#endif
 	#elif defined (UNIX)
 		/*
 		 * Preferences files go into the home directory.
@@ -528,16 +548,20 @@ void Melder_getPrefDir (MelderDir prefDir) {
 
 void Melder_getTempDir (MelderDir tempDir) {
 	#if defined (macintosh)
-		FSRef macFileReference;
-		FSFindFolder (kOnSystemDisk, kTemporaryFolderType, kCreateFolder, & macFileReference);
-		Melder_machToDir (& macFileReference, tempDir);
+        #if useCarbon
+                FSRef macFileReference;
+                FSFindFolder (kOnSystemDisk, kTemporaryFolderType, kCreateFolder, & macFileReference);
+                Melder_machToDir (& macFileReference, tempDir);
+        #else
+            wcscpy (tempDir -> path, Melder_peekUtf8ToWcs(getenv("TMPDIR")));
+        #endif
 	#else
 		(void) tempDir;
 	#endif
 }
-
 #if defined (macintosh)
 
+#if useCarbon
 static long textCreator = 'PpgB';
 
 void MelderFile_setMacTypeAndCreator (MelderFile file, long fileType, long creator) {
@@ -564,6 +588,28 @@ unsigned long MelderFile_getMacType (MelderFile file) {
 	}
 	return 0;
 }
+#else
+
+/*
+ 
+ FIXME: Are type an creator still relevant?
+ 
+ https://developer.apple.com/library/mac/#documentation/Carbon/Reference/File_Manager/DeprecationAppendix/AppendixADeprecatedAPI.html#//apple_ref/c/func/FSGetCatalogInfo
+ 
+ FSGetCatalogInfo
+ Returns catalog information about a file or directory. You can use this function to map an FSRef to an FSSpec. (Deprecated in OS X v10.8. At the Foundation layer, use getResourceValue:forKey:error: or resourceValuesForKeys:error: instead. At the Core Foundation layer, use CFURLCopyResourcePropertyForKey or CFURLCopyResourcePropertiesForKeys instead.)*/
+
+void MelderFile_setMacTypeAndCreator (MelderFile file, long fileType, long creator) {
+#pragma unused (file, fileType, creator)
+}
+
+unsigned long MelderFile_getMacType (MelderFile file) {
+#pragma unused (file)
+    return 0;
+}
+
+
+#endif
 #endif
 
 #ifdef CURLPRESENT
