@@ -256,10 +256,12 @@ struct structMelderDir {
 typedef struct structMelderDir *MelderDir;
 
 #if defined (macintosh)
-	void Melder_machToFile (void *void_fsref, MelderFile file);
-	void Melder_machToDir (void *void_fsref, MelderDir dir);
-	void Melder_fileToMach (MelderFile file, void *void_fsref);
-	void Melder_dirToMach (MelderDir dir, void *void_fsref);
+    #if useCarbon
+        void Melder_machToFile (void *void_fsref, MelderFile file);
+        void Melder_machToDir (void *void_fsref, MelderDir dir);
+        void Melder_fileToMach (MelderFile file, void *void_fsref);
+        void Melder_dirToMach (MelderDir dir, void *void_fsref);
+    #endif
 #endif
 const wchar_t * MelderFile_name (MelderFile file);
 wchar_t * MelderDir_name (MelderDir dir);

@@ -29,7 +29,9 @@
 #include <locale.h>
 #ifdef macintosh
 	#include "macport_on.h"
-	#include <Gestalt.h>
+    #if useCarbon
+        #include <Carbon/Carbon.h>
+    #endif
 	#include "macport_off.h"
 #endif
 #if defined (UNIX)

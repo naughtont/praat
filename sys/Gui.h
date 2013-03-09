@@ -50,8 +50,10 @@
 	#include <cairo/cairo.h>
 #elif defined (macintosh)
 	#include "macport_on.h"
-	#include <Carbon/Carbon.h>
-	#include <Cocoa/Cocoa.h>
+    #if useCarbon
+        #include <Carbon/Carbon.h>
+    #endif
+    #include <Cocoa/Cocoa.h>
 	#include "macport_off.h"
 #elif defined (_WIN32)
 	#include "winport_on.h"

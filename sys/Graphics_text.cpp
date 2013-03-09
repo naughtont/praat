@@ -84,9 +84,9 @@ extern const char * ipaSerifRegular24 [1 + 255-33+1 + 1] [24 + 1];
 	static int win_isize2size (int isize) { return isize; }
 #elif mac
 	#include "macport_on.h"
-	#include <Fonts.h>
-	#include <Gestalt.h>
-	#include <QDOffscreen.h>
+    #if useCarbon
+        #include <Carbon/Carbon.h>
+    #endif
 	#include "macport_off.h"
 	static ATSFontRef theTimesAtsuiFont, theHelveticaAtsuiFont, theCourierAtsuiFont, theSymbolAtsuiFont,
 		thePalatinoAtsuiFont, theIpaTimesAtsuiFont, theIpaPalatinoAtsuiFont, theZapfDingbatsAtsuiFont, theArabicAtsuiFont;

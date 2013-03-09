@@ -81,7 +81,9 @@ const wchar_t * Graphics_Colour_name (Graphics_Colour colour) {
 
 #if mac
 	#include "macport_on.h"
-	#include <LowMem.h>
+    #if useCarbon
+        #include <Carbon/Carbon.h>
+    #endif
 #endif
 
 #define wdx(x)  ((x) * my scaleX + my deltaX)

@@ -26,8 +26,9 @@
 	#include <windowsx.h>
 #elif defined (macintosh)
 	#include "macport_on.h"
-	#include <Quickdraw.h>
-	#include <MacWindows.h>
+    #if useCarbon
+        #include <Carbon/Carbon.h>
+    #endif
 	#include "macport_off.h"
 #endif
 
