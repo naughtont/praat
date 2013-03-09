@@ -412,7 +412,7 @@
 		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
-	<string>Praat</string>
+	<string>PraatCocoa</string>
 	<key>CFBundleGetInfoString</key>
 	<string>Praat PRAAT_VERSION_STR, © 1992-PRAAT_YEAR by Paul Boersma and David Weenink</string>
 	<key>CFBundleIconFile</key>

@@ -5256,7 +5256,7 @@
 		23E3BF171328390E008285D9 /* main_Praat.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = main_Praat.cpp; path = main/main_Praat.cpp; sourceTree = "<group>"; };
 		23E3BF7B132855B7008285D9 /* Function.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Function.cpp; path = fon/Function.cpp; sourceTree = "<group>"; };
 		23E3BF8913285810008285D9 /* praat_Stat.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = praat_Stat.cpp; path = stat/praat_Stat.cpp; sourceTree = "<group>"; };
-		23E5C92009A228FA004E41D5 /* Praat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Praat.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		23E5C92009A228FA004E41D5 /* PraatCocoa.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PraatCocoa.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		23E5C93509A228FC004E41D5 /* manual_Artsynth.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; name = manual_Artsynth.cpp; path = artsynth/manual_Artsynth.cpp; sourceTree = "<group>"; };
 		23E5C93609A228FC004E41D5 /* praat_Artsynth.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; name = praat_Artsynth.cpp; path = artsynth/praat_Artsynth.cpp; sourceTree = "<group>"; };
 		23E5C93709A228FC004E41D5 /* Art_Speaker.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Art_Speaker.cpp; path = artsynth/Art_Speaker.cpp; sourceTree = "<group>"; };
@@ -5717,7 +5717,7 @@
 		23FE2D440E4F3D44003EEE43 /* Pattern_to_Categories_cluster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Pattern_to_Categories_cluster.h; path = contrib/ola/Pattern_to_Categories_cluster.h; sourceTree = "<group>"; };
 		23FE2D450E4F3D44003EEE43 /* praat_contrib_Ola_KNN.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = praat_contrib_Ola_KNN.cpp; path = contrib/ola/praat_contrib_Ola_KNN.cpp; sourceTree = "<group>"; };
 		E22CEF3216EA4BF400D189BF /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/Carbon.framework; sourceTree = DEVELOPER_DIR; };
-		E23EF5FF16EA492F00081257 /* Praat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Praat.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E23EF5FF16EA492F00081257 /* PraatCarbon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PraatCarbon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2DCE9A216E7AF3900C6CA97 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		E2DCE9A416E7AF5000C6CA97 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -6956,8 +6956,8 @@
 		23E5C92109A228FA004E41D5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				23E5C92009A228FA004E41D5 /* Praat.app */,
-				E23EF5FF16EA492F00081257 /* Praat.app */,
+				23E5C92009A228FA004E41D5 /* PraatCocoa.app */,
+				E23EF5FF16EA492F00081257 /* PraatCarbon.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -9392,7 +9392,7 @@
 			);
 			name = praatCocoa;
 			productName = praat_macx;
-			productReference = 23E5C92009A228FA004E41D5 /* Praat.app */;
+			productReference = 23E5C92009A228FA004E41D5 /* PraatCocoa.app */;
 			productType = "com.apple.product-type.application";
 		};
 		E23EEE8816EA492F00081257 /* praatCarbon */ = {
@@ -9411,7 +9411,7 @@
 			);
 			name = praatCarbon;
 			productName = praat_macx;
-			productReference = E23EF5FF16EA492F00081257 /* Praat.app */;
+			productReference = E23EF5FF16EA492F00081257 /* PraatCarbon.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -11916,7 +11916,7 @@
 					"$(OTHER_CFLAGS)",
 				);
 				PREBINDING = YES;
-				PRODUCT_NAME = Praat;
+				PRODUCT_NAME = PraatCocoa;
 				REZ_SCRIPT_TYPE = Roman;
 				REZ_SUPPRESS_REDECLARED_RESOURCE_TYPE_WARNINGS = NO;
 				SDKROOT = macosx10.7;
@@ -11990,7 +11990,7 @@
 					"$(OTHER_CFLAGS)",
 				);
 				PREBINDING = YES;
-				PRODUCT_NAME = Praat;
+				PRODUCT_NAME = PraatCarbon;
 				REZ_SCRIPT_TYPE = Roman;
 				REZ_SUPPRESS_REDECLARED_RESOURCE_TYPE_WARNINGS = NO;
 				SDKROOT = macosx10.6;
@@ -12064,7 +12064,7 @@
 					"$(OTHER_CFLAGS)",
 				);
 				PREBINDING = YES;
-				PRODUCT_NAME = Praat;
+				PRODUCT_NAME = PraatCarbon;
 				REZ_SCRIPT_TYPE = Roman;
 				REZ_SUPPRESS_REDECLARED_RESOURCE_TYPE_WARNINGS = NO;
 				SDKROOT = macosx10.6;
@@ -12152,7 +12152,7 @@
 					"$(OTHER_CFLAGS)",
 				);
 				PREBINDING = YES;
-				PRODUCT_NAME = Praat;
+				PRODUCT_NAME = PraatCocoa;
 				REZ_SCRIPT_TYPE = Roman;
 				REZ_SUPPRESS_REDECLARED_RESOURCE_TYPE_WARNINGS = NO;
 				SDKROOT = macosx10.7;
