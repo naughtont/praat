@@ -520,7 +520,7 @@ void Melder_getPrefDir (MelderDir prefDir) {
 		Melder_machToDir (& macFileReference, prefDir);
 #else
     CFStringRef  homePath  = CFStringCreateWithCString(kCFAllocatorDefault, getenv("HOME"), kCFStringEncodingUTF8);
-    CFStringRef  prefRelPath = CFSTR("/Library/Preferences/");
+    CFStringRef  prefRelPath = CFSTR("/Library/Preferences");
     CFMutableStringRef prefPath   = CFStringCreateMutable(kCFAllocatorDefault, CFStringGetLength( homePath ) + CFStringGetLength( prefRelPath ));
     CFStringAppend(prefPath, homePath);
     CFStringAppend(prefPath, prefRelPath);
