@@ -244,6 +244,9 @@ GuiMenu GuiMenu_createInWindow (GuiWindow window, const wchar_t *title, long fla
 			 * Install the menu button in the form.
 			 */
 			[(NSView *) window -> d_widget   addSubview: my d_cocoaMenuButton];   // parent will retain the button...
+            
+            NSLog(@"GuiMenu: %@ addSubview %@", window -> d_widget, my d_cocoaMenuButton);
+
 			[my d_cocoaMenuButton   release];   // ... so we can release the button already
 			/*
 			 * Attach the menu to the button.

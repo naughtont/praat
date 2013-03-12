@@ -164,6 +164,34 @@ Thing_implement (GuiDrawingArea, GuiControl, 0);
 		return FALSE;
 	}
 #elif cocoa
+@implementation GuiCocoaDrawingArea {
+    GuiDrawingArea d_userData;
+}
+- (id)initWithFrame:(NSRect)frame {
+    self = [super initWithFrame:frame];
+    return self;
+}
+- (void) dealloc {   // override
+    GuiDrawingArea me = d_userData;
+    forget (me);   // BUG remove options
+    Melder_casual ("deleting a drawing area");
+    [super dealloc];
+}
+- (GuiThing) userData {
+    return d_userData;
+}
+- (void) setUserData: (GuiThing) userData {
+    d_userData = static_cast <GuiDrawingArea> (userData);
+}
+
+- (void)drawRect:(NSRect)dirtyRect {
+    NSLog(@"GuiCocoaDrawingArea drawRect");
+    // set any NSColor for filling, say white:
+    [[NSColor whiteColor] setFill];
+    NSRectFill(dirtyRect);
+}
+@end
+
 #elif win
 	void _GuiWinDrawingArea_destroy (GuiObject widget) {
 		iam_drawingarea;
@@ -389,8 +417,13 @@ GuiDrawingArea GuiDrawingArea_create (GuiForm parent, int left, int right, int t
 		my v_positionInForm (my d_widget, left, right, top, bottom, parent);
 		gtk_widget_set_double_buffered (GTK_WIDGET (my d_widget), FALSE);
 	#elif cocoa
-		my d_widget = (GuiObject) [[NSView alloc] init];
-	#elif win
+    
+        GuiCocoaDrawingArea *drawingArea = [GuiCocoaDrawingArea alloc];
+		my d_widget = (GuiObject) drawingArea;
+        my v_positionInForm (my d_widget, left, right, top, bottom, parent);
+        [drawingArea setUserData:me];
+
+    #elif win
 		my d_widget = _Gui_initializeWidget (xmDrawingAreaWidgetClass, parent -> d_widget, L"drawingArea");
 		_GuiObject_setUserData (my d_widget, me);
 		my d_widget -> window = CreateWindowEx (0, _GuiWin_getDrawingAreaClassName (), L"drawingArea",
@@ -459,7 +492,15 @@ GuiDrawingArea GuiDrawingArea_create (GuiScrolledWindow parent, int width, int h
 		my v_positionInScrolledWindow (my d_widget, width, height, parent);
 		gtk_widget_set_double_buffered (GTK_WIDGET (my d_widget), FALSE);
 	#elif cocoa
-		my d_widget = (GuiObject) [[NSView alloc] init];
+    
+        GuiCocoaDrawingArea *drawingArea = [GuiCocoaDrawingArea alloc];
+        
+        my d_widget = (GuiObject) drawingArea;
+        my v_positionInScrolledWindow (my d_widget, width, height, parent);
+
+        [drawingArea setUserData:me];
+
+    
 	#elif win
 		my d_widget = _Gui_initializeWidget (xmDrawingAreaWidgetClass, parent -> d_widget, L"drawingArea");
 		_GuiObject_setUserData (my d_widget, me);

@@ -105,13 +105,23 @@
 		- (void) setUserData: (GuiThing) userData;
 	@end
 	typedef NSObject <GuiCocoaAny> *GuiObject;
-	@interface GuiCocoaButton      : NSButton      <GuiCocoaAny> @end
+    @interface GuiCocoaButton      : NSButton      <GuiCocoaAny> @end
 	@interface GuiCocoaLabel       : NSTextField   <GuiCocoaAny> @end
 	@interface GuiCocoaMenu        : NSMenu        <GuiCocoaAny> @end
 	@interface GuiCocoaMenuButton  : NSPopUpButton <GuiCocoaAny> @end
 	@interface GuiCocoaMenuItem    : NSMenuItem    <GuiCocoaAny> @end
 	@interface GuiCocoaText        : NSTextField   <GuiCocoaAny> @end
 	@interface GuiCocoaWindow      : NSWindow      <GuiCocoaAny> @end
+
+    @interface GuiCocoaCheckButton : NSButton      <GuiCocoaAny> @end
+    @interface GuiCocoaDrawingArea : NSView <GuiCocoaAny> @end
+    @interface GuiCocoaList : NSView <GuiCocoaAny, NSTableViewDataSource, NSTableViewDelegate>
+        @property (nonatomic, retain) NSMutableArray *contents;
+        @property (nonatomic, retain) NSTableView *tableView;
+    @end
+    @interface GuiCocoaOptionMenu : NSPopUpButton <GuiCocoaAny> @end
+
+
 #elif motif
 	typedef class structGuiObject *GuiObject;   // Opaque
 

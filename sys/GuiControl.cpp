@@ -107,7 +107,9 @@ void structGuiControl :: v_positionInForm (GuiObject widget, int left, int right
 		gtk_widget_set_size_request (GTK_WIDGET (widget), right - left, bottom - top);
 		gtk_fixed_put (GTK_FIXED (parent -> d_widget), GTK_WIDGET (widget), left, top);
 	#elif cocoa
-		NSRect parentRect = [(NSView *) parent -> d_widget   frame];
+        NSView *superView = (NSView*)parent -> d_widget;
+
+		NSRect parentRect = [superView frame];
 		int parentWidth = parentRect.size.width, parentHeight = parentRect.size.height;
 		if (left   <  0) left   += parentWidth;
 		if (right  <= 0) right  += parentWidth;
@@ -118,7 +120,14 @@ void structGuiControl :: v_positionInForm (GuiObject widget, int left, int right
 		NSRect rect = { { left, bottom }, { right - left, top - bottom } };
 		[(NSView *) widget initWithFrame: rect];
 		[(NSView *) widget setBounds: rect];
-		[(NSView *) parent -> d_widget   addSubview: (NSView *) widget];   // parent will retain the subview...
+    
+	//	[superView    addSubview: (NSView *) widget];   // parent will retain the subview...
+    
+    [(NSView *) parent -> d_widget   addSubview: (NSView *) widget];   // parent will retain the subview...
+
+    
+        NSLog(@"v_positionInForm: %@ addSubview %@", parent -> d_widget, widget);
+    
 		[(NSButton *) widget release];   // ... so we can release the item already
 	#elif motif
 		(void) parent;
@@ -154,6 +163,20 @@ void structGuiControl :: v_positionInScrolledWindow (GuiObject widget, int width
 		gtk_widget_set_size_request (GTK_WIDGET (widget), width, height);
 		gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (parent -> d_widget), GTK_WIDGET (widget));
 	#elif cocoa
+    NSWindow *window = parent->d_shell->d_cocoaWindow;
+    
+    //    int parentWidth = parentRect.size.width, parentHeight = parentRect.size.height;
+        NSRect rect = NSMakeRect(0, 0, width, 700.0);
+        [(NSView *) widget initWithFrame: rect];
+        [(NSView *) widget setBounds: rect];
+    
+        [[window contentView]  addSubview: (NSView *) widget];   // parent will retain the subview...
+        
+        NSLog(@"v_positionInScrolledWindow: %@ addSubview %@", parent -> d_widget, widget);
+        
+//        [(NSView *) widget release];   // ... so we can release the item already
+
+        
 	#elif motif
 		(void) parent;
 		XtVaSetValues (widget, XmNwidth, width, XmNheight, height, NULL);
