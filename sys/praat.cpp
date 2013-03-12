@@ -1349,15 +1349,15 @@ void praat_run (void) {
 	praatP.phase = praat_STARTING_UP;
 
 	trace ("execute start-up file(s)");
-	#if defined (UNIX) || defined (macintosh)
+	#if defined (UNIX)
 		structMelderDir usrLocal = { { 0 } };
 		Melder_pathToDir (L"/usr/local", & usrLocal);
 		executeStartUpFile (& usrLocal, L"%ls-startUp");
 	#endif
-	#if defined (UNIX) || defined (macintosh)
+	#if defined (macintosh)
 		executeStartUpFile (& homeDir, L".%ls-user-startUp");   // not on Windows (empty file name error)
 	#endif
-	#if defined (UNIX) || defined (macintosh) || defined (_WIN32)
+	#if defined (_WIN32)
 		executeStartUpFile (& homeDir, L"%ls-user-startUp");
 	#endif
 
