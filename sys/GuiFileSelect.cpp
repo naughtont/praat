@@ -70,9 +70,9 @@ SortedSetOfString GuiFileSelect_getInfileNames (GuiWindow parent, const wchar_t 
 //    }
 
     
-    NSOpenPanel			*openPanel = [NSOpenPanel openPanel];
+    NSOpenPanel	*openPanel = [NSOpenPanel openPanel];
     
-    [openPanel setAllowsMultipleSelection:YES];
+    [openPanel setAllowsMultipleSelection:allowMultipleFiles];
     [openPanel setCanChooseDirectories:NO];
 //    [openPanel setDirectoryURL:bookmarkFileURL];
 // FIXME: allow file types?
