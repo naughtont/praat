@@ -173,7 +173,7 @@ Thing_implement (GuiDrawingArea, GuiControl, 0);
 }
 - (void) dealloc {   // override
     GuiDrawingArea me = d_userData;
-    forget (me);   // BUG remove options
+    forget (me); 
     Melder_casual ("deleting a drawing area");
     [super dealloc];
 }
@@ -185,11 +185,70 @@ Thing_implement (GuiDrawingArea, GuiControl, 0);
 }
 
 - (void)drawRect:(NSRect)dirtyRect {
-    NSLog(@"GuiCocoaDrawingArea drawRect");
-    // set any NSColor for filling, say white:
-    [[NSColor whiteColor] setFill];
-    NSRectFill(dirtyRect);
+#pragma unused (dirtyRect)
+
+    GuiDrawingArea me = (GuiDrawingArea) d_userData;
+
+    if (my d_exposeCallback) {
+        struct structGuiDrawingAreaExposeEvent event = { me };
+        try {
+            my d_exposeCallback (my d_exposeBoss, & event);
+        } catch (MelderError) {
+            Melder_flushError ("Redrawing not completed");
+        }
+    }
 }
+
+- (void)mouseDown:(NSEvent *)theEvent {
+    GuiDrawingArea me = (GuiDrawingArea) d_userData;
+
+    if (my d_clickCallback) {
+        
+        NSPoint event_location = [theEvent locationInWindow];
+        NSPoint local_point = [self convertPoint:event_location fromView:nil];
+        NSUInteger modifiers = [theEvent modifierFlags];
+        
+        struct structGuiDrawingAreaClickEvent event = { me, 0 };
+        event. x = local_point.x;
+        event. y = local_point.y;
+        event. shiftKeyPressed = NSShiftKeyMask & modifiers;
+        event. optionKeyPressed = NSAlternateKeyMask & modifiers;
+        event. commandKeyPressed = NSCommandKeyMask & modifiers;
+        try {
+            my d_clickCallback (my d_clickBoss, & event);
+        } catch (MelderError) {
+            Melder_flushError ("Mouse click not completely handled.");
+        }
+    }
+
+
+}
+- (void)keyDown:(NSEvent *)theEvent {
+    GuiDrawingArea me = (GuiDrawingArea) d_userData;
+    NSUInteger modifiers = [theEvent modifierFlags];
+    unsigned short keyCode = [theEvent keyCode];
+
+    if (my d_keyCallback) {
+        struct structGuiDrawingAreaKeyEvent event = { me, 0 };
+        event. key = keyCode;
+        // FIXME: Map these keys
+//        if (event. key == VK_RETURN) event. key = 10;
+//        if (event. key == VK_LEFT)  event. key = 0x2190;
+//        if (event. key == VK_RIGHT) event. key = 0x2192;
+//        if (event. key == VK_UP)    event. key = 0x2191;
+//        if (event. key == VK_DOWN)  event. key = 0x2193;
+        event. shiftKeyPressed = NSShiftKeyMask & modifiers;
+        event. optionKeyPressed = NSAlternateKeyMask & modifiers;
+        event. commandKeyPressed = NSCommandKeyMask & modifiers;
+        try {
+            my d_keyCallback (my d_keyBoss, & event);
+        } catch (MelderError) {
+            Melder_flushError ("Key press not completely handled.");
+        }
+    }
+
+}
+
 @end
 
 #elif win
@@ -494,14 +553,11 @@ GuiDrawingArea GuiDrawingArea_create (GuiScrolledWindow parent, int width, int h
 	#elif cocoa
     
         GuiCocoaDrawingArea *drawingArea = [GuiCocoaDrawingArea alloc];
-        
         my d_widget = (GuiObject) drawingArea;
         my v_positionInScrolledWindow (my d_widget, width, height, parent);
-
         [drawingArea setUserData:me];
 
-    
-	#elif win
+    #elif win
 		my d_widget = _Gui_initializeWidget (xmDrawingAreaWidgetClass, parent -> d_widget, L"drawingArea");
 		_GuiObject_setUserData (my d_widget, me);
 		my d_widget -> window = CreateWindowEx (0, _GuiWin_getDrawingAreaClassName (), L"drawingArea",
