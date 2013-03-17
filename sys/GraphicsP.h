@@ -61,7 +61,11 @@ Thing_define (GraphicsScreen, Graphics) {
 			bool d_fatNonSolid;
 			bool d_useGdiplus;
 		#elif defined (macintosh)
-			GrafPtr d_macPort;
+            #if useCarbon
+                GrafPtr d_macPort;
+            #else
+                NSView *d_macView;
+            #endif
 			int d_macFont, d_macStyle;
 			int d_depth;
 			RGBColor d_macColour;

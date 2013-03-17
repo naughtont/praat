@@ -88,10 +88,18 @@ void structGraphicsScreen :: v_destroy () {
 		 * not even with GetDC.
 		 */
 	#elif mac
-		if (d_macPort == NULL) {
-			CGContextEndPage (d_macGraphicsContext);
-			CGContextRelease (d_macGraphicsContext);
-		}
+        #if useCarbon
+            if (d_macPort == NULL) {
+                CGContextEndPage (d_macGraphicsContext);
+                CGContextRelease (d_macGraphicsContext);
+            }
+
+        #else
+            if (d_macView == NULL) {
+                CGContextEndPage (d_macGraphicsContext);
+                CGContextRelease (d_macGraphicsContext);
+            }
+        #endif
 	#endif
 	GraphicsScreen_Parent :: v_destroy ();
 }
@@ -262,7 +270,11 @@ static int GraphicsScreen_init (GraphicsScreen me, void *voidDisplay, void *void
 		_GraphicsScreen_text_init (me);
 	#elif mac
 		(void) voidDisplay;
-		my d_macPort = (GrafPtr) voidWindow;
+        #if useCarbon
+            my d_macPort = (GrafPtr) voidWindow;
+        #else
+            my d_macView = (NSView*) voidWindow;
+        #endif
 		my d_macColour = theBlackColour;
 		my resolution = resolution;
 		my d_depth = my resolution > 150 ? 1 : 8;   /* BUG: replace by true depth (1=black/white) */
@@ -358,11 +370,19 @@ Graphics Graphics_create_xmdrawingarea (GuiDrawingArea w) {
 		_GraphicsMacintosh_tryToInitializeQuartz ();
 	#endif
 	Graphics_init (me);
-	#if mac && useCarbon
-		GraphicsScreen_init (me,
-			XtDisplay (my d_drawingArea -> d_widget),
-			GetWindowPort ((WindowRef) XtWindow (my d_drawingArea -> d_widget)),
-			Gui_getResolution (NULL));
+	#if mac 
+    #if useCarbon
+            GraphicsScreen_init (me,
+                XtDisplay (my d_drawingArea -> d_widget),
+                GetWindowPort ((WindowRef) XtWindow (my d_drawingArea -> d_widget)),
+                Gui_getResolution (NULL));
+    #else
+            GraphicsScreen_init (me,
+                                 my d_drawingArea -> d_widget,
+                                 my d_drawingArea -> d_widget,
+                                 Gui_getResolution (NULL));
+    #endif
+    
 	#else
 		#if gtk
 			GraphicsScreen_init (me, GTK_WIDGET (my d_drawingArea -> d_widget), GTK_WIDGET (my d_drawingArea -> d_widget), Gui_getResolution (my d_drawingArea -> d_widget));
@@ -473,6 +493,16 @@ Graphics Graphics_create_pdf (void *context, int resolution,
 				}
 				CGContextScaleCTM (my d_macGraphicsContext, 1.0, -1.0);
 			}
+        #else
+            if (my d_macView) {            
+                NSView *view = my d_macView;
+                [view lockFocus];
+                CGContextRef context = (CGContextRef)[[NSGraphicsContext currentContext] graphicsPort];
+                my d_macGraphicsContext = context;
+                GuiCocoaDrawingArea *cocoaDrawingArea = (GuiCocoaDrawingArea*)my d_drawingArea -> d_widget;
+                CGContextTranslateCTM (my d_macGraphicsContext, 0, cocoaDrawingArea.bounds.size.height);
+                CGContextScaleCTM (my d_macGraphicsContext, 1.0, -1.0);
+        }
 		#endif
 	}
 	void GraphicsQuartz_exitDraw (GraphicsScreen me) {
@@ -481,6 +511,12 @@ Graphics Graphics_create_pdf (void *context, int resolution,
 				CGContextSynchronize (my d_macGraphicsContext);
 				QDEndCGContext (my d_macPort, & my d_macGraphicsContext);
 			}
+        #else
+                NSView *view = my d_macView;
+                if (view) {
+                    CGContextSynchronize (my d_macGraphicsContext);
+                    [my d_macView unlockFocus];
+                }
 		#endif
 	}
 #endif
