@@ -244,8 +244,6 @@ GuiMenu GuiMenu_createInWindow (GuiWindow window, const wchar_t *title, long fla
 			 * Install the menu button in the form.
 			 */
 			[(NSView *) window -> d_widget   addSubview: my d_cocoaMenuButton];   // parent will retain the button...
-            
-            NSLog(@"GuiMenu: %@ addSubview %@", window -> d_widget, my d_cocoaMenuButton);
 
 			[my d_cocoaMenuButton   release];   // ... so we can release the button already
 			/*
@@ -254,6 +252,7 @@ GuiMenu GuiMenu_createInWindow (GuiWindow window, const wchar_t *title, long fla
 			[my d_cocoaMenuButton   setMenu: my d_cocoaMenu];   // the button will retain the menu...
 			[my d_cocoaMenu   release];   // ... so we can release the menu already (before even returning it!)
 			[my d_cocoaMenuButton   setTitle: (NSString *) Melder_peekWcsToCfstring (title)];
+
 		}
 	#elif motif
 		if (window == NULL) {
