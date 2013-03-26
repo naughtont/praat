@@ -175,6 +175,22 @@ static void highlight (Graphics graphics, long x1DC, long x2DC, long y1DC, long 
 			//cairo_set_source_rgb (my d_cairoGraphicsContext, 0.0, 0.0, 0.0);
 			//cairo_set_operator (my d_cairoGraphicsContext, CAIRO_OPERATOR_OVER);
 		#elif cocoa
+            NSRect rect = NSMakeRect(x1DC, y2DC, x2DC, y1DC);
+            CGContextRef context = (CGContextRef)[[NSGraphicsContext
+                                                   currentContext] graphicsPort];
+            CGContextSaveGState (context);
+            CGContextSetBlendMode(context, kCGBlendModeDifference);
+            CGContextSetRGBFillColor (context, 1.0, 1.0, 1.0, 1.0);
+            CGContextFillRect (context, rect);
+            CGContextRestoreGState (context);
+        #elif mac
+                Rect rect;
+                if (my d_drawingArea) GuiMac_clipOn (my d_drawingArea -> d_widget);
+                SetRect (& rect, x1DC, y2DC, x2DC, y1DC);
+                SetPort (my d_macPort);
+                LMSetHiliteMode (LMGetHiliteMode () & ~ 128L);   /* see IM V-61 */
+                InvertRect (& rect);
+                if (my d_drawingArea) GuiMac_clipOff ();
 		#elif win
 			static HBRUSH highlightBrush;
 			RECT rect;
@@ -188,14 +204,6 @@ static void highlight (Graphics graphics, long x1DC, long x2DC, long y1DC, long 
 			SetROP2 (my d_gdiGraphicsContext, R2_COPYPEN);
 			SelectPen (my d_gdiGraphicsContext, GetStockPen (BLACK_PEN));
 			SelectBrush (my d_gdiGraphicsContext, GetStockBrush (NULL_BRUSH));   /* Superfluous? */
-		#elif mac
-			Rect rect;
-			if (my d_drawingArea) GuiMac_clipOn (my d_drawingArea -> d_widget);
-			SetRect (& rect, x1DC, y2DC, x2DC, y1DC);
-			SetPort (my d_macPort);
-			LMSetHiliteMode (LMGetHiliteMode () & ~ 128L);   /* see IM V-61 */
-			InvertRect (& rect);
-			if (my d_drawingArea) GuiMac_clipOff ();
 		#endif
 	}
 }
@@ -229,6 +237,38 @@ static void highlight2 (Graphics graphics, long x1DC, long x2DC, long y1DC, long
 			cairo_fill (my d_cairoGraphicsContext);
 			cairo_restore (my d_cairoGraphicsContext);
 		#elif cocoa
+        
+
+            NSRect rect = NSMakeRect(x1DC, y2DC, x2DC - x1DC, y1DC - y2DC);
+            NSRect innerRect = NSMakeRect(x1DC_inner, y2DC_inner, x2DC_inner - x1DC_inner, y1DC_inner);
+            CGContextRef context = (CGContextRef)[[NSGraphicsContext
+                                                   currentContext] graphicsPort];
+            CGContextSaveGState (context);
+            CGContextSetBlendMode(context, kCGBlendModeDifference);
+            CGContextSetRGBFillColor (context, 2.0, 2.0, 2.0, 2.0);
+            CGContextFillRect (context, rect);
+            CGContextFillRect (context, innerRect);
+            CGContextRestoreGState (context);
+
+        #elif mac
+        
+        
+                Rect rect;
+                if (my d_drawingArea) GuiMac_clipOn (my d_drawingArea -> d_widget);
+                SetPort (my d_macPort);
+                LMSetHiliteMode (LMGetHiliteMode () & ~ 128L);
+                SetRect (& rect, x1DC, y2DC, x2DC, y2DC_inner);
+                InvertRect (& rect);
+                LMSetHiliteMode (LMGetHiliteMode () & ~ 128L);
+                SetRect (& rect, x1DC, y2DC_inner, x1DC_inner, y1DC_inner);
+                InvertRect (& rect);
+                LMSetHiliteMode (LMGetHiliteMode () & ~ 128L);
+                SetRect (& rect, x2DC_inner, y2DC_inner, x2DC, y1DC_inner);
+                InvertRect (& rect);
+                LMSetHiliteMode (LMGetHiliteMode () & ~ 128L);
+                SetRect (& rect, x1DC, y1DC_inner, x2DC, y1DC);
+                InvertRect (& rect);
+                if (my d_drawingArea) GuiMac_clipOff ();
 		#elif win
 			static HBRUSH highlightBrush;
 			if (! highlightBrush)
@@ -243,23 +283,6 @@ static void highlight2 (Graphics graphics, long x1DC, long x2DC, long y1DC, long
 			SetROP2 (my d_gdiGraphicsContext, R2_COPYPEN);
 			SelectPen (my d_gdiGraphicsContext, GetStockPen (BLACK_PEN));
 			SelectBrush (my d_gdiGraphicsContext, GetStockBrush (NULL_BRUSH));   /* Superfluous? */
-		#elif mac
-			Rect rect;
-			if (my d_drawingArea) GuiMac_clipOn (my d_drawingArea -> d_widget);
-			SetPort (my d_macPort);
-			LMSetHiliteMode (LMGetHiliteMode () & ~ 128L);
-			SetRect (& rect, x1DC, y2DC, x2DC, y2DC_inner);
-			InvertRect (& rect);
-			LMSetHiliteMode (LMGetHiliteMode () & ~ 128L);
-			SetRect (& rect, x1DC, y2DC_inner, x1DC_inner, y1DC_inner);
-			InvertRect (& rect);
-			LMSetHiliteMode (LMGetHiliteMode () & ~ 128L);
-			SetRect (& rect, x2DC_inner, y2DC_inner, x2DC, y1DC_inner);
-			InvertRect (& rect);
-			LMSetHiliteMode (LMGetHiliteMode () & ~ 128L);
-			SetRect (& rect, x1DC, y1DC_inner, x2DC, y1DC);
-			InvertRect (& rect);
-			if (my d_drawingArea) GuiMac_clipOff ();
 		#endif
 	}
 }

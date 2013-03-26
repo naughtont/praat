@@ -42,13 +42,13 @@ void structGraphics :: v_destroy () {
  * Graphics_setWsViewport ().
  */
 static void widgetToWindowCoordinates (I) {
-	#if motif && mac
+    int shellX = 0, shellY = 0;
+#if motif && mac
 		iam (Graphics);
 		if (my screen) {
 			iam (GraphicsScreen);
 			if (my d_drawingArea) {
 				GuiObject widget = my d_drawingArea -> d_widget;
-				int shellX = 0, shellY = 0;
 				do {
 					int x = widget -> x, y = widget -> y;
 					shellX += x;
@@ -59,8 +59,30 @@ static void widgetToWindowCoordinates (I) {
 				my d_x2DC += shellX;
 				my d_y1DC += shellY;
 				my d_y2DC += shellY;
+                
 			}
 		}
+    #elif cocoa
+    
+        iam (Graphics);
+        if (my screen) {
+            iam (GraphicsScreen);
+            if (my d_drawingArea) {
+                NSView *view = (NSView *)my d_drawingArea -> d_widget;
+                do {
+                    int x = [view frame].origin.x;
+                    int y = [view frame].origin.y;
+                    shellX += x;
+                    shellY += y;
+                    view = [view superview];
+                } while (view);
+                my d_x1DC += shellX;
+                my d_x2DC += shellX;
+                my d_y1DC += shellY;
+                my d_y2DC += shellY;
+            }
+        }
+
 	#else
 		(void) void_me;
 	#endif
@@ -84,6 +106,9 @@ static void computeTrafo (I) {
 		my deltaY = my d_y1DC - (my d_y1wNDC - my deltaY) * workScaleY;
 	}
 	my scaleY = worldScaleY * workScaleY;
+    
+
+    NSLog(@"computeTrafo %f,%f", my scaleX, my scaleY);
 }
 
 /***** WORKSTATION FUNCTIONS *****/

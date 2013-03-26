@@ -155,6 +155,31 @@ void structGraphicsScreen :: v_clearWs () {
 			cairo_set_source_rgb (d_cairoGraphicsContext, 0.0, 0.0, 0.0);
 		}
 	#elif cocoa
+        
+        NSView *view =  d_macView;
+        if (view) {
+            [view lockFocus];
+            CGContextRef context = (CGContextRef)[[NSGraphicsContext currentContext] graphicsPort];
+             d_macGraphicsContext = context;
+
+            CGContextScaleCTM ( d_macGraphicsContext, 1.0, -1.0);
+
+             //   QDBeginCGContext (d_macPort, & d_macGraphicsContext);
+                CGContextSetAlpha (d_macGraphicsContext, 1.0);
+                CGContextSetBlendMode (d_macGraphicsContext, kCGBlendModeNormal);
+                //CGContextSetAllowsAntialiasing (my macGraphicsContext, false);
+            GuiCocoaDrawingArea *cocoaDrawingArea = (GuiCocoaDrawingArea*) d_drawingArea -> d_widget;
+            int shellHeight = cocoaDrawingArea.bounds.size.height;
+                CGContextSetRGBFillColor (d_macGraphicsContext, 1.0, 1.0, 1.0, 1.0);
+                CGContextFillRect (d_macGraphicsContext, CGRectMake (this -> d_x1DC, shellHeight - this -> d_y1DC, this -> d_x2DC - this -> d_x1DC, this -> d_y1DC - this -> d_y2DC));
+            
+            
+          CGContextScaleCTM ( d_macGraphicsContext, 1.0, -1.0);
+
+                CGContextSynchronize ( d_macGraphicsContext);
+                [ d_macView unlockFocus];
+        }
+
 	#elif win
 		RECT rect;
 		rect. left = rect. top = 0;
