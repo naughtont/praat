@@ -96,7 +96,7 @@ GuiScrolledWindow GuiScrolledWindow_create (GuiForm parent, int left, int right,
         [scrollView setUserData:me];
         [scrollView setHasVerticalScroller:YES];
         [scrollView setHasHorizontalScroller:YES];
-        [scrollView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+        [scrollView setBackgroundColor:[NSColor lightGrayColor]];
     
 	#elif motif
 		my d_widget = XmCreateScrolledWindow (parent -> d_widget, "scrolledWindow", NULL, 0);

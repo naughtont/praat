@@ -130,7 +130,6 @@ GuiScrollBar GuiScrollBar_create (GuiForm parent, int left, int right, int top, 
         NSScroller *scroller = [GuiCocoaScrollBar alloc];
         my d_widget = (GuiObject) scroller;
         my v_positionInForm (my d_widget, left, right, top, bottom, parent);
-        [scroller setAutoresizingMask:NSViewMinYMargin]; // stick to top
         [scroller setScrollerStyle:NSScrollerStyleLegacy];
         [scroller setTarget:scroller];
         [scroller setAction:@selector(valueChanged)];

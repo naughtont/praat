@@ -171,6 +171,7 @@ GuiWindow GuiWindow_create (int x, int y, int width, int height,
 			styleMask: NSTitledWindowMask | NSClosableWindowMask | NSMiniaturizableWindowMask | NSResizableWindowMask
 			backing: NSBackingStoreBuffered
 			defer: false];
+        [my d_cocoaWindow setMinSize:NSMakeSize(500.0, 500.0)];
 		my f_setTitle (title);
 		[my d_cocoaWindow makeKeyAndOrderFront: nil];
 		my d_widget = [my d_cocoaWindow contentView];

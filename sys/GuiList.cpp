@@ -79,13 +79,13 @@ Thing_implement (GuiList, GuiControl, 0);
         
         _tableView.delegate = self;
         _tableView.dataSource = self;
-        _tableView.allowsMultipleSelection = YES;
         _tableView.allowsEmptySelection = YES;
         _tableView.headerView = nil;
         _tableView.target = self;
         _tableView.action = @selector(clicked:);
         
         NSScrollView *sv = [[NSScrollView alloc] initWithFrame:frameRect];
+        [sv setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
         [sv setBorderType:NSGrooveBorder];
         [sv setDocumentView:_tableView];
         [sv setHasVerticalScroller:YES];
@@ -97,6 +97,10 @@ Thing_implement (GuiList, GuiControl, 0);
         _contents = [[NSMutableArray alloc] init];
     }
     return self;
+}
+
+- (void)setAllowMultipleSelection:(BOOL)allowMultipleSelection {
+    _tableView.allowsMultipleSelection = allowMultipleSelection;
 }
 
 - (void) dealloc {
@@ -128,6 +132,7 @@ Thing_implement (GuiList, GuiControl, 0);
 }
 
 - (IBAction)clicked:(id)sender {
+#pragma unused (sender)
     GuiList me = (GuiList)d_userData;
 
     if (me) {
@@ -409,6 +414,7 @@ GuiList GuiList_create (GuiForm parent, int left, int right, int top, int bottom
         GuiCocoaList *list = [GuiCocoaList alloc];
         my d_widget = (GuiObject) list;
         my v_positionInForm (my d_widget, left, right, top, bottom, parent);
+        [list setAllowMultipleSelection:allowMultipleSelection];
         [list setUserData:me];
 
 	#elif win

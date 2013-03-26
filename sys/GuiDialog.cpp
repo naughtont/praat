@@ -115,6 +115,7 @@ GuiDialog GuiDialog_create (GuiWindow parent, int x, int y, int width, int heigh
 			styleMask: NSTitledWindowMask | NSClosableWindowMask
 			backing: NSBackingStoreBuffered
 			defer: false];
+        [nsWindow setMinSize:NSMakeSize(500.0, 500.0)];
 		[nsWindow setTitle: (NSString *) Melder_peekWcsToCfstring (title)];
 		//[nsWindow makeKeyAndOrderFront: nil];
 		my d_widget = (GuiObject) [nsWindow contentView];

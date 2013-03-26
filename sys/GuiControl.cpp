@@ -101,7 +101,7 @@ void structGuiControl :: v_positionInForm (GuiObject widget, int left, int right
 		//parentHeight = GTK_WIDGET (parent -> d_widget) -> allocation.height;
 		if (left   <  0) left   += parentWidth;
 		if (right  <= 0) right  += parentWidth;
-		if (top    <  0) top    += parentHeight;
+        if (top    <  0) top    += parentHeight;
 		if (bottom <= 0) bottom += parentHeight;
 		trace ("fixed: parent width %d height %d", parentWidth, parentHeight);
 		gtk_widget_set_size_request (GTK_WIDGET (widget), right - left, bottom - top);
@@ -110,13 +110,26 @@ void structGuiControl :: v_positionInForm (GuiObject widget, int left, int right
         NSView *superView = (NSView*)parent -> d_widget;
         NSView *widgetView = (NSView*) d_widget;
 		NSRect parentRect = [superView frame];
-		int parentWidth = parentRect.size.width, parentHeight = parentRect.size.height;
+        int parentWidth = parentRect.size.width;
+        int parentHeight = parentRect.size.height;
     
-        NSUInteger resizingMask = NSViewMinYMargin;
+        NSUInteger horizMask = 0;
+        if (left >= 0) {
+            if (right <= 0) {
+                horizMask = NSViewWidthSizable;
+            }
+        } else {
+            horizMask = NSViewMinXMargin;
+        }
+        
+        NSUInteger vertMask = 0;
+        if (top >= 0) {
+            vertMask = NSViewMinYMargin;
+            if (bottom <= 0) {
+                vertMask = NSViewHeightSizable;
+            }
+        }
 
-//        if (left <= 0 || right <= 0) resizingMask |= NSViewWidthSizable;
-//        if (top <= 0 || bottom <= 0) resizingMask |= NSViewHeightSizable;
-    
 		if (left   <  0) left   += parentWidth;
 		if (right  <= 0) right  += parentWidth;
 		if (top    <  0) top    += parentHeight;
@@ -126,7 +139,7 @@ void structGuiControl :: v_positionInForm (GuiObject widget, int left, int right
 		NSRect rect = { { left, bottom }, { right - left, top - bottom } };
 		[widgetView initWithFrame: rect];
 
-        [widgetView setAutoresizingMask:resizingMask]; // stick to top
+        [widgetView setAutoresizingMask:horizMask | vertMask];
         [superView addSubview:widgetView];   // parent will retain the subview...
         [widgetView setBounds: rect];
 		[widgetView release];   // ... so we can release the item already
