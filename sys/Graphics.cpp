@@ -42,47 +42,25 @@ void structGraphics :: v_destroy () {
  * Graphics_setWsViewport ().
  */
 static void widgetToWindowCoordinates (I) {
-    int shellX = 0, shellY = 0;
 #if motif && mac
-		iam (Graphics);
-		if (my screen) {
-			iam (GraphicsScreen);
-			if (my d_drawingArea) {
-				GuiObject widget = my d_drawingArea -> d_widget;
-				do {
-					int x = widget -> x, y = widget -> y;
-					shellX += x;
-					shellY += y;
-					widget = widget -> parent;
-				} while (! XtIsShell (widget));
-				my d_x1DC += shellX;
-				my d_x2DC += shellX;
-				my d_y1DC += shellY;
-				my d_y2DC += shellY;
-                
-			}
-		}
-    #elif cocoa
-    
-        iam (Graphics);
-        if (my screen) {
-            iam (GraphicsScreen);
-            if (my d_drawingArea) {
-                NSView *view = (NSView *)my d_drawingArea -> d_widget;
-                do {
-                    int x = [view frame].origin.x;
-                    int y = [view frame].origin.y;
-                    shellX += x;
-                    shellY += y;
-                    view = [view superview];
-                } while (view);
-                my d_x1DC += shellX;
-                my d_x2DC += shellX;
-                my d_y1DC += shellY;
-                my d_y2DC += shellY;
-            }
+    iam (Graphics);
+    if (my screen) {
+        iam (GraphicsScreen);
+        if (my d_drawingArea) {
+            GuiObject widget = my d_drawingArea -> d_widget;
+            int shellX = 0, shellY = 0;
+            do {
+                int x = widget -> x, y = widget -> y;
+                shellX += x;
+                shellY += y;
+                widget = widget -> parent;
+            } while (! XtIsShell (widget));
+            my d_x1DC += shellX;
+            my d_x2DC += shellX;
+            my d_y1DC += shellY;
+            my d_y2DC += shellY;
         }
-
+    }
 	#else
 		(void) void_me;
 	#endif
