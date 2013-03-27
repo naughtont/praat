@@ -426,6 +426,10 @@ Graphics Graphics_create_xmdrawingarea (GuiDrawingArea w) {
 	#elif motif
 		XtVaGetValues (my d_drawingArea -> d_widget, XmNwidth, & width, XmNheight, & height, NULL);
 		Graphics_setWsViewport ((Graphics) me, 0, width, 0, height);
+    #elif cocoa
+        NSView *view = (NSView *)my d_drawingArea -> d_widget;
+        NSRect bounds = [view bounds];
+        Graphics_setWsViewport ((Graphics) me, 0, bounds.size.width, 0, bounds.size.height);
 	#endif
 	#if mac && useCarbon
 		XtAddCallback (my d_drawingArea -> d_widget, XmNmoveCallback, cb_move, (XtPointer) me);
