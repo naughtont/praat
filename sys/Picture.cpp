@@ -153,6 +153,9 @@ static void gui_drawingarea_cb_expose (I, GuiDrawingAreaExposeEvent event) {
 // TODO: Paul, deze code is bagger :) En dient door event-model-extremisten te worden veroordeeld.
 // Stefan, zoals gezegd, er zijn goede redenen waarom sommige platforms dit synchroon oplossen;
 // misschien maar splitsen tussen die platforms en platforms die met events kunnen werken.
+
+// On Cocoa this leads to flashing, it definitely needs to be event based..
+
 static void gui_drawingarea_cb_click (I, GuiDrawingAreaClickEvent event) {
 	iam (Picture);
 	int xstart = event -> x;

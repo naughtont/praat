@@ -175,7 +175,10 @@ static void highlight (Graphics graphics, long x1DC, long x2DC, long y1DC, long 
 			//cairo_set_source_rgb (my d_cairoGraphicsContext, 0.0, 0.0, 0.0);
 			//cairo_set_operator (my d_cairoGraphicsContext, CAIRO_OPERATOR_OVER);
 		#elif cocoa
-            NSRect rect = NSMakeRect(x1DC, y2DC, x2DC, y1DC);
+            int width = x2DC - x1DC, height = y1DC - y2DC;
+            if (width <= 0 || height <= 0) return;
+
+            NSRect rect = NSMakeRect(x1DC, y2DC, width, height);
             CGContextRef context = (CGContextRef)[[NSGraphicsContext
                                                    currentContext] graphicsPort];
             CGContextSaveGState (context);
@@ -238,21 +241,43 @@ static void highlight2 (Graphics graphics, long x1DC, long x2DC, long y1DC, long
 			cairo_restore (my d_cairoGraphicsContext);
 		#elif cocoa
         
+            NSView *view = (NSView*)my d_drawingArea -> d_widget;
+            if (view) {
+               [view lockFocus];
 
-            NSRect rect = NSMakeRect(x1DC, y2DC, x2DC - x1DC, y1DC - y2DC);
-            NSRect innerRect = NSMakeRect(x1DC_inner, y2DC_inner, x2DC_inner - x1DC_inner, y1DC_inner);
-            CGContextRef context = (CGContextRef)[[NSGraphicsContext
-                                                   currentContext] graphicsPort];
-            CGContextSaveGState (context);
-            CGContextSetBlendMode(context, kCGBlendModeDifference);
-            CGContextSetRGBFillColor (context, 2.0, 2.0, 2.0, 2.0);
-            CGContextFillRect (context, rect);
-            CGContextFillRect (context, innerRect);
-            CGContextRestoreGState (context);
+                CGContextRef context = (CGContextRef)[[NSGraphicsContext currentContext] graphicsPort];
+                CGContextSaveGState (context);
+                CGContextTranslateCTM (my d_macGraphicsContext, 0, view.bounds.size.height);
+                CGContextScaleCTM (my d_macGraphicsContext, 1.0, -1.0);
+
+                CGContextSetBlendMode(context, kCGBlendModeDifference);
+
+                CGContextSetRGBFillColor (context, 2.0, 2.0, 2.0, 2.0);
+                
+                NSRect upperRect = NSMakeRect(x1DC, y2DC, x2DC - x1DC, y2DC_inner - y2DC);
+                NSRect leftRect = NSMakeRect(x1DC, y2DC_inner, x1DC_inner - x1DC, y1DC_inner - y2DC_inner);
+                NSRect rightRect = NSMakeRect(x2DC_inner, y2DC_inner, x2DC - x2DC_inner, y1DC_inner - y2DC_inner);
+                NSRect lowerRect = NSMakeRect(x1DC, y1DC_inner, x2DC - x1DC, y1DC - y1DC_inner);
+                NSRect unionRect = NSUnionRect(upperRect, leftRect);
+                unionRect = NSUnionRect(unionRect, rightRect);
+                unionRect = NSUnionRect(unionRect, lowerRect);
+                
+                CGContextFillRect (context, upperRect);
+                CGContextFillRect (context, leftRect);
+                CGContextFillRect (context, rightRect);
+                CGContextFillRect (context, lowerRect);
+
+                CGContextRestoreGState (context);
+                CGContextSynchronize ( context);
+                [view unlockFocus];
+                
+                // See comments in gui_drawingarea_cb_click
+               // [view setNeedsDisplayInRect:unionRect];
+                [[view window] flushWindow];
+
+            }
 
         #elif mac
-        
-        
                 Rect rect;
                 if (my d_drawingArea) GuiMac_clipOn (my d_drawingArea -> d_widget);
                 SetPort (my d_macPort);

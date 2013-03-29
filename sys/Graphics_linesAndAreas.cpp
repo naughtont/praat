@@ -608,6 +608,7 @@ void structGraphicsScreen :: v_button (long x1DC, long x2DC, long y1DC, long y2D
         CGContextRef context = (CGContextRef)[[NSGraphicsContext currentContext] graphicsPort];
         d_macGraphicsContext = context;
         GuiCocoaDrawingArea *cocoaDrawingArea = (GuiCocoaDrawingArea*) d_drawingArea -> d_widget;
+        CGContextSaveGState (context);
         CGContextTranslateCTM (context, 0, cocoaDrawingArea.bounds.size.height);
         CGContextScaleCTM (context, 1.0, -1.0);
 
@@ -655,7 +656,10 @@ void structGraphicsScreen :: v_button (long x1DC, long x2DC, long y1DC, long y2D
         }
         
         CGContextSetRGBStrokeColor(context, 0.65 * 65535.0, 0.65 * 65535.0, 0.65 * 65535.0, 1.0);
-        CGContextSynchronize ( d_macGraphicsContext);
+        CGContextSynchronize ( context);
+    
+        CGContextRestoreGState (context);
+
         [ d_macView unlockFocus];
 
 

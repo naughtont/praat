@@ -84,9 +84,6 @@ static void computeTrafo (I) {
 		my deltaY = my d_y1DC - (my d_y1wNDC - my deltaY) * workScaleY;
 	}
 	my scaleY = worldScaleY * workScaleY;
-    
-
-    NSLog(@"computeTrafo %f,%f", my scaleX, my scaleY);
 }
 
 /***** WORKSTATION FUNCTIONS *****/

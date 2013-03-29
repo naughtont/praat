@@ -155,29 +155,46 @@ void structGraphicsScreen :: v_clearWs () {
 			cairo_set_source_rgb (d_cairoGraphicsContext, 0.0, 0.0, 0.0);
 		}
 	#elif cocoa
-        
+
+    
         NSView *view =  d_macView;
         if (view) {
+            NSRect rect;
+            if (this -> d_x1DC < this -> d_x2DC) {
+                rect.origin.x = this -> d_x1DC;
+                rect.size.width = this -> d_x2DC - this -> d_x1DC;
+            } else {
+                rect.origin.x = this -> d_x2DC;
+                rect.size.width = this -> d_x1DC - this -> d_x2DC;
+            }
+            if (this -> d_y1DC < this -> d_y2DC) {
+                rect.origin.y = this -> d_y1DC;
+                rect.size.height = this -> d_y2DC - this -> d_y1DC;
+            } else {
+                rect.origin.y = this -> d_y2DC;
+                rect.size.height = this -> d_y1DC - this -> d_y2DC;
+            }
+
             [view lockFocus];
             CGContextRef context = (CGContextRef)[[NSGraphicsContext currentContext] graphicsPort];
              d_macGraphicsContext = context;
 
+            CGContextTranslateCTM (context, 0, view.bounds.size.height);
+            CGContextScaleCTM (context, 1.0, -1.0);
+
+            CGContextSetAlpha (d_macGraphicsContext, 1.0);
+            CGContextSetBlendMode (d_macGraphicsContext, kCGBlendModeNormal);
+            CGContextSetAllowsAntialiasing (d_macGraphicsContext, false);
+            GuiCocoaDrawingArea *cocoaDrawingArea = (GuiCocoaDrawingArea*) d_drawingArea -> d_widget;
+            int shellHeight = view.bounds.size.height;
+            CGContextSetRGBFillColor (d_macGraphicsContext, 1.0, 1.0, 1.0, 1.0);
+            CGContextFillRect (d_macGraphicsContext, rect);
+            
+            
             CGContextScaleCTM ( d_macGraphicsContext, 1.0, -1.0);
 
-             //   QDBeginCGContext (d_macPort, & d_macGraphicsContext);
-                CGContextSetAlpha (d_macGraphicsContext, 1.0);
-                CGContextSetBlendMode (d_macGraphicsContext, kCGBlendModeNormal);
-                //CGContextSetAllowsAntialiasing (my macGraphicsContext, false);
-            GuiCocoaDrawingArea *cocoaDrawingArea = (GuiCocoaDrawingArea*) d_drawingArea -> d_widget;
-            int shellHeight = cocoaDrawingArea.bounds.size.height;
-                CGContextSetRGBFillColor (d_macGraphicsContext, 1.0, 1.0, 1.0, 1.0);
-                CGContextFillRect (d_macGraphicsContext, CGRectMake (this -> d_x1DC, shellHeight - this -> d_y1DC, this -> d_x2DC - this -> d_x1DC, this -> d_y1DC - this -> d_y2DC));
-            
-            
-          CGContextScaleCTM ( d_macGraphicsContext, 1.0, -1.0);
-
-                CGContextSynchronize ( d_macGraphicsContext);
-                [ d_macView unlockFocus];
+            CGContextSynchronize ( d_macGraphicsContext);
+            [ d_macView unlockFocus];
         }
 
 	#elif win
@@ -240,6 +257,27 @@ void structGraphicsScreen :: v_updateWs () {
 		gdk_window_invalidate_rect (d_window, & rect, true);
 		//gdk_window_process_updates (d_window, true);
 	#elif cocoa
+        NSView *view =  d_macView;
+        NSRect rect;
+    
+        if (this -> d_x1DC < this -> d_x2DC) {
+            rect.origin.x = this -> d_x1DC;
+            rect.size.width = this -> d_x2DC - this -> d_x1DC;
+        } else {
+            rect.origin.x = this -> d_x2DC;
+            rect.size.width = this -> d_x1DC - this -> d_x2DC;
+        }
+        
+        if (this -> d_y1DC < this -> d_y2DC) {
+            rect.origin.y = this -> d_y1DC;
+            rect.size.height = this -> d_y2DC - this -> d_y1DC;
+        } else {
+            rect.origin.y = this -> d_y2DC;
+            rect.size.height = this -> d_y1DC - this -> d_y2DC;
+        }
+    
+        [view setNeedsDisplayInRect:rect];
+    
 	#elif win
 		//clear (this); // lll
 		if (d_winWindow) InvalidateRect (d_winWindow, NULL, TRUE);

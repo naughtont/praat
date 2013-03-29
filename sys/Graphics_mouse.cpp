@@ -35,7 +35,8 @@ bool structGraphicsScreen :: v_mouseStillDown () {
 		if (theMouseDown) return true;
 		else { theMouseDown = true; return false; }
 	#elif cocoa
-		return [NSEvent pressedMouseButtons];
+        NSUInteger buttons = [NSEvent pressedMouseButtons];
+		return buttons;
 	#elif win
 		return motif_win_mouseStillDown ();
 	#elif mac
@@ -65,7 +66,6 @@ void structGraphicsScreen :: v_getMouseLocation (double *xWC, double *yWC) {
         NSPoint mouseLoc = [[d_macView window] mouseLocationOutsideOfEventStream];
         mouseLoc = [d_macView convertPoint:mouseLoc fromView:nil];
         mouseLoc.y = d_macView.bounds.size.height - mouseLoc.y;
-        // convert to View
         Graphics_DCtoWC (this, mouseLoc.x, mouseLoc.y, xWC, yWC);
 
 	#elif win
