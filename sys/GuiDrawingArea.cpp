@@ -164,16 +164,32 @@ Thing_implement (GuiDrawingArea, GuiControl, 0);
 		return FALSE;
 	}
 #elif cocoa
+@interface GuiCocoaDrawingArea ()
+@property (nonatomic, assign) BOOL inited;
+@property (nonatomic, retain) NSTrackingArea *trackingArea;
+@end
 @implementation GuiCocoaDrawingArea {
     GuiDrawingArea d_userData;
 }
 - (id)initWithFrame:(NSRect)frame {
     self = [super initWithFrame:frame];
-    return self;
+    if (self) {
+        _trackingArea = [[[NSTrackingArea alloc] initWithRect:[self visibleRect]
+                                         // feed in NSTrackingMouseMoved to get mouseMoved: events too
+                                                                     options:NSTrackingMouseEnteredAndExited | NSTrackingMouseMoved | NSTrackingInVisibleRect |NSTrackingActiveAlways
+                                                                       owner:self
+                                                                    userInfo:nil] autorelease];
+        
+        [self addTrackingArea:_trackingArea];
+
+    }
+   return self;
 }
 - (void) dealloc {   // override
     GuiDrawingArea me = d_userData;
-    forget (me); 
+    forget (me);
+    [self removeTrackingArea:_trackingArea];
+
     Melder_casual ("deleting a drawing area");
     [super dealloc];
 }
@@ -186,6 +202,13 @@ Thing_implement (GuiDrawingArea, GuiControl, 0);
 
 - (void)drawRect:(NSRect)dirtyRect {
 #pragma unused (dirtyRect)
+    
+    if (!_inited) {
+        // Last chance to do this. Is there a better place?
+        [self resizeCallback:self.frame];
+        _inited = YES;
+    }
+
 
     GuiDrawingArea me = (GuiDrawingArea) d_userData;
 
@@ -199,9 +222,41 @@ Thing_implement (GuiDrawingArea, GuiControl, 0);
     }
 }
 
+- (void)resizeCallback:(NSRect)rect {
+    GuiDrawingArea me = (GuiDrawingArea) d_userData;
+    
+    if (my d_resizeCallback) {
+        struct structGuiDrawingAreaResizeEvent event = { me, 0 };
+        event. width = rect.size.width;
+        event. height = rect.size.height;
+        
+        try {
+            my d_resizeCallback (my d_resizeBoss, & event);
+        } catch (MelderError) {
+            Melder_flushError ("Window resizing not completely handled.");
+        }
+    }
+    
+}
+
+- (void)setFrame:(NSRect)rect {
+    [self resizeCallback:rect];
+    [super setFrame:rect];
+}
+
+- (void)mouseEntered:(NSEvent *)theEvent{
+#pragma unused (theEvent)
+    [[NSCursor crosshairCursor] push];
+
+}
+
+- (void)mouseExited:(NSEvent *)theEvent{
+#pragma unused (theEvent)
+    [[NSCursor currentCursor] pop];
+}    
+
 - (void)mouseDown:(NSEvent *)theEvent {
     GuiDrawingArea me = (GuiDrawingArea) d_userData;
-
     if (my d_clickCallback) {
         
         NSPoint event_location = [theEvent locationInWindow];
@@ -210,7 +265,53 @@ Thing_implement (GuiDrawingArea, GuiControl, 0);
         
         struct structGuiDrawingAreaClickEvent event = { me, 0 };
         event. x = local_point.x;
-        event. y = local_point.y;
+        event. y = [self frame].size.height - local_point.y;
+        event. shiftKeyPressed = NSShiftKeyMask & modifiers;
+        event. optionKeyPressed = NSAlternateKeyMask & modifiers;
+        event. commandKeyPressed = NSCommandKeyMask & modifiers;
+        event.type = BUTTON_PRESS;
+        try {
+            my d_clickCallback (my d_clickBoss, & event);
+        } catch (MelderError) {
+            Melder_flushError ("Mouse click not completely handled.");
+        }
+    }
+}
+
+- (void)mouseUp:(NSEvent *)theEvent {
+    GuiDrawingArea me = (GuiDrawingArea) d_userData;
+    if (my d_clickCallback) {
+        
+        NSPoint event_location = [theEvent locationInWindow];
+        NSPoint local_point = [self convertPoint:event_location fromView:nil];
+        NSUInteger modifiers = [theEvent modifierFlags];
+        
+        struct structGuiDrawingAreaClickEvent event = { me, 0 };
+        event. x = local_point.x;
+        event. y = [self frame].size.height - local_point.y;
+        event. shiftKeyPressed = NSShiftKeyMask & modifiers;
+        event. optionKeyPressed = NSAlternateKeyMask & modifiers;
+        event. commandKeyPressed = NSCommandKeyMask & modifiers;
+        event.type = BUTTON_RELEASE;
+        try {
+            my d_clickCallback (my d_clickBoss, & event);
+        } catch (MelderError) {
+            Melder_flushError ("Mouse click not completely handled.");
+        }
+    }
+}
+
+- (void)mouseDragged:(NSEvent *)theEvent {
+    GuiDrawingArea me = (GuiDrawingArea) d_userData;
+    if (my d_clickCallback) {
+        
+        NSPoint event_location = [theEvent locationInWindow];
+        NSPoint local_point = [self convertPoint:event_location fromView:nil];
+        NSUInteger modifiers = [theEvent modifierFlags];
+        
+        struct structGuiDrawingAreaClickEvent event = { me, 0 };
+        event. x = local_point.x;
+        event. y = [self frame].size.height - local_point.y;
         event. shiftKeyPressed = NSShiftKeyMask & modifiers;
         event. optionKeyPressed = NSAlternateKeyMask & modifiers;
         event. commandKeyPressed = NSCommandKeyMask & modifiers;
@@ -220,9 +321,8 @@ Thing_implement (GuiDrawingArea, GuiControl, 0);
             Melder_flushError ("Mouse click not completely handled.");
         }
     }
-
-
 }
+
 - (void)keyDown:(NSEvent *)theEvent {
     GuiDrawingArea me = (GuiDrawingArea) d_userData;
     NSUInteger modifiers = [theEvent modifierFlags];
@@ -246,7 +346,6 @@ Thing_implement (GuiDrawingArea, GuiControl, 0);
             Melder_flushError ("Key press not completely handled.");
         }
     }
-
 }
 
 @end
