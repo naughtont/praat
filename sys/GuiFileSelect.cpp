@@ -53,56 +53,22 @@ SortedSetOfString GuiFileSelect_getInfileNames (GuiWindow parent, const wchar_t 
 		setlocale (LC_ALL, "C");
 	#elif cocoa
     
-    // FIXME: Need to remember last directory accessed
-    // http://stackoverflow.com/questions/13729958/remember-user-selected-folder-and-reopen-it-by-nsopenpanel-under-sandbox
-//    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-//    NSURL *bookmarkFileURL = nil;
-//    NSData *bookmarkData = [defaults objectForKey:@"recentDirectory"];
-//    if (bookmarkData != nil)
-//    {
-//        NSError *error=nil;
-//        bookmarkFileURL = [NSURL URLByResolvingBookmarkData:bookmarkData options:NSURLBookmarkResolutionWithSecurityScope relativeToURL:nil bookmarkDataIsStale:nil error:&error];
-//        if (error != nil) bookmarkFileURL = nil;
-//    }
-//    if (bookmarkFileURL)
-//    {
-//        [bookmarkFileURL startAccessingSecurityScopedResource];
-//    }
-
-    
-    NSOpenPanel	*openPanel = [NSOpenPanel openPanel];
-    
-    [openPanel setAllowsMultipleSelection:allowMultipleFiles];
-    [openPanel setCanChooseDirectories:NO];
-//    [openPanel setDirectoryURL:bookmarkFileURL];
-// FIXME: allow file types?
-//    [openPanel setAllowedFileTypes:getImageFileTypes()];
-    
-    if ([openPanel runModal] == NSFileHandlingPanelOKButton)
-    {
-        for (NSURL *url in [openPanel URLs]) {
-            structMelderFile file;
-            NSUInteger usedBufferCount;
-            NSRange leftover;
-            NSMutableString *path = [[url path] mutableCopy];
-            CFStringNormalize ((CFMutableStringRef)path, kCFStringNormalizationFormC);   // Praat requires composed characters.
-            [path getBytes:&file.path maxLength:kMelder_MAXPATH usedLength:&usedBufferCount encoding:NSUTF32StringEncoding options:0 range:NSMakeRange(0,[path length]) remainingRange:&leftover];
-            // 	Melder_8bitFileRepresentationToWcs_inline (path, file -> path);
-
-            my addString (Melder_fileToPath (&file));
-        }
+        (void) parent;
+        static structMelderDir dir;
+        if (MelderDir_isNull (& dir))   // first time?
+            Melder_getDefaultDir (& dir);
         
-//        NSError *error = nil;
-//        bookmarkData = [[openPanel URL] bookmarkDataWithOptions:NSURLBookmarkCreationWithSecurityScope includingResourceValuesForKeys:nil relativeToURL:nil error:&error];
-//        if (!error)
-//        {
-//            [defaults setObject:bookmarkData forKey:@"recentDirectory"];
-//            [defaults synchronize];
-//        }
-
-    }
-    
-//    [bookmarkFileURL stopAccessingSecurityScopedResource];
+        NSOpenPanel	*openPanel = [NSOpenPanel openPanel];
+        [openPanel setTitle:[NSString stringWithUTF8String:Melder_peekWcsToUtf8(title)]];
+        [openPanel setAllowsMultipleSelection:allowMultipleFiles];
+        [openPanel setCanChooseDirectories:NO];
+        [openPanel setDirectoryURL:[NSURL URLWithString:[NSString stringWithUTF8String:Melder_peekWcsToUtf8 (Melder_dirToPath (& dir))]]];
+        
+        if ([openPanel runModal] == NSFileHandlingPanelOKButton) {
+            for (NSURL *url in [openPanel URLs]) {
+                my addString (Melder_peekUtf8ToWcs ([[url path] UTF8String]));
+            }
+        }
 
 	#elif defined (macintosh)
 		(void) parent;
