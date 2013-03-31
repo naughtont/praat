@@ -156,9 +156,8 @@ void structGraphicsScreen :: v_clearWs () {
 		}
 	#elif cocoa
 
-    
-        NSView *view =  d_macView;
-        if (view) {
+        GuiCocoaDrawingArea *cocoaDrawingArea = (GuiCocoaDrawingArea*) d_drawingArea -> d_widget;
+        if (cocoaDrawingArea) {
             NSRect rect;
             if (this -> d_x1DC < this -> d_x2DC) {
                 rect.origin.x = this -> d_x1DC;
@@ -174,27 +173,15 @@ void structGraphicsScreen :: v_clearWs () {
                 rect.origin.y = this -> d_y2DC;
                 rect.size.height = this -> d_y1DC - this -> d_y2DC;
             }
-
-            [view lockFocus];
+            
             CGContextRef context = (CGContextRef)[[NSGraphicsContext currentContext] graphicsPort];
-             d_macGraphicsContext = context;
-
-            CGContextTranslateCTM (context, 0, view.bounds.size.height);
-            CGContextScaleCTM (context, 1.0, -1.0);
-
-            CGContextSetAlpha (d_macGraphicsContext, 1.0);
-            CGContextSetBlendMode (d_macGraphicsContext, kCGBlendModeNormal);
-            CGContextSetAllowsAntialiasing (d_macGraphicsContext, false);
-            GuiCocoaDrawingArea *cocoaDrawingArea = (GuiCocoaDrawingArea*) d_drawingArea -> d_widget;
-            int shellHeight = view.bounds.size.height;
-            CGContextSetRGBFillColor (d_macGraphicsContext, 1.0, 1.0, 1.0, 1.0);
-            CGContextFillRect (d_macGraphicsContext, rect);
-            
-            
-            CGContextScaleCTM ( d_macGraphicsContext, 1.0, -1.0);
-
-            CGContextSynchronize ( d_macGraphicsContext);
-            [ d_macView unlockFocus];
+            CGContextSaveGState(context);
+            CGContextSetAlpha (context, 1.0);
+            CGContextSetBlendMode (context, kCGBlendModeNormal);
+            CGContextSetRGBFillColor (context, 1.0, 1.0, 1.0, 1.0);
+            CGContextFillRect (context, rect);
+            CGContextSynchronize ( context);
+            CGContextRestoreGState(context);
         }
 
 	#elif win
