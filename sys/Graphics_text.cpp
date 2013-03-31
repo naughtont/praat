@@ -208,7 +208,6 @@ static void charSize (I, _Graphics_widechar *lc) {
 				lc -> font.integer = font;
 				lc -> size = size;
 			}
-		#elif cocoa
 		#elif win
 			Longchar_Info info = Longchar_getInfoFromNative (lc -> kar);
 			int font, size, style;
@@ -270,6 +269,28 @@ static void charSize (I, _Graphics_widechar *lc) {
 			lc -> font.integer = font;   // kGraphics_font_HELVETICA .. kGraphics_font_DINGBATS
 			lc -> size = size;   // 0..4 instead of 10..24
 			lc -> style = style;   // without Graphics_CODE
+        #elif cocoa
+        
+            int normalSize = my fontSize * my resolution / 72.0;
+            lc -> size = lc -> size < 100 ? (3 * normalSize + 2) / 4 : /*lc -> size > 100 ? 1.2 * normalSize :*/ normalSize;
+            lc -> font.string = NULL;   // this erases font.integer!
+            
+            NSString *s =[[NSString alloc] initWithBytes: &lc -> kar length:4 encoding:NSUTF16LittleEndianStringEncoding];
+            NSAttributedString *string = [[NSAttributedString alloc] initWithString:s];
+            CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString(( CFAttributedStringRef)string);
+            CFRange fitRange;
+            CFRange textRange =  CFRangeMake(0, CFAttributedStringGetLength(( CFAttributedStringRef)string));
+            CGSize targetSize = CGSizeMake(lc -> width, CGFLOAT_MAX);
+            CGSize frameSize = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, textRange, NULL, targetSize, &fitRange);
+            CFRelease(framesetter);
+            [string release];
+            [s release];
+        
+            lc -> width = frameSize.width ;
+            lc -> baseline *= my fontSize * 0.01;
+            lc -> code = lc -> kar;
+
+        
 		#elif mac
 			Longchar_Info info = Longchar_getInfoFromNative (lc -> kar);
 			int normalSize = my fontSize * my resolution / 72.0;
@@ -574,6 +595,60 @@ static void charDraw (I, int xDC, int yDC, _Graphics_widechar *lc,
 			int needBitmappedIPA = 0;
 		#elif cocoa
 			int needBitmappedIPA = 0;
+        
+            int normalSize = my fontSize * my resolution / 72.0;
+            lc -> size = lc -> size < 100 ? (3 * normalSize + 2) / 4 : /*lc -> size > 100 ? 1.2 * normalSize :*/ normalSize;
+            lc -> baseline *= 0.01 * normalSize;
+            lc -> font.string = NULL;   // this erases font.integer!
+            
+            NSString *s = [[NSString alloc] initWithBytes:Melder_peekWcsToUtf16 (codes) length:nchars * 2 encoding:NSUTF16LittleEndianStringEncoding];
+            NSAttributedString *string = [[NSAttributedString alloc] initWithString:s];
+            CGContextRef context = (CGContextRef)[[NSGraphicsContext currentContext] graphicsPort];
+            CGContextSaveGState(context);
+
+            // Flip the coordinate system
+            CGContextSetTextMatrix(context, CGAffineTransformIdentity);
+            
+            // Create a path to render text in
+            CGMutablePathRef path = CGPathCreateMutable();
+            NSRect rect = NSMakeRect(0, 0, CGFLOAT_MAX, 15);
+            CGPathAddRect(path, NULL, rect );
+
+        
+            // create the framesetter and render text
+            CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((CFAttributedStringRef)string);
+            CTFrameRef frame = CTFramesetterCreateFrame(framesetter,
+                                                        CFRangeMake(0, [string length]), path, NULL);
+            
+            /*
+             * Draw.
+             */
+            CGContextSaveGState (my d_macGraphicsContext);
+            CGContextTranslateCTM (my d_macGraphicsContext, xDC, yDC);
+            
+            if (my yIsZeroAtTheTop) CGContextScaleCTM (my d_macGraphicsContext, 1.0, -1.0);
+            CGContextRotateCTM (my d_macGraphicsContext, my textRotation * NUMpi / 180.0);
+            if (my duringXor) {
+                CGContextSetBlendMode (my d_macGraphicsContext, kCGBlendModeDifference);
+                CGContextSetAllowsAntialiasing (my d_macGraphicsContext, false);
+                CTFrameDraw(frame, context);
+                CGContextSetBlendMode (my d_macGraphicsContext, kCGBlendModeNormal);
+                CGContextSetAllowsAntialiasing (my d_macGraphicsContext, true);
+            } else {
+                CTFrameDraw(frame, context);
+            }
+            CGContextRestoreGState (my d_macGraphicsContext);
+
+            
+            // Clean up
+            CFRelease(frame);
+            CFRelease(path);
+            CFRelease(framesetter);
+            CGContextRestoreGState(context);
+            [string release];
+            [s release];
+
+        
 		#elif win
 			int font = lc -> font.integer;
 			int needBitmappedIPA = font == kGraphics_font_IPATIMES && ! ipaAvailable;
