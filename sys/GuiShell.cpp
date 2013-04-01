@@ -27,6 +27,7 @@ int structGuiShell :: f_getShellWidth () {
 	#if gtk
 		width = GTK_WIDGET (d_gtkWindow) -> allocation.width;
 	#elif cocoa
+        return [d_cocoaWindow frame].size.width;
 	#elif motif
 		width = d_xmShell -> width;
 	#endif
@@ -38,6 +39,7 @@ int structGuiShell :: f_getShellHeight () {
 	#if gtk
 		height = GTK_WIDGET (d_gtkWindow) -> allocation.height;
 	#elif cocoa
+        return [d_cocoaWindow frame].size.height;
 	#elif motif
 		height = d_xmShell -> height;
 	#endif
@@ -61,6 +63,8 @@ void structGuiShell :: f_drain () {
 		//gdk_window_flush (gtk_widget_get_window (me));
 		gdk_flush ();
 	#elif cocoa
+        // Probably never needed, unless we diabled flushing
+        [d_cocoaWindow flushWindowIfNeeded];
 	#elif win
 	#elif mac
 		Melder_assert (d_xmShell != NULL);
