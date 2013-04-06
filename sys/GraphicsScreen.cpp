@@ -489,6 +489,8 @@ Graphics Graphics_create_pdffile (MelderFile file, int resolution,
 		my d_y1DC = my d_y1DCmin = 0;
 		my d_y2DC = my d_y2DCmax = 11.0 * resolution;
 		Graphics_setWsWindow ((Graphics) me, 0, 7.5, 1.0, 12.0);
+    NSCAssert(my d_macGraphicsContext, @"nil context");
+
 		CGContextBeginPage (my d_macGraphicsContext, & rect);
 		CGContextScaleCTM (my d_macGraphicsContext, 72.0/resolution, 72.0/resolution);
 		CGContextTranslateCTM (my d_macGraphicsContext, - x1inches * resolution, (12.0 - y1inches) * resolution);
@@ -515,6 +517,8 @@ Graphics Graphics_create_pdf (void *context, int resolution,
 		my d_y1DC = my d_y1DCmin = 0;
 		my d_y2DC = my d_y2DCmax = 11.0 * resolution;
 		Graphics_setWsWindow ((Graphics) me, 0, 7.5, 1.0, 12.0);
+    NSCAssert(my d_macGraphicsContext, @"nil context");
+
 		CGContextBeginPage (my d_macGraphicsContext, & rect);
 		CGContextScaleCTM (my d_macGraphicsContext, 72.0/resolution, 72.0/resolution);
 		CGContextTranslateCTM (my d_macGraphicsContext, - x1inches * resolution, (12.0 - y1inches) * resolution);
@@ -552,6 +556,8 @@ Graphics Graphics_create_pdf (void *context, int resolution,
                 NSView *view = my d_macView;
                 [view lockFocus];
                 CGContextRef context = (CGContextRef)[[NSGraphicsContext currentContext] graphicsPort];
+                NSCAssert(context, @"nil context");
+
                 my d_macGraphicsContext = context;
                 GuiCocoaDrawingArea *cocoaDrawingArea = (GuiCocoaDrawingArea*)my d_drawingArea -> d_widget;
                 CGContextTranslateCTM (my d_macGraphicsContext, 0, cocoaDrawingArea.bounds.size.height);

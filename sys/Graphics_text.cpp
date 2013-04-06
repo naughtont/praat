@@ -712,6 +712,8 @@ static void charDraw (I, int xDC, int yDC, _Graphics_widechar *lc,
             CGPathAddRect(path, NULL, drawRect );
             frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, [s length]), path, NULL);
 
+        NSCAssert(my d_macGraphicsContext, @"nil context");
+
             CGContextSaveGState (my d_macGraphicsContext);
             CGContextTranslateCTM (my d_macGraphicsContext, xDC, yDC + descent);
             if (my yIsZeroAtTheTop) CGContextScaleCTM (my d_macGraphicsContext, 1.0, -1.0);
@@ -803,6 +805,9 @@ static void charDraw (I, int xDC, int yDC, _Graphics_widechar *lc,
 			 * Draw.
 			 */
 			CGContextSaveGState (my d_macGraphicsContext);
+        
+        NSCAssert(my d_macGraphicsContext, @"nil context");
+
 			CGContextTranslateCTM (my d_macGraphicsContext, xDC, yDC);
 
 			if (my yIsZeroAtTheTop) CGContextScaleCTM (my d_macGraphicsContext, 1.0, -1.0);
