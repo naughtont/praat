@@ -247,6 +247,8 @@ static void highlight2 (Graphics graphics, long x1DC, long x2DC, long y1DC, long
 
                 CGContextRef context = (CGContextRef)[[NSGraphicsContext currentContext] graphicsPort];
                 CGContextSaveGState (context);
+                
+                NSCAssert(context, @"nil context");
                 CGContextTranslateCTM (my d_macGraphicsContext, 0, view.bounds.size.height);
                 CGContextScaleCTM (my d_macGraphicsContext, 1.0, -1.0);
 
