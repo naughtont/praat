@@ -115,7 +115,9 @@
     @interface GuiCocoaWindow : NSWindow <GuiCocoaAny> @end
     @interface GuiCocoaScrolledWindow : NSScrollView <GuiCocoaAny> @end
     @interface GuiCocoaCheckButton : NSButton <GuiCocoaAny> @end
-    @interface GuiCocoaDrawingArea : NSView <GuiCocoaAny> @end
+    @interface GuiCocoaDrawingArea : NSView <GuiCocoaAny>
+    - (void)flush;
+    @end
     @interface GuiCocoaOptionMenu : NSPopUpButton <GuiCocoaAny> @end
     @interface GuiCocoaList : NSView <GuiCocoaAny, NSTableViewDataSource, NSTableViewDelegate>
         @property (nonatomic, retain) NSMutableArray *contents;
