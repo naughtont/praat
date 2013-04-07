@@ -611,63 +611,63 @@ void structGraphicsScreen :: v_button (long x1DC, long x2DC, long y1DC, long y2D
         NSView *view = d_macView;
         NSCAssert(view, @"nil view");
         [view lockFocus];
-        CGContextRef context = (CGContextRef)[[NSGraphicsContext currentContext] graphicsPort];
-        d_macGraphicsContext = context;
+        d_macGraphicsContext = (CGContextRef)[[NSGraphicsContext currentContext] graphicsPort];
         GuiCocoaDrawingArea *cocoaDrawingArea = (GuiCocoaDrawingArea*) d_drawingArea -> d_widget;
-        CGContextSaveGState (context);
-        NSCAssert(context, @"nil context");
+        CGContextSaveGState (d_macGraphicsContext);
+        NSCAssert(d_macGraphicsContext, @"nil context");
 
-        CGContextTranslateCTM (context, 0, cocoaDrawingArea.bounds.size.height);
-        CGContextScaleCTM (context, 1.0, -1.0);
+        CGContextTranslateCTM (d_macGraphicsContext, 0, cocoaDrawingArea.bounds.size.height);
+        CGContextScaleCTM (d_macGraphicsContext, 1.0, -1.0);
 
     CGRect rect;
         int width, height;
         width = x2DC - x1DC, height = y1DC - y2DC;
         if (width <= 0 || height <= 0) return;
         
-        CGContextSetRGBStrokeColor(context, 0.1 , 0.1 , 0.1 , 1.0);
+        CGContextSetRGBStrokeColor(d_macGraphicsContext, 0.1 , 0.1 , 0.1 , 1.0);
         SetRect (rect, x1DC - 1, y2DC - 1, x2DC, y1DC);
 
 
     
         if (width > 2 && height > 2) {
             
-            CGContextSetRGBStrokeColor(context, 0.3 , 0.3 , 0.3 , 1.0);
+            CGContextSetRGBStrokeColor(d_macGraphicsContext, 0.3 , 0.3 , 0.3 , 1.0);
 
-            CGContextMoveToPoint(context, x1DC, y1DC - 2);
-            CGContextAddLineToPoint(context, x2DC - 2, y1DC - 2);
+            CGContextMoveToPoint(d_macGraphicsContext, x1DC, y1DC - 2);
+            CGContextAddLineToPoint(d_macGraphicsContext, x2DC - 2, y1DC - 2);
 
-            CGContextMoveToPoint(context, x2DC - 2, y1DC - 2);
-            CGContextAddLineToPoint(context, x2DC - 2, y2DC);
-
-
-            CGContextSetRGBStrokeColor(context, 1.0 , 1.0 , 1.0 , 1.0);
-
-            CGContextMoveToPoint(context, x1DC, y1DC - 2);
-            CGContextAddLineToPoint(context, x1DC, y2DC);
+            CGContextMoveToPoint(d_macGraphicsContext, x2DC - 2, y1DC - 2);
+            CGContextAddLineToPoint(d_macGraphicsContext, x2DC - 2, y2DC);
 
 
-            CGContextMoveToPoint(context, x1DC, y2DC);
-            CGContextAddLineToPoint(context, x2DC - 2, y2DC);
+            CGContextSetRGBStrokeColor(d_macGraphicsContext, 1.0 , 1.0 , 1.0 , 1.0);
+
+            CGContextMoveToPoint(d_macGraphicsContext, x1DC, y1DC - 2);
+            CGContextAddLineToPoint(d_macGraphicsContext, x1DC, y2DC);
+
+
+            CGContextMoveToPoint(d_macGraphicsContext, x1DC, y2DC);
+            CGContextAddLineToPoint(d_macGraphicsContext, x2DC - 2, y2DC);
 
             if (width > 4 && height > 4) {
                 
-                CGContextSetRGBStrokeColor(context, 0.65 , 0.65 , 0.65 , 1.0);
+                CGContextSetRGBStrokeColor(d_macGraphicsContext, 0.65 , 0.65 , 0.65 , 1.0);
 
                 
                 SetRect ( rect, x1DC + 1, y2DC + 1, x2DC - 2, y1DC - 2);
-                CGContextAddRect(context, rect);
+                CGContextAddRect(d_macGraphicsContext, rect);
 
-                CGContextSetLineWidth(context, 2.0);
-                CGContextStrokePath(context);
+                CGContextSetLineWidth(d_macGraphicsContext, 2.0);
+                CGContextStrokePath(d_macGraphicsContext);
 
             }
         }
         
-        CGContextSetRGBStrokeColor(context, 0.65 , 0.65 , 0.65 , 1.0);
-        CGContextSynchronize ( context);
+        CGContextSetRGBStrokeColor(d_macGraphicsContext, 0.65 , 0.65 , 0.65 , 1.0);
+        CGContextSynchronize ( d_macGraphicsContext);
     
-        CGContextRestoreGState (context);
+    CGContextFlush(d_macGraphicsContext);
+    CGContextRestoreGState (d_macGraphicsContext);
 
         [ d_macView unlockFocus];
 

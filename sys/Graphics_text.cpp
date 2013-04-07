@@ -278,6 +278,8 @@ static void charSize (I, _Graphics_widechar *lc) {
             
             NSString *s =[[NSString alloc] initWithBytes: &lc -> kar length:4 encoding:NSUTF16LittleEndianStringEncoding];
             CGContextRef context = (CGContextRef)[[NSGraphicsContext currentContext] graphicsPort];
+            NSCAssert(context, @"nil context");
+
             CGContextSaveGState(context);
             CGContextSetTextMatrix(context, CGAffineTransformIdentity);
             Boolean boldStyle = (lc -> style & Graphics_BOLD) != 0;
@@ -644,6 +646,7 @@ static void charDraw (I, int xDC, int yDC, _Graphics_widechar *lc,
 		#elif cocoa
 			int needBitmappedIPA = 0;
             CGContextRef context = (CGContextRef)[[NSGraphicsContext currentContext] graphicsPort];
+            NSCAssert(context, @"nil context");
             CGContextSaveGState(context);
             CGContextSetTextMatrix(context, CGAffineTransformIdentity);
             NSString *s = [[NSString alloc] initWithBytes:Melder_peekWcsToUtf16 (codes) length:nchars * 2 encoding:NSUTF16LittleEndianStringEncoding];

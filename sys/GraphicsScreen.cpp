@@ -553,12 +553,9 @@ Graphics Graphics_create_pdf (void *context, int resolution,
 			}
         #else
             if (my d_macView) {            
-                NSView *view = my d_macView;
-                [view lockFocus];
-                CGContextRef context = (CGContextRef)[[NSGraphicsContext currentContext] graphicsPort];
-                NSCAssert(context, @"nil context");
-
-                my d_macGraphicsContext = context;
+                [my d_macView lockFocus];
+                my d_macGraphicsContext = (CGContextRef)[[NSGraphicsContext currentContext] graphicsPort];
+                NSCAssert(my d_macGraphicsContext, @"nil context");
                 GuiCocoaDrawingArea *cocoaDrawingArea = (GuiCocoaDrawingArea*)my d_drawingArea -> d_widget;
                 CGContextTranslateCTM (my d_macGraphicsContext, 0, cocoaDrawingArea.bounds.size.height);
                 CGContextScaleCTM (my d_macGraphicsContext, 1.0, -1.0);
@@ -572,11 +569,10 @@ Graphics Graphics_create_pdf (void *context, int resolution,
 				QDEndCGContext (my d_macPort, & my d_macGraphicsContext);
 			}
         #else
-                NSView *view = my d_macView;
-                if (view) {
-                    CGContextSynchronize (my d_macGraphicsContext);
-                    [my d_macView unlockFocus];
-                }
+            if (my d_macView) {
+                CGContextSynchronize (my d_macGraphicsContext);
+                [my d_macView unlockFocus];
+            }
 		#endif
 	}
 #endif
