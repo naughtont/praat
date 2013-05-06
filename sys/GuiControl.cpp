@@ -137,7 +137,7 @@ void structGuiControl :: v_positionInForm (GuiObject widget, int left, int right
 		top = parentHeight - top;         // flip
 		bottom = parentHeight - bottom;   // flip
 		NSRect rect = { { left, bottom }, { right - left, top - bottom } };
-		[widgetView initWithFrame: rect];
+		[widgetView setFrame: rect];
 
         [widgetView setAutoresizingMask:horizMask | vertMask];
         [superView addSubview:widgetView];   // parent will retain the subview...
