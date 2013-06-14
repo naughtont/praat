@@ -333,10 +333,6 @@ static void drawNow (FunctionEditor me) {
 		my v_drawSelectionViewer ();
 	}
 
-	/*
-	 * End of inner drawing.
-	 */
-	Graphics_setViewport (my d_graphics, my functionViewerLeft, my selectionViewerRight, 0, my height);
 #if cocoa
     if (my anchorForDragging > 0) {
         
@@ -348,6 +344,11 @@ static void drawNow (FunctionEditor me) {
 		my v_highlightSelection (left, right, 0.0, 1.0);
     }
 #endif
+
+	/*
+	 * End of inner drawing.
+	 */
+	Graphics_setViewport (my d_graphics, my functionViewerLeft, my selectionViewerRight, 0, my height);
 }
 
 /********** METHODS **********/
