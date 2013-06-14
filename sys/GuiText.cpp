@@ -866,7 +866,6 @@ void _GuiText_exit (void) {
 	- (void) dealloc {   // override
 		GuiText me = d_userData;
 		forget (me);
-		Melder_casual ("deleting a label");
 		[super dealloc];
 	}
 	- (GuiThing) userData {
@@ -926,22 +925,10 @@ GuiText GuiText_create (GuiForm parent, int left, int right, int top, int bottom
 		my d_redo_item = NULL;
 		g_signal_connect (G_OBJECT (my d_widget), "destroy", G_CALLBACK (_GuiGtkText_destroyCallback), me);
 	#elif cocoa
-		trace ("create");
 		my d_widget = [[GuiCocoaText alloc] init];
-		trace ("position");
 		my v_positionInForm (my d_widget, left, right, top, bottom, parent);
-		trace ("set user data");
-		[(GuiCocoaText *) my d_widget   setUserData: me];
-		trace ("set bezeled");
-		//[(NSTextField *) my d_widget   setBezeled: YES];
-		trace ("set bezel style");
-		//[(NSTextField *) my d_widget   setBezelStyle: NSRoundedBezelStyle];
-		trace ("set bordered");
-		//[(NSTextField *) my d_widget   setBordered: YES];
-		trace ("set editable");
-		[(NSTextField *) my d_widget   setEditable: YES];
-		//NSColor *white = [NSColor whiteColor];
-		//[(NSTextField *) my d_widget   setBackgroundColor: white];
+		[(GuiCocoaText *) my d_widget setUserData: me];
+		[(GuiCocoaText *) my d_widget setEditable: YES];
 	#elif win
 		my d_widget = _Gui_initializeWidget (xmTextWidgetClass, parent -> d_widget, flags & GuiText_SCROLLED ? L"scrolledText" : L"text");
 		_GuiObject_setUserData (my d_widget, me);

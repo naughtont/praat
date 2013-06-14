@@ -66,7 +66,7 @@ Thing_implement (GuiList, GuiControl, 0);
 #elif cocoa
 @implementation GuiCocoaList {
     GuiList d_userData;
-    NSMutableArray *items;
+//    NSMutableArray *items;
 }
 
 - (id)initWithFrame:(NSRect)frameRect {
