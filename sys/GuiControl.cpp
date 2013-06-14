@@ -136,12 +136,12 @@ void structGuiControl :: v_positionInForm (GuiObject widget, int left, int right
 		if (bottom <= 0) bottom += parentHeight;
 		top = parentHeight - top;         // flip
 		bottom = parentHeight - bottom;   // flip
-		NSRect rect = { { left, bottom }, { right - left, top - bottom } };
-		[widgetView setFrame: rect];
-
+        int width = right - left;
+        int height = top - bottom;
+        NSRect rect = NSMakeRect(left, bottom, width, height);
         [widgetView setAutoresizingMask:horizMask | vertMask];
         [superView addSubview:widgetView];   // parent will retain the subview...
-        [widgetView setBounds: rect];
+        [widgetView setFrame: rect];
 		[widgetView release];   // ... so we can release the item already
 	#elif motif
 		(void) parent;
