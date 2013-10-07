@@ -119,7 +119,9 @@
 	@interface GuiCocoaOptionMenu : NSPopUpButton <GuiCocoaAny> @end
 	@interface GuiCocoaProgressBar : NSProgressIndicator <GuiCocoaAny> @end
 	@interface GuiCocoaRadioButton : NSButton <GuiCocoaAny> @end
-	@interface GuiCocoaScrollBar : NSScroller <GuiCocoaAny> @end
+	@interface GuiCocoaScrollBar : NSScroller <GuiCocoaAny>
+        - (void)scrollWheel:(CGFloat)delta;
+    @end
 	@interface GuiCocoaScrolledWindow : NSScrollView <GuiCocoaAny> @end
 	@interface GuiCocoaTextField : NSTextField <GuiCocoaAny> @end
 	@interface GuiCocoaTextView : NSTextView <GuiCocoaAny, NSTextViewDelegate> @end

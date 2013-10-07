@@ -96,6 +96,28 @@ Thing_implement (GuiScrollBar, GuiControl, 0);
 		[self setDoubleValue: (value - minimum) / spaceLeft];
 	}
 }
+
+- (void)scrollWheel:(CGFloat)delta {
+    GuiScrollBar me = (GuiScrollBar) d_userData;
+
+    _m_sliderSize -= delta * (_m_maximum - _m_minimum) / 1000.0;
+    if (_m_value < _m_minimum)
+        _m_value = _m_minimum;
+    if (_m_value > _m_maximum - _m_sliderSize)
+        _m_value = _m_maximum - _m_sliderSize;
+
+    [self setMinimum: _m_minimum maximum: _m_maximum value: _m_value sliderSize: _m_sliderSize increment: _m_increment pageIncrement: _m_pageIncrement];
+
+    if (my d_valueChangedCallback) {
+        struct structGuiScrollBarEvent event = { me };
+        try {
+            my d_valueChangedCallback (my d_valueChangedBoss, & event);
+        } catch (MelderError) {
+            Melder_flushError ("Scroll not completely handled.");
+        }
+    }
+}
+
 - (void) valueChanged {
 	GuiScrollBar me = (GuiScrollBar) d_userData;
 	switch ([self hitPart]) {

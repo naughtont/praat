@@ -271,6 +271,30 @@ Thing_implement (GuiDrawingArea, GuiControl, 0);
 			}
 		}
 	}
+
+- (void)magnifyWithEvent:(NSEvent *)event {
+     NSLog(@"Magnification value is %f", [event magnification]);
+}
+
+- (void)scrollWheel:(NSEvent *)event {
+    BOOL scrolled = NO;
+    GuiDrawingArea me = (GuiDrawingArea) d_userData;
+	if (my d_horizontalScrollBar) {
+        
+        GuiCocoaScrollBar *horizontalScrollBar = (GuiCocoaScrollBar*)my d_horizontalScrollBar -> d_widget;
+        [horizontalScrollBar scrollWheel:[event deltaX]];
+        scrolled = YES;
+	}
+	if (my d_verticalScrollBar) {
+        GuiCocoaScrollBar *verticalScrollBar = (GuiCocoaScrollBar*)my d_verticalScrollBar -> d_widget;
+        [verticalScrollBar scrollWheel:[event deltaY]];
+        scrolled = YES;
+	}
+    
+    if (!scrolled)
+        [super scrollWheel:event];
+}
+
 	@end
 #elif win
 	void _GuiWinDrawingArea_destroy (GuiObject widget) {
