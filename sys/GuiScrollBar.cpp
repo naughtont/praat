@@ -100,7 +100,7 @@ Thing_implement (GuiScrollBar, GuiControl, 0);
 - (void)scrollWheel:(CGFloat)delta {
     GuiScrollBar me = (GuiScrollBar) d_userData;
 
-    _m_sliderSize -= delta * (_m_maximum - _m_minimum) / 1000.0;
+    _m_value -= delta * (_m_maximum - _m_minimum) / 1000.0;
     if (_m_value < _m_minimum)
         _m_value = _m_minimum;
     if (_m_value > _m_maximum - _m_sliderSize)
