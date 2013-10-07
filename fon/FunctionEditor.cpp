@@ -333,18 +333,6 @@ static void drawNow (FunctionEditor me) {
 		my v_drawSelectionViewer ();
 	}
 
-#if cocoa
-    if (my anchorForDragging > 0) {
-        
-        double left = my anchorForDragging, right = my xForDragging;
-        if (my anchorForDragging > my xForDragging)
-            left = my xForDragging, right = my anchorForDragging;
-
-        drawWhileDragging (me, left,right);
-		my v_highlightSelection (left, right, 0.0, 1.0);
-    }
-#endif
-
 	/*
 	 * End of inner drawing.
 	 */
@@ -551,15 +539,19 @@ static void do_zoomToSelection (FunctionEditor me) {
 	if (my d_endSelection > my d_startSelection) {
 		my startZoomHistory = my d_startWindow;   // remember for Zoom Back
 		my endZoomHistory = my d_endWindow;   // remember for Zoom Back
-		//Melder_casual ("Zoomed in to %f ~ %f seconds.", my startSelection, my endSelection);
+		trace ("Zooming in to %.17g ~ %.17g seconds.", my d_startSelection, my d_endSelection);
 		my d_startWindow = my d_startSelection;
 		my d_endWindow = my d_endSelection;
+		trace ("Zoomed in to %.17g ~ %.17g seconds (1).", my d_startWindow, my d_endWindow);
 		my v_updateText ();
+		trace ("Zoomed in to %.17g ~ %.17g seconds (2).", my d_startWindow, my d_endWindow);
 		updateScrollBar (me);
+		trace ("Zoomed in to %.17g ~ %.17g seconds (3).", my d_startWindow, my d_endWindow);
 		/*Graphics_updateWs (my d_graphics);*/ drawNow (me);
 		if (my pref_synchronizedZoomAndScroll ()) {
 			updateGroup (me);
 		}
+		trace ("Zoomed in to %.17g ~ %.17g seconds (4).", my d_startWindow, my d_endWindow);
 	}
 }
 
@@ -777,6 +769,7 @@ static void menu_cb_moveEby (EDITOR_ARGS) {
 void FunctionEditor_shift (FunctionEditor me, double shift, bool needsUpdateGroup) {
 	double windowLength = my d_endWindow - my d_startWindow;
 	MelderAudio_stopPlaying (MelderAudio_IMPLICIT);   /* Quickly, before window changes. */
+	trace ("shifting by %.17g", shift);
 	if (shift < 0.0) {
 		my d_startWindow += shift;
 		if (my d_startWindow < my d_tmin + 1e-12)
@@ -1044,7 +1037,6 @@ static void gui_drawingarea_cb_expose (I, GuiDrawingAreaExposeEvent event) {
 static void gui_drawingarea_cb_click (I, GuiDrawingAreaClickEvent event) {
 	iam (FunctionEditor);
 	if (my d_graphics == NULL) return;   // Could be the case in the very beginning.
-if (gtk && event -> type != BUTTON_PRESS) return;
 	double xWC, yWC;
 	my shiftKeyPressed = event -> shiftKeyPressed;
 	Graphics_setWindow (my d_graphics, my functionViewerLeft, my functionViewerRight, 0, my height);
@@ -1062,9 +1054,6 @@ if (gtk && event -> type != BUTTON_PRESS) return;
 			Melder_casual ("FunctionEditor::gui_drawingarea_cb_click: button %d shift %d option %d command %d control %d",
 				event -> button, my shiftKeyPressed, event -> optionKeyPressed, event -> commandKeyPressed, event -> extraControlKeyPressed);
 		}
-#if cocoa
-        my clickEvent = event;
-#endif
 #if defined (macintosh)
 		needsUpdate =
 			event -> optionKeyPressed || event -> extraControlKeyPressed ? my v_clickB (xWC, yWC) :
@@ -1082,16 +1071,15 @@ if (gtk && event -> type != BUTTON_PRESS) return;
 			event -> button == 1 ? my v_click (xWC, yWC, my shiftKeyPressed) :
 			event -> button == 2 ? my v_clickB (xWC, yWC) : my v_clickE (xWC, yWC);
 #endif
-#if cocoa
-        if (needsUpdate) {
-            GuiCocoaDrawingArea *drawingArea = (GuiCocoaDrawingArea*) my drawingArea->d_widget;
-            [drawingArea setNeedsDisplay:YES];
-            needsUpdate = 0;
-        }
-#endif
 		if (needsUpdate) my v_updateText ();
 		Graphics_setViewport (my d_graphics, my functionViewerLeft, my functionViewerRight, 0, my height);
-		if (needsUpdate) /*Graphics_updateWs (my d_graphics);*/ drawNow (me);
+		if (needsUpdate) {
+			#if cocoa
+				Graphics_updateWs (my d_graphics);
+			#else
+				drawNow (me);
+			#endif
+		}
 		if (needsUpdate) updateGroup (me);
 	}
 	else   /* Clicked outside signal region? Let us hear it. */
@@ -1158,6 +1146,10 @@ void structFunctionEditor :: v_createChildren () {
 		#if gtk
 			Melder_assert (text -> d_widget);
 			gtk_widget_grab_focus (GTK_WIDGET (text -> d_widget));   // BUG: can hardly be correct (the text should grab the focus of the window, not the global focus)
+		#elif cocoa
+			Melder_assert ([(NSView *) text -> d_widget window]);
+			//[[(NSView *) text -> d_widget window] setInitialFirstResponder: (NSView *) text -> d_widget];
+			[[(NSView *) text -> d_widget window] makeFirstResponder: (NSView *) text -> d_widget];
 		#endif
 	}
 
@@ -1218,17 +1210,10 @@ int structFunctionEditor :: v_click (double xbegin, double ybegin, bool shiftKey
 	 * Another example: if she shift-clicks near E, B will become (and stay) the anchor.
 	 */
 
-    Graphics_setWindow (d_graphics, d_startWindow, d_endWindow, 0, 1);
+	Graphics_setWindow (d_graphics, d_startWindow, d_endWindow, 0, 1);
 
-#if cocoa
-    xForDragging = xbegin;
-    if (clickEvent->type == BUTTON_PRESS)
-        anchorForDragging = xbegin;   // the default (for if the shift key isn't pressed)
-	if (shiftKeyPressed && clickEvent->type == BUTTON_PRESS) {
-#else
-  	double anchorForDragging = xbegin;   // the default (for if the shift key isn't pressed)
-        if (shiftKeyPressed) {
-#endif
+	double anchorForDragging = xbegin;   // the default (for if the shift key isn't pressed)
+	if (shiftKeyPressed) {
 		/*
 		 * Extend the selection.
 		 * We should always end up with a real selection (B < E),
@@ -1311,9 +1296,6 @@ int structFunctionEditor :: v_click (double xbegin, double ybegin, bool shiftKey
 	 * Find out whether this is a click or a drag.
 	 */
     
-#if cocoa
-    drag = clickEvent->type == MOTION_NOTIFY;
-#else
 	while (Graphics_mouseStillDown (d_graphics)) {
 		Graphics_getMouseLocation (d_graphics, & x, & y);
 		if (x < d_startWindow) x = d_startWindow;
@@ -1323,7 +1305,6 @@ int structFunctionEditor :: v_click (double xbegin, double ybegin, bool shiftKey
 			break;
 		}
 	}
-#endif
     
 	if (drag) {
 		/*
@@ -1345,10 +1326,7 @@ int structFunctionEditor :: v_click (double xbegin, double ybegin, bool shiftKey
 		 * Draw the text at least once.
 		 */
 		/*if (x < d_startWindow) x = d_startWindow; else if (x > d_endWindow) x = d_endWindow;*/
-#if cocoa
-#else
         drawWhileDragging (this, anchorForDragging, x);
-#endif
 		/*
 		 * Draw the dragged selection at least once.
 		 */
@@ -1361,12 +1339,8 @@ int structFunctionEditor :: v_click (double xbegin, double ybegin, bool shiftKey
 		 * Drag for the new selection.
 		 */
         
-#if cocoa
-        if (drag)
-#else
 		while (Graphics_mouseStillDown (d_graphics))
-#endif
-        {
+		{
 			double xold = x, x1, x2;
 			Graphics_getMouseLocation (d_graphics, & x, & y);
 			/*
@@ -1374,18 +1348,15 @@ int structFunctionEditor :: v_click (double xbegin, double ybegin, bool shiftKey
 			 */
 			if (x < d_startWindow) x = d_startWindow; else if (x > d_endWindow) x = d_endWindow;
             
-#if cocoa
-#else
-                if (x == xold)
-                    continue;
-#endif
+			if (x == xold)
+				continue;
             
 			/*
-			 * Undraw and redraw the text at the top.
+			 * Undraw the text.
 			 */
 			drawWhileDragging (this, anchorForDragging, xold);
 			/*
-			 * Remove previous dragged selection.
+			 * Undraw previous dragged selection.
 			 */
 			if (xold > anchorForDragging) x1 = anchorForDragging, x2 = xold; else x1 = xold, x2 = anchorForDragging;
 			if (x1 != x2) v_unhighlightSelection (x1, x2, 0, 1);
@@ -1395,29 +1366,8 @@ int structFunctionEditor :: v_click (double xbegin, double ybegin, bool shiftKey
 			if (x > anchorForDragging) x1 = anchorForDragging, x2 = x; else x1 = x, x2 = anchorForDragging;
 			if (x1 != x2) v_highlightSelection (x1, x2, 0, 1);
 			/*
-			 * Redraw the text at the top.
+			 * Redraw the text at the new location.
 			 */
-#if cocoa
-            } else if (! shiftKeyPressed && clickEvent->type == BUTTON_PRESS) {
-                /*
-                 * Move the cursor to the clicked position.
-                 */
-                d_startSelection = d_endSelection = xbegin;
-            }
-        }
-
-        
-        if (clickEvent->type == BUTTON_RELEASE) {
-            /*
-             * Set the new selection.
-             */
-            if (x > anchorForDragging) d_startSelection = anchorForDragging, d_endSelection = x;
-            else d_startSelection = x, d_endSelection = anchorForDragging;
-            
-            anchorForDragging = -1.0;
-        }
-
-#else
             drawWhileDragging (this, anchorForDragging, x);
         } ;
 		/*
@@ -1431,7 +1381,6 @@ int structFunctionEditor :: v_click (double xbegin, double ybegin, bool shiftKey
 		 */
 		d_startSelection = d_endSelection = xbegin;
 	}
-#endif
 	return FunctionEditor_UPDATE_NEEDED;
 }
 

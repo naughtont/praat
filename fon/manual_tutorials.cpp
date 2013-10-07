@@ -23,9 +23,44 @@
 void manual_tutorials_init (ManPages me);
 void manual_tutorials_init (ManPages me) {
 
-MAN_BEGIN (L"What's new?", L"ppgb", 20130302)
+MAN_BEGIN (L"What's new?", L"ppgb", 20130915)
 INTRO (L"Latest changes in Praat.")
 /*LIST_ITEM (L"\\bu Manual page about @@drawing a vowel triangle@.")*/
+NORMAL (L"##5.3.56# (15 September 2013)")
+LIST_ITEM (L"\\bu Mac: 64-bit alpha version.")
+LIST_ITEM (L"\\bu Linux: improved selecting in the Picture window.")
+NORMAL (L"##5.3.55# (2 September 2013)")
+LIST_ITEM (L"\\bu Corrected a bug introduced in 5.3.54 by which you couldn't select a file for saving.")
+NORMAL (L"##5.3.54# (1 September 2013)")
+LIST_ITEM (L"\\bu Sound window: removed a bug introduced in 5.3.42 by which you couldn't ask for an odd number of poles in Formant Settings "
+	"(by e.g. specifying \"5.5\" for the number of formants).")
+LIST_ITEM (L"Linux: improved dragging of selections in the Picture window and the Sound window.")
+NORMAL (L"##5.3.53# (9 July 2013)")
+LIST_ITEM (L"\\bu Table: more drawing commands.")
+NORMAL (L"##5.3.52# (12 June 2013)")
+LIST_ITEM (L"\\bu Scripting: editor windows understand #do and ##do\\$ #.")
+NORMAL (L"##5.3.51# (30 May 2013)")
+LIST_ITEM (L"\\bu Sound window: ##Extract selected sound for overlap...#.")
+NORMAL (L"##5.3.49# (13 May 2013)")
+LIST_ITEM (L"\\bu TextGrid window: alignment of the sound and the annotation in an interval, via Espeak.")
+LIST_ITEM (L"\\bu Scripting: repaired a bug introduced in 5.3.32 that could cause very slow running of scripts.")
+NORMAL (L"##5.3.48# (1 May 2013)")
+LIST_ITEM (L"\\bu Scripting: variable-substitution-free object selection and file writing.")
+LIST_ITEM (L"\\bu Scripting: #selectObject and #removeObject can select or remove multiple objects at a time.")
+NORMAL (L"##5.3.47# (23 April 2013)")
+LIST_ITEM (L"\\bu OTGrammar: included Giorgio Magri's (2012) update rule (weighted all up, high down).")
+NORMAL (L"##5.3.46# (21 April 2013)")
+LIST_ITEM (L"\\bu Scripting: variable-substitution-free procedure calls.")
+LIST_ITEM (L"\\bu Linux: made the Save menu compatible with Ubuntu 12.04.")
+NORMAL (L"##5.3.45# (15 April 2013)")
+LIST_ITEM (L"\\bu More parts of the manual reflect variable-substitution-free scripting.")
+NORMAL (L"##5.3.44# (7 April 2013)")
+LIST_ITEM (L"\\bu ##Create Sound as pure tone...#.")
+LIST_ITEM (L"\\bu First steps towards variable-substitution-free scripting: the #do, ##do\\$ #, #writeInfo and #appendInfo functions.")
+NORMAL (L"##5.3.43# (27 March 2013)")
+LIST_ITEM (L"\\bu Read and write stereo Kay sound files.")
+LIST_ITEM (L"\\bu Phonetic symbols \\ts, \\tS and \\ap.")
+LIST_ITEM (L"\\bu Network: ##Normalize weights...#, ##List weights...#, ##Weights down to Table...#.")
 NORMAL (L"##5.3.42# (2 March 2013)")
 LIST_ITEM (L"\\bu Repaired some minor bugs regarding synchronization between multiple windows.")
 NORMAL (L"##5.3.41# (9 February 2013)")
@@ -132,6 +167,29 @@ NORMAL (L"##5.3.01# (1 November 2011)")
 LIST_ITEM (L"\\bu Macintosh and Windows: better window positioning if the Dock or Task Bar is on the left or right.")
 LIST_ITEM (L"\\bu IPA symbol: you can now use \\bs.f for the half-length sign (\\.f).")
 LIST_ITEM (L"\\bu EEG window.")
+ENTRY (L"What used to be new?")
+LIST_ITEM (L"\\bu @@What was new in 5.3?")
+LIST_ITEM (L"\\bu @@What was new in 5.2?")
+LIST_ITEM (L"\\bu @@What was new in 5.1?")
+LIST_ITEM (L"\\bu @@What was new in 5.0?")
+LIST_ITEM (L"\\bu @@What was new in 4.6?")
+LIST_ITEM (L"\\bu @@What was new in 4.5?")
+LIST_ITEM (L"\\bu @@What was new in 4.4?")
+LIST_ITEM (L"\\bu @@What was new in 4.3?")
+LIST_ITEM (L"\\bu @@What was new in 4.2?")
+LIST_ITEM (L"\\bu @@What was new in 4.1?")
+LIST_ITEM (L"\\bu @@What was new in 4.0?")
+LIST_ITEM (L"\\bu @@What was new in 3.9?")
+LIST_ITEM (L"\\bu @@What was new in 3.8?")
+LIST_ITEM (L"\\bu @@What was new in 3.7?")
+LIST_ITEM (L"\\bu @@What was new in 3.6?")
+LIST_ITEM (L"\\bu @@What was new in 3.5?")
+LIST_ITEM (L"\\bu @@What was new in 3.3?")
+LIST_ITEM (L"\\bu @@What was new in 3.2?")
+LIST_ITEM (L"\\bu @@What was new in 3.1?")
+MAN_END
+
+MAN_BEGIN (L"What was new in 5.3?", L"ppgb", 20111015)
 NORMAL (L"##5.3# (15 October 2011)")
 NORMAL (L"##5.2.46# (7 October 2011)")
 LIST_ITEM (L"\\bu Corrected the same very old bug as in 5.2.44, but now also for opening and saving files.")
@@ -272,6 +330,9 @@ LIST_ITEM (L"\\bu Linux: made spectrogram drawing compatible with Ubuntu 10.10."
 LIST_ITEM (L"\\bu Linux: made sound more easily available on Ubuntu 10.10.")
 NORMAL (L"##5.2.01# (4 November 2010)")
 LIST_ITEM (L"\\bu Scripting: support for numeric @@Scripting 5.6. Arrays|arrays@.")
+MAN_END
+
+MAN_BEGIN (L"What was new in 5.2?", L"ppgb", 20101029)
 NORMAL (L"##5.2# (29 October 2010)")
 NORMAL (L"##5.1.45# (26 October 2010)")
 LIST_ITEM (L"\\bu Linux/GTK: allow Praat to run without an X display.")
@@ -280,7 +341,7 @@ NORMAL (L"##5.1.44# (4 October 2010)")
 LIST_ITEM (L"\\bu Linux/GTK: visibility of ExperimentMFC window.")
 LIST_ITEM (L"\\bu Linux/GTK: keyboard shortcuts.")
 NORMAL (L"##5.1.43# (4 August 2010)")
-LIST_ITEM (L"\\bu Scripting: support for stand-alone programs; see @@Scripting 9. Turning a script into a stand-alone program@.")
+LIST_ITEM (L"\\bu Scripting: support for stand-alone programs; see @@Scripting 9.1. Turning a script into a stand-alone program@.")
 LIST_ITEM (L"\\bu Table: allow drawing of ellipses even if irrelevant columns contain undefined data.")
 LIST_ITEM (L"\\bu Linux/GTK: correct resizing of Table window.")
 LIST_ITEM (L"\\bu Linux/GTK: prevented multiple storing of Picture window selection in scripting history.")
@@ -451,6 +512,9 @@ LIST_ITEM (L"\\bu TextGrid: ##List...# and ##Down to Table...#.")
 LIST_ITEM (L"\\bu OT learning: Giorgio Magri's \"Weighted all up, highest down\" update rule.")
 NORMAL (L"##5.1.01# (26 February 2009)")
 LIST_ITEM (L"\\bu Corrected several bugs in Klatt synthesis.")
+MAN_END
+
+MAN_BEGIN (L"What was new in 5.1?", L"ppgb", 20090131)
 NORMAL (L"##5.1# (31 January 2009)")
 LIST_ITEM (L"\\bu Editors for Klatt synthesis.")
 LIST_ITEM (L"\\bu Corrected many bugs.")
@@ -582,6 +646,9 @@ LIST_ITEM (L"\\bu TextGrid window: corrected the drawing of numbers to the right
 LIST_ITEM (L"\\bu Corrected a bug that caused Praat to crash when doing ##SpectrumTier: List#.")
 NORMAL (L"##5.0.01# (18 December 2007)")
 LIST_ITEM (L"\\bu Corrected a bug that could cause Praat to crash when redrawing the sound or TextGrid window.")
+MAN_END
+
+MAN_BEGIN (L"What was new in 5.0?", L"ppgb", 20071210)
 NORMAL (L"##5.0# (10 December 2007)")
 LIST_ITEM (L"\\bu Corrected many bugs.")
 LIST_ITEM (L"\\bu Display font sizes in points rather than pixels.")
@@ -707,6 +774,9 @@ LIST_ITEM (L"\\bu Sound files: saving FLAC audio files (implemented by Erez Volk
 NORMAL (L"##4.6.01# (16 May 2007)")
 LIST_ITEM (L"\\bu Removed a bug that caused downsampling (and therefore formant measurements) "
 	"to be incorrect for stereo sounds.")
+MAN_END
+
+MAN_BEGIN (L"What was new in 4.6?", L"ppgb", 20070512)
 NORMAL (L"##4.6# (12 May 2007)")
 NORMAL (L"##4.5.26# (8 May 2007)")
 LIST_ITEM (L"\\bu Sound files: reading FLAC audio files (implemented by Erez Volk).")
@@ -794,6 +864,9 @@ LIST_ITEM (L"\\bu Corrected yet another bug in the new @@Sound: To TextGrid (sil
 NORMAL (L"##4.5.01# (28 October 2006)")
 LIST_ITEM (L"\\bu Sound window: the pitch drawing method is #Curves, #Speckles, or #Automatic.")
 LIST_ITEM (L"\\bu Corrected another bug in the new @@Sound: To TextGrid (silences)...@.")
+MAN_END
+
+MAN_BEGIN (L"What was new in 4.5?", L"ppgb", 20061026)
 NORMAL (L"##4.5# (26 October 2006)")
 NORMAL (L"##4.4.35# (20 October 2006)")
 LIST_ITEM (L"\\bu In @ManPages you can now draw pictures.")
@@ -892,6 +965,9 @@ NORMAL (L"##4.4.01# (2 January 2006)")
 LIST_ITEM (L"\\bu Picture window: \"Logarithmic marks\" allows reversed axes.")
 LIST_ITEM (L"\\bu Manipulation window: removed a bug from \"Shift frequencies\" that caused much too small shifts in semitones.")
 LIST_ITEM (L"\\bu TextGrid: \"Remove point...\".")
+MAN_END
+
+MAN_BEGIN (L"What was new in 4.4?", L"ppgb", 20051219)
 NORMAL (L"##4.4# (19 December 2005)")
 NORMAL (L"##4.3.37# (15 December 2005)")
 LIST_ITEM (L"\\bu @@Principal component analysis@: now accepts tables with more variables (columns) than cases (rows).")
@@ -987,6 +1063,9 @@ LIST_ITEM (L"\\bu Replaced PostScript font SILDoulosIPA with XIPA (adapted for P
 LIST_ITEM (L"\\bu Sound: Set part to zero...")
 LIST_ITEM (L"\\bu Pitch: To Sound (sine)...")
 LIST_ITEM (L"\\bu Sound & TextGrid: Clone time domain.")
+MAN_END
+
+MAN_BEGIN (L"What was new in 4.3?", L"ppgb", 20050126)
 ENTRY (L"Praat 4.3, 26 January 2005")
 	NORMAL (L"General:")
 	LIST_ITEM (L"\\bu `Apply' button in settings windows for menu commands and in script forms.")
@@ -1024,6 +1103,9 @@ ENTRY (L"Praat 4.3, 26 January 2005")
 	NORMAL (L"Scripting:")
 	LIST_ITEM (L"\\bu nowarn, noprogress, nocheck.")
 	LIST_ITEM (L"\\bu Line numbers.")
+MAN_END
+
+MAN_BEGIN (L"What was new in 4.2?", L"ppgb", 20040304)
 ENTRY (L"Praat 4.2, 4 March 2004")
 	NORMAL (L"General:")
 	LIST_ITEM (L"\\bu July 10, 2003: Open source code (General Public Licence).")
@@ -1062,6 +1144,9 @@ ENTRY (L"Praat 4.2, 4 March 2004")
 	LIST_ITEM (L"\\bu ManPages: variable duration of recording.")
 	LIST_ITEM (L"\\bu Support for unlimited size of script files in editor window on Windows XP and MacOS X (the Unix editions already had this).")
 	LIST_ITEM (L"\\bu Improved the reception of %sendpraat commands on Windows XP.")
+MAN_END
+
+MAN_BEGIN (L"What was new in 4.1?", L"ppgb", 20030605)
 ENTRY (L"Praat 4.1, 5 June 2003")
 	NORMAL (L"General:")
 	LIST_ITEM (L"\\bu MacOS X edition.")
@@ -1116,6 +1201,9 @@ ENTRY (L"Praat 4.1, 5 June 2003")
 		"#let, #getnumber, #getstring, #ARGS, #copy, #proc, variables with capitals, and strings in numeric variables; "
 		"there are messages about how to modify your old scripts.")
 	LIST_ITEM (L"\\bu Disallowed ambiguous expressions like -3\\^ 2.")
+MAN_END
+
+MAN_BEGIN (L"What was new in 4.0?", L"ppgb", 20011015)
 ENTRY (L"Praat 4.0, 15 October 2001")
 	NORMAL (L"Editors:")
 	LIST_ITEM (L"\\bu Simplified selection and cursor in editor windows.")
@@ -1156,6 +1244,9 @@ ENTRY (L"Praat 4.0, 15 October 2001")
 	NORMAL (L"Documentation:")
 	LIST_ITEM (L"\\bu @@Multidimensional scaling@ tutorial.")
 	LIST_ITEM (L"\\bu Enabled debugging-at-a-distance.")
+MAN_END
+
+MAN_BEGIN (L"What was new in 3.9?", L"ppgb", 20001018)
 ENTRY (L"Praat 3.9, 18 October 2000")
 	NORMAL (L"Editors:")
 	LIST_ITEM (L"\\bu Shift-click and shift-drag extend or shrink selection in editor windows.")
@@ -1226,6 +1317,9 @@ ENTRY (L"Praat 3.9, 18 October 2000")
 	LIST_ITEM (L"\\bu Script links in @ManPages.")
 	NORMAL (L"Documentation")
 	LIST_ITEM (L"\\bu Tutorials on all subjects available through @Intro.")
+MAN_END
+
+MAN_BEGIN (L"What was new in 3.8?", L"ppgb", 19990112)
 ENTRY (L"Praat 3.8, 12 January 1999")
 	NORMAL (L"Phonetics library")
 	LIST_ITEM (L"\\bu New objects: @LongSound (view and label long sound files), with editor; PairDistribution.")
@@ -1269,6 +1363,9 @@ ENTRY (L"Praat 3.8, 12 January 1999")
 	LIST_ITEM (L"\\bu June 22: unlimited number of script variables.")
 	LIST_ITEM (L"\\bu April 5: suspended chopping of trailing spaces.")
 	LIST_ITEM (L"\\bu March 29: enabled formulas as arguments to dialogs (also interactive).")
+MAN_END
+
+MAN_BEGIN (L"What was new in 3.7?", L"ppgb", 19980324)
 ENTRY (L"Praat 3.7, 24 March 1998")
 	NORMAL (L"Editors:")
 	LIST_ITEM (L"\\bu In all FunctionEditors: drag to get a selection.")
@@ -1298,6 +1395,9 @@ ENTRY (L"Praat 3.7, 24 March 1998")
 	NORMAL (L"Documentation:")
 	LIST_ITEM (L"\\bu 230 more man pages (now 630).")
 	LIST_ITEM (L"\\bu Hypertext: increased readability of formulas, navigation with keyboard.")
+MAN_END
+
+MAN_BEGIN (L"What was new in 3.6?", L"ppgb", 19971027)
 ENTRY (L"Praat 3.6, 27 October 1997")
 	NORMAL (L"Editors:")
 	LIST_ITEM (L"\\bu Intuitive position of B and E buttons on left-handed mice.")
@@ -1336,6 +1436,9 @@ ENTRY (L"Praat 3.6, 27 October 1997")
 	LIST_ITEM (L"\\bu Use the @sendpraat program for sending messages to running Praat programs.")
 	NORMAL (L"Mac:")
 	LIST_ITEM (L"\\bu Praat looks best with the new and beautiful System 8.")
+MAN_END
+
+MAN_BEGIN (L"What was new in 3.5?", L"ppgb", 19970527)
 ENTRY (L"Praat 3.5, 27 May 1997")
 	NORMAL (L"New editors:")
 	LIST_ITEM (L"\\bu #TextGridEditor replaces and extends LabelEditor: edit points as well as intervals.")
@@ -1382,6 +1485,9 @@ ENTRY (L"Praat 3.5, 27 May 1997")
 	LIST_ITEM (L"\\bu Fast and interpolating spectrogram drawing.")
 	LIST_ITEM (L"\\bu Phonetic Mac screen font included in source code (as a fallback to using SIL Doulos IPA).")
 	LIST_ITEM (L"\\bu Keyboard shortcuts, text editor, help under question mark, etc.")
+MAN_END
+
+MAN_BEGIN (L"What was new in 3.3?", L"ppgb", 19961006)
 ENTRY (L"Praat 3.3, 6 October 1996")
 	LIST_ITEM (L"\\bu Documentation: hypertext help browser, including the first 190 man pages.")
 	LIST_ITEM (L"\\bu New editors: type #TextTier for labelling times instead of intervals.")
@@ -1402,6 +1508,9 @@ ENTRY (L"Praat 3.3, 6 October 1996")
 	LIST_ITEM (L"\\bu Object type changes: #StylPitch and #MarkTier are now called #PitchTier and #TextTier, respectively. "
 		"Old files can still be read.")
 	LIST_ITEM (L"\\bu Script warning: all times in dialogs are in seconds now: milliseconds have gone.")
+MAN_END
+
+MAN_BEGIN (L"What was new in 3.2?", L"ppgb", 19960429)
 ENTRY (L"Praat 3.2, 29 April 1996")
 	LIST_ITEM (L"\\bu Sound I/O for HPUX, Sun Sparc 5, and Sun Sparc LX.")
 	LIST_ITEM (L"\\bu Cross-correlation pitch and HNR analysis.")
@@ -1413,32 +1522,15 @@ ENTRY (L"Praat 3.2, 29 April 1996")
 	LIST_ITEM (L"\\bu Read and write Bell-Labs sound files and Kay CSL audio files.")
 	LIST_ITEM (L"\\bu Replaced IpaTimes font by free SILDoulos-IPA font, and embedded phonetic font in PostScript picture.")
 	LIST_ITEM (L"\\bu Completed main phonetic characters.")
+MAN_END
+
+MAN_BEGIN (L"What was new in 3.1?", L"ppgb", 19951205)
 ENTRY (L"Praat 3.1, 5 December 1995")
 	LIST_ITEM (L"\\bu Add and remove buttons dynamically.")
 	LIST_ITEM (L"\\bu DataEditor (Inspect button).")
 	LIST_ITEM (L"\\bu Initialization scripts.")
 	LIST_ITEM (L"\\bu Logarithmic axes.")
 	LIST_ITEM (L"\\bu Call remote ADDA server directly.")
-ENTRY (L"To do")
-	LIST_ITEM (L"\\bu TextGrid & Sound: Extract intervals with margins.")
-	LIST_ITEM (L"\\bu Spectrum: draw power, re, im, phase.")
-	LIST_ITEM (L"\\bu Formant: To Spectrum (slice)... (combines Formant-to-LPC and LPC-to-Spectrum-slice)")
-	LIST_ITEM (L"\\bu Read and/or write Matlab files, MBROLA files, Xwaves files, CHAT files.") /* Aix */
-	LIST_ITEM (L"\\bu Matrix: draw numbers.")
-	LIST_ITEM (L"\\bu Fractions with \\bsf{a|b}.")
-	LIST_ITEM (L"\\bu Move objects up and down list.")
-	LIST_ITEM (L"\\bu Spectrogram cross-correlation.")
-	LIST_ITEM (L"\\bu Labels in AIFC file.") /* Theo Veenker 19980323 */
-	LIST_ITEM (L"\\bu Improve scrolling and add selection in hyperpages.")
-	LIST_ITEM (L"\\bu Segment spectrograph?") /* Ton Wempe, Jul 16 1996 */
-	LIST_ITEM (L"\\bu Phoneme-to-articulation conversion??") /* Mirjam Ernestus, Jul 1 1996 */
-ENTRY (L"Known bugs in the Windows version")
-	LIST_ITEM (L"\\bu Cannot stand infinitesimal zooming in SpectrogramEditor.")
-	LIST_ITEM (L"\\bu Clipboards with greys sometimes become black-and-white after use of colour.")
-ENTRY (L"Known bugs in the Linux version")
-	LIST_ITEM (L"\\bu Sounds shorter than 200 ms do not always play (workaround: add zeroes in prefs).")
-	LIST_ITEM (L"\\bu Keyboard shortcuts do not work if NumLock is on.")
-	LIST_ITEM (L"\\bu Keyboard shortcut \"tab\" does not work.")
 MAN_END
 /*
    BUGBASE
@@ -1452,9 +1544,29 @@ MAN_END
 >* In drawing a picture of an Artword for a Speaker, the Pen|Line-width
 >option only works for dotted and dashed lines.  It's ignored for plain
 >lines (and is WAY too wide).
+
+ENTRY (L"To do")
+	LIST_ITEM (L"\\bu TextGrid & Sound: Extract intervals with margins.")
+	LIST_ITEM (L"\\bu Spectrum: draw power, re, im, phase.")
+	LIST_ITEM (L"\\bu Formant: To Spectrum (slice)... (combines Formant-to-LPC and LPC-to-Spectrum-slice)")
+	LIST_ITEM (L"\\bu Read and/or write Matlab files, MBROLA files, Xwaves files, CHAT files.") // Aix
+	LIST_ITEM (L"\\bu Matrix: draw numbers.")
+	LIST_ITEM (L"\\bu Fractions with \\bsf{a|b}.")
+	LIST_ITEM (L"\\bu Move objects up and down list.")
+	LIST_ITEM (L"\\bu Spectrogram cross-correlation.")
+	LIST_ITEM (L"\\bu Labels in AIFC file.") // Theo Veenker 19980323
+	LIST_ITEM (L"\\bu Improve scrolling and add selection in hyperpages.")
+	LIST_ITEM (L"\\bu Segment spectrograph?") // Ton Wempe, Jul 16 1996
+	LIST_ITEM (L"\\bu Phoneme-to-articulation conversion??") // Mirjam Ernestus, Jul 1 1996
+ENTRY (L"Known bugs in the Windows version")
+	LIST_ITEM (L"\\bu Cannot stand infinitesimal zooming in SpectrogramEditor.")
+	LIST_ITEM (L"\\bu Clipboards with greys sometimes become black-and-white after use of colour.")
+ENTRY (L"Known bugs in the Linux version")
+	LIST_ITEM (L"\\bu Sounds shorter than 200 ms do not always play (workaround: add zeroes in prefs).")
+	LIST_ITEM (L"\\bu Keyboard shortcuts do not work if NumLock is on.")
 */
  
-MAN_BEGIN (L"Acknowledgments", L"ppgb", 20120219)
+MAN_BEGIN (L"Acknowledgments", L"ppgb", 20130406)
 NORMAL (L"The following people contributed source code to Praat:")
 LIST_ITEM (L"Paul Boersma: user interface, graphics, @printing, @@Intro|sound@, "
 	"@@Intro 3. Spectral analysis|spectral analysis@, @@Intro 4. Pitch analysis|pitch analysis@, "
@@ -1468,6 +1580,7 @@ LIST_ITEM (L"David Weenink: "
 	"@VowelEditor, "
 	"and adaptation of GSL, LAPACK, fftpack, regular expressions, and Espeak.")
 LIST_ITEM (L"Stefan de Konink and Franz Brau\\sse: major help in port to GTK.")
+LIST_ITEM (L"Tom Naughton: major help in port to Cocoa.")
 LIST_ITEM (L"Erez Volk: adaptation of FLAC and MAD.")
 LIST_ITEM (L"Ola S\\o\"der: @@kNN classifiers@, @@k-means clustering@.")
 LIST_ITEM (L"Rafael Laboissi\\e`re: adaptation of XIPA.")
@@ -1664,32 +1777,32 @@ NORMAL (L"If you choose ##Move cursor to maximum pitch#, then choose ##Get pitch
 	"lower values.")
 MAN_END
 
-MAN_BEGIN (L"FAQ: Scripts", L"ppgb", 20110128)
+MAN_BEGIN (L"FAQ: Scripts", L"ppgb", 20130421)
 NORMAL (L"#Question: how do I do something to all the files in a directory?")
 NORMAL (L"Answer: look at @@Create Strings as file list...@.")
 NORMAL (L"")
 NORMAL (L"#Question: why doesn't the editor window react to my commands?")
 NORMAL (L"Your commands are probably something like:")
-CODE (L"Read from file... hello.wav")
-CODE (L"View & Edit")
-CODE (L"Zoom... 0.3 0.5")
+CODE (L"do (\"Read from file...\", \"hello.wav\")")
+CODE (L"do (\"View & Edit\")")
+CODE (L"do (\"Zoom...\", 0.3, 0.5)")
 NORMAL (L"Answer: Praat doesn't know it has to send the #Zoom command to the editor "
 	"window called ##Sound hello#. There could be several Sound editor windows on your "
 	"screen. According to @@Scripting 7.1. Scripting an editor from a shell script@, "
 	"you will have to say this explicitly:")
-CODE (L"Read from file... hello.wav")
-CODE (L"View & Edit")
+CODE (L"do (\"Read from file...\", \"hello.wav\")")
+CODE (L"do (\"View & Edit\")")
 CODE (L"editor Sound hello")
-CODE (L"Zoom... 0.3 0.5")
+CODE (L"do (\"Zoom...\", 0.3, 0.5)")
 NORMAL (L"")
 NORMAL (L"#Problem: a line like \"Number = 1\" does not work.")
 NORMAL (L"Solution: names of variables should start with a lower-case letter.")
 NORMAL (L"")
 NORMAL (L"#Question: why do names of variables have to start with a lower-case letter? "
 	"I would like to do things like \"F0 = Get mean pitch\".")
-NORMAL (L"Answer: Praat scripts combine button commands with things that only occur "
+NORMAL (L"Answer (using the shorthand script syntax): Praat scripts combine button commands with things that only occur "
 	"in scripts. Button commands always start with a capital letter, e.g. \"Play\". "
-	"Script command always start with lower case, e.g. \"echo Hello\". "
+	"Script commands always start with lower case, e.g. \"echo Hello\". "
 	"A minimal pair is \"select\", which simulates a mouse click in the object list, "
 	"versus \"Select...\", which sets the selection in editor windows. Variable names "
 	"that start with a capital letter would be rather ambiguous in assignments, "
@@ -1698,9 +1811,9 @@ NORMAL (L"Answer: Praat scripts combine button commands with things that only oc
 	"a rigorous lower-case/upper-case distinction.")
 NORMAL (L"")
 NORMAL (L"#Question: how do I convert a number into a string?")
-NORMAL (L"Answer: a\\$  = \"'a'\"")
+NORMAL (L"Answer: a\\$  = string\\$  (a)")
 NORMAL (L"#Question: how do I convert a string into a number?")
-NORMAL (L"Answer: a = 'a\\$ '")
+NORMAL (L"Answer: a = number (a\\$ )")
 MAN_END
 
 MAN_BEGIN (L"FAQ: Spectrograms", L"ppgb", 20030916)

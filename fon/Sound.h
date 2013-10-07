@@ -158,6 +158,8 @@ double Sound_getIntensity_dB (Sound me);
 double Sound_getNearestZeroCrossing (Sound me, double position, long ichannel);
 void Sound_setZero (Sound me, double tmin, double tmax, int roundTimesToNearestZeroCrossing);
 
+Sound Sound_createAsPureTone (long numberOfChannels, double startingTime, double endTime,
+	double sampleRate, double frequency, double amplitude, double fadeInDuration, double fadeOutDuration);
 Sound Sound_createFromToneComplex (double startingTime, double endTime,
 	double sampleRate, int phase, double frequencyStep,
 	double firstFrequency, double ceiling, long numberOfComponents);
@@ -170,6 +172,7 @@ void Sound_multiplyByWindow (Sound me, enum kSound_windowShape windowShape);
 void Sound_scaleIntensity (Sound me, double newAverageIntensity);
 void Sound_overrideSamplingFrequency (Sound me, double newSamplingFrequency);
 Sound Sound_extractPart (Sound me, double t1, double t2, enum kSound_windowShape windowShape, double relativeWidth, bool preserveTimes);
+Sound Sound_extractPartForOverlap (Sound me, double t1, double t2, double overlap);
 void Sound_filterWithFormants (Sound me, double tmin, double tmax,
 	int numberOfFormants, double formant [], double bandwidth []);
 Sound Sound_filter_oneFormant (Sound me, double frequency, double bandwidth);

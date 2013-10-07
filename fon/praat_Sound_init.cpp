@@ -546,7 +546,7 @@ END
 
 FORM (Sound_createFromFormula, L"Create Sound from formula", L"Create Sound from formula...")
 	WORD (L"Name", L"sineWithNoise")
-	CHANNEL (L"Number of channels (e.g. 2 = stereo)", L"1")
+	CHANNEL (L"Number of channels", L"1 (= mono)")
 	REAL (L"Start time (s)", L"0.0")
 	REAL (L"End time (s)", L"1.0")
 	REAL (L"Sampling frequency (Hz)", L"44100")
@@ -555,6 +555,24 @@ FORM (Sound_createFromFormula, L"Create Sound from formula", L"Create Sound from
 	OK
 DO
 	common_Sound_create (dia, interpreter, true);
+END
+
+FORM (Sound_createAsPureTone, L"Create Sound as pure tone", L"Create Sound as pure tone...")
+	WORD (L"Name", L"tone")
+	CHANNEL (L"Number of channels", L"1 (= mono)")
+	REAL (L"Start time (s)", L"0.0")
+	REAL (L"End time (s)", L"0.4")
+	POSITIVE (L"Sampling frequency (Hz)", L"44100")
+	POSITIVE (L"Tone frequency (Hz)", L"440.0")
+	POSITIVE (L"Amplitude (Pa)", L"0.2")
+	POSITIVE (L"Fade-in duration (s)", L"0.01")
+	POSITIVE (L"Fade-out duration (s)", L"0.01")
+	OK
+DO
+	autoSound me = Sound_createAsPureTone (GET_INTEGER (L"Number of channels"), GET_REAL (L"Start time"), GET_REAL (L"End time"),
+		GET_REAL (L"Sampling frequency"), GET_REAL (L"Tone frequency"), GET_REAL (L"Amplitude"),
+		GET_REAL (L"Fade-in duration"), GET_REAL (L"Fade-out duration"));
+	praat_new (me.transfer(), GET_STRING (L"Name"));
 END
 
 FORM (Sound_createFromToneComplex, L"Create Sound from tone complex", L"Create Sound from tone complex...")
@@ -752,6 +770,21 @@ DO
 			GET_REAL (L"left Time range"), GET_REAL (L"right Time range"),
 			GET_ENUM (kSound_windowShape, L"Window shape"), GET_REAL (L"Relative width"),
 			GET_INTEGER (L"Preserve times"));
+		praat_new (thee.transfer(), my name, L"_part");
+	}
+END
+
+FORM (Sound_extractPartForOverlap, L"Sound: Extract part for overlap", 0)
+	REAL (L"left Time range (s)", L"0")
+	REAL (L"right Time range (s)", L"0.1")
+	POSITIVE (L"Overlap (s)", L"0.01")
+	OK
+DO
+	LOOP {
+		iam (Sound);
+		autoSound thee = Sound_extractPartForOverlap (me,
+			GET_REAL (L"left Time range"), GET_REAL (L"right Time range"),
+			GET_REAL (L"Overlap"));
 		praat_new (thee.transfer(), my name, L"_part");
 	}
 END
@@ -2183,9 +2216,6 @@ static Any soundFileRecognizer (int nread, const char *header, MelderFile file) 
 	if (strnequ (header, "NIST_1A", 7)) return Sound_readFromSoundFile (file);
 	if (strnequ (header, "fLaC", 4)) return Sound_readFromSoundFile (file);   // Erez Volk, March 2007
 	if ((wcsstr (MelderFile_name (file), L".mp3") || wcsstr (MelderFile_name (file), L".MP3")) && mp3_recognize (nread, header)) return Sound_readFromSoundFile (file);   // Erez Volk, May 2007
-	#ifdef macintosh
-		if (MelderFile_getMacType (file) == 'Sd2f') return Sound_readFromSoundFile (file);
-	#endif
 	return NULL;
 }
 
@@ -2287,8 +2317,11 @@ void praat_uvafon_Sound_init (void) {
 	praat_addMenuCommand (L"Objects", L"New", L"Record Sound (fixed time)...", 0, praat_HIDDEN, DO_Sound_recordFixedTime);
 	praat_addMenuCommand (L"Objects", L"New", L"Sound", 0, 0, 0);
 		praat_addMenuCommand (L"Objects", L"New", L"Create Sound...", 0, praat_HIDDEN + praat_DEPTH_1, DO_Sound_create);
+		praat_addMenuCommand (L"Objects", L"New", L"Create Sound as pure tone...", 0, 1, DO_Sound_createAsPureTone);
 		praat_addMenuCommand (L"Objects", L"New", L"Create Sound from formula...", 0, 1, DO_Sound_createFromFormula);
-		praat_addMenuCommand (L"Objects", L"New", L"Create Sound from tone complex...", 0, 1, DO_Sound_createFromToneComplex);
+		praat_addMenuCommand (L"Objects", L"New", L"-- create sound advanced --", 0, 1, 0);
+		praat_addMenuCommand (L"Objects", L"New", L"Create Sound as tone complex...", 0, 1, DO_Sound_createFromToneComplex);
+		praat_addMenuCommand (L"Objects", L"New", L"Create Sound from tone complex...", 0, praat_HIDDEN + praat_DEPTH_1, DO_Sound_createFromToneComplex);
 
 	praat_addMenuCommand (L"Objects", L"Open", L"-- read sound --", 0, 0, 0);
 	praat_addMenuCommand (L"Objects", L"Open", L"Open long sound file...", 0, 'L', DO_LongSound_open);
@@ -2523,6 +2556,7 @@ void praat_uvafon_Sound_init (void) {
 		praat_addAction1 (classSound, 0, L"Extract right channel", 0, praat_HIDDEN + praat_DEPTH_1, DO_Sound_extractRightChannel);   // deprecated 2010
 		praat_addAction1 (classSound, 0, L"Extract one channel...", 0, 1, DO_Sound_extractChannel);
 		praat_addAction1 (classSound, 0, L"Extract part...", 0, 1, DO_Sound_extractPart);
+		praat_addAction1 (classSound, 0, L"Extract part for overlap...", 0, 1, DO_Sound_extractPartForOverlap);
 		praat_addAction1 (classSound, 0, L"Resample...", 0, 1, DO_Sound_resample);
 		praat_addAction1 (classSound, 0, L"-- enhance --", 0, 1, 0);
 		praat_addAction1 (classSound, 0, L"Lengthen (overlap-add)...", 0, 1, DO_Sound_lengthen_overlapAdd);

@@ -2,7 +2,7 @@
 #define _GraphicsP_h_
 /* GraphicsP.h
  *
- * Copyright (C) 1992-2011,2012 Paul Boersma
+ * Copyright (C) 1992-2011,2012 Paul Boersma, 2013 Tom Naughton
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,7 +42,8 @@ void Graphics_init (Graphics me);
 
 #define kGraphics_font_SYMBOL  (kGraphics_font_MAX + 1)
 #define kGraphics_font_IPATIMES  (kGraphics_font_MAX + 2)
-#define kGraphics_font_DINGBATS  (kGraphics_font_MAX + 3)
+#define kGraphics_font_IPAPALATINO  (kGraphics_font_MAX + 3)
+#define kGraphics_font_DINGBATS  (kGraphics_font_MAX + 4)
 
 Thing_define (GraphicsScreen, Graphics) {
 	// new data:

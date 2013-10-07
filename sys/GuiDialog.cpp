@@ -1,6 +1,6 @@
 /* GuiDialog.cpp
  *
- * Copyright (C) 1993-2012 Paul Boersma
+ * Copyright (C) 1993-2012,2013 Paul Boersma, 2013 Tom Naughton
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -115,11 +115,12 @@ GuiDialog GuiDialog_create (GuiWindow parent, int x, int y, int width, int heigh
 			styleMask: NSTitledWindowMask | NSClosableWindowMask
 			backing: NSBackingStoreBuffered
 			defer: false];
-        [nsWindow setMinSize:NSMakeSize(500.0, 500.0)];
+        [nsWindow setMinSize: NSMakeSize (500.0, 500.0)];   // BUG: should not be needed
 		[nsWindow setTitle: (NSString *) Melder_peekWcsToCfstring (title)];
 		//[nsWindow makeKeyAndOrderFront: nil];
 		my d_widget = (GuiObject) [nsWindow contentView];
 		[(GuiCocoaDialog *) nsWindow setUserData: me];
+		[nsWindow setReleasedWhenClosed: NO];
 	#elif motif
 		my d_xmShell = XmCreateDialogShell (mac ? NULL : parent -> d_widget, "dialogShell", NULL, 0);
 		XtVaSetValues (my d_xmShell, XmNdeleteResponse, goAwayCallback ? XmDO_NOTHING : XmUNMAP, XmNx, x, XmNy, y, NULL);

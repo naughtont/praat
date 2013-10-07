@@ -2,7 +2,7 @@
 #define _melder_h_
 /* melder.h
  *
- * Copyright (C) 1992-2012 Paul Boersma
+ * Copyright (C) 1992-2012,2013 Paul Boersma
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -255,14 +255,10 @@ struct structMelderDir {
 };
 typedef struct structMelderDir *MelderDir;
 
-#if defined (macintosh)
-    #if useCarbon
-        void Melder_machToFile (void *void_fsref, MelderFile file);
-        void Melder_machToDir (void *void_fsref, MelderDir dir);
-        void Melder_fileToMach (MelderFile file, void *void_fsref);
-        void Melder_dirToMach (MelderDir dir, void *void_fsref);
-    #endif
+#if defined (macintosh) && useCarbon
+	void Melder_machToFile (void *void_fsref, MelderFile file);
 #endif
+
 const wchar_t * MelderFile_name (MelderFile file);
 wchar_t * MelderDir_name (MelderDir dir);
 void Melder_pathToDir (const wchar_t *path, MelderDir dir);
@@ -298,19 +294,13 @@ void MelderFile_delete (MelderFile file);
 
 /* The following two should be combined with each other and with Windows extension setting: */
 FILE * Melder_fopen (MelderFile file, const char *type);
-#if defined (macintosh)
-	void MelderFile_setMacTypeAndCreator (MelderFile file, long fileType, long creator);
-	unsigned long MelderFile_getMacType (MelderFile file);
-#else
-	#define MelderFile_setMacTypeAndCreator(f,t,c)  (void) 0
-#endif
 void Melder_fclose (MelderFile file, FILE *stream);
 void Melder_files_cleanUp (void);
 
 /* So these will be the future replacements for the above, as soon as we rid of text files: */
 MelderFile MelderFile_open (MelderFile file);
 MelderFile MelderFile_append (MelderFile file);
-MelderFile MelderFile_create (MelderFile file, const wchar_t *macType, const wchar_t *macCreator, const wchar_t *winExtension);
+MelderFile MelderFile_create (MelderFile file);
 void * MelderFile_read (MelderFile file, long nbytes);
 char * MelderFile_readLine (MelderFile file);
 void MelderFile_writeCharacter (MelderFile file, wchar_t kar);
@@ -487,7 +477,8 @@ void MelderInfo_writeLine  (const wchar_t *s1, const wchar_t *s2, const wchar_t 
 void MelderInfo_writeLine  (const wchar_t *s1, const wchar_t *s2, const wchar_t *s3, const wchar_t *s4, const wchar_t *s5, const wchar_t *s6, const wchar_t *s7);
 void MelderInfo_writeLine  (const wchar_t *s1, const wchar_t *s2, const wchar_t *s3, const wchar_t *s4, const wchar_t *s5, const wchar_t *s6, const wchar_t *s7, const wchar_t *s8);
 void MelderInfo_writeLine  (const wchar_t *s1, const wchar_t *s2, const wchar_t *s3, const wchar_t *s4, const wchar_t *s5, const wchar_t *s6, const wchar_t *s7, const wchar_t *s8, const wchar_t *s9);
-void MelderInfo_close (void);   /* Flush the background info to the Info window. */
+void MelderInfo_close (void);   // drain the background info to the Info window, making sure there is a line break
+void MelderInfo_drain (void);   // drain the background info to the Info window, without adding any extra line break
 
 void Melder_information (const wchar_t *s1);
 void Melder_information (const wchar_t *s1, const wchar_t *s2);
@@ -951,13 +942,10 @@ void Melder_audio_prefs (void);   // in init file
 #define Melder_WAV  3
 #define Melder_NEXT_SUN  4
 #define Melder_NIST  5
-#define Melder_SOUND_DESIGNER_TWO  6
-#define Melder_FLAC 7
-#define Melder_MP3 8
-#define Melder_NUMBER_OF_AUDIO_FILE_TYPES  8
-const wchar_t * Melder_audioFileTypeString (int audioFileType);   /* "AIFF", "AIFC", "WAV", "NeXT/Sun", "NIST", "Sound Designer II", "FLAC", "MP3" */
-const wchar_t * Melder_macAudioFileType (int audioFileType);   /* "AIFF", "AIFC", "WAVE", "ULAW", "NIST", "Sd2f", "FLAC", "MP3" */
-const wchar_t * Melder_winAudioFileExtension (int audioFileType);   /* ".aiff", ".aifc", ".wav", ".au", ".nist", ".sd2", ".flac", ".mp3" */
+#define Melder_FLAC 6
+#define Melder_MP3 7
+#define Melder_NUMBER_OF_AUDIO_FILE_TYPES  7
+const wchar_t * Melder_audioFileTypeString (int audioFileType);   /* "AIFF", "AIFC", "WAV", "NeXT/Sun", "NIST", "FLAC", "MP3" */
 /* Audio encodings. */
 #define Melder_LINEAR_8_SIGNED  1
 #define Melder_LINEAR_8_UNSIGNED  2
@@ -979,7 +967,7 @@ const wchar_t * Melder_winAudioFileExtension (int audioFileType);   /* ".aiff", 
 #define Melder_MPEG_COMPRESSION_16 18
 #define Melder_MPEG_COMPRESSION_24 19
 #define Melder_MPEG_COMPRESSION_32 20
-int Melder_defaultAudioFileEncoding (int audioFileType, int numberOfBitsPerSamplePoint);   /* BIG_ENDIAN, BIG_ENDIAN, LITTLE_ENDIAN, BIG_ENDIAN, LITTLE_ENDIAN, BIG_ENDIAN */
+int Melder_defaultAudioFileEncoding (int audioFileType, int numberOfBitsPerSamplePoint);   /* BIG_ENDIAN, BIG_ENDIAN, LITTLE_ENDIAN, BIG_ENDIAN, LITTLE_ENDIAN */
 void MelderFile_writeAudioFileHeader (MelderFile file, int audioFileType, long sampleRate, long numberOfSamples, int numberOfChannels, int numberOfBitsPerSamplePoint);
 void MelderFile_writeAudioFileTrailer (MelderFile file, int audioFileType, long sampleRate, long numberOfSamples, int numberOfChannels, int numberOfBitsPerSamplePoint);
 void MelderFile_writeAudioFile (MelderFile file, int audioFileType, const short *buffer, long sampleRate, long numberOfSamples, int numberOfChannels, int numberOfBitsPerSamplePoint);
@@ -1030,6 +1018,13 @@ struct autoMelderProgressOff {
 struct autoMelderString : MelderString {
 	autoMelderString () { length = 0; bufferSize = 0; string = NULL; }
 	~autoMelderString () { Melder_free (string); }
+	wchar_t * transfer () {
+		wchar_t *tmp = string;
+		string = NULL;
+		length = 0;
+		bufferSize = 0;
+		return tmp;
+	}
 };
 
 struct autoMelderReadText {

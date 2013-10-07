@@ -1,6 +1,6 @@
 /* praat_actions.cpp
  *
- * Copyright (C) 1992-2012 Paul Boersma
+ * Copyright (C) 1992-2012,2013 Paul Boersma
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@ static struct structPraat_Command *theActions;
 static GuiMenu praat_writeMenu;
 static GuiMenuItem praat_writeMenuSeparator;
 static GuiForm praat_form;
+static bool actionsInvisible = false;
 
 static void fixSelectionSpecification (ClassInfo *class1, int *n1, ClassInfo *class2, int *n2, ClassInfo *class3, int *n3) {
 /*
@@ -82,23 +83,23 @@ static long lookUpMatchingAction (ClassInfo class1, ClassInfo class2, ClassInfo 
 }
 
 void praat_addAction (ClassInfo class1, int n1, ClassInfo class2, int n2, ClassInfo class3, int n3,
-	const wchar_t *title, const wchar_t *after, unsigned long flags, void (*callback) (UiForm, const wchar_t *, Interpreter, const wchar_t *, bool, void *))
+	const wchar_t *title, const wchar_t *after, unsigned long flags, void (*callback) (UiForm, int, Stackel, const wchar_t *, Interpreter, const wchar_t *, bool, void *))
 { praat_addAction4 (class1, n1, class2, n2, class3, n3, NULL, 0, title, after, flags, callback); }
 
 void praat_addAction1 (ClassInfo class1, int n1,
-	const wchar_t *title, const wchar_t *after, unsigned long flags, void (*callback) (UiForm, const wchar_t *, Interpreter, const wchar_t *, bool, void *))
+	const wchar_t *title, const wchar_t *after, unsigned long flags, void (*callback) (UiForm, int, Stackel, const wchar_t *, Interpreter, const wchar_t *, bool, void *))
 { praat_addAction4 (class1, n1, NULL, 0, NULL, 0, NULL, 0, title, after, flags, callback); }
 
 void praat_addAction2 (ClassInfo class1, int n1, ClassInfo class2, int n2,
-	const wchar_t *title, const wchar_t *after, unsigned long flags, void (*callback) (UiForm, const wchar_t *, Interpreter, const wchar_t *, bool, void *))
+	const wchar_t *title, const wchar_t *after, unsigned long flags, void (*callback) (UiForm, int, Stackel, const wchar_t *, Interpreter, const wchar_t *, bool, void *))
 { praat_addAction4 (class1, n1, class2, n2, NULL, 0, NULL, 0, title, after, flags, callback); }
 
 void praat_addAction3 (ClassInfo class1, int n1, ClassInfo class2, int n2, ClassInfo class3, int n3,
-	const wchar_t *title, const wchar_t *after, unsigned long flags, void (*callback) (UiForm, const wchar_t *, Interpreter, const wchar_t *, bool, void *))
+	const wchar_t *title, const wchar_t *after, unsigned long flags, void (*callback) (UiForm, int, Stackel, const wchar_t *, Interpreter, const wchar_t *, bool, void *))
 { praat_addAction4 (class1, n1, class2, n2, class3, n3, NULL, 0, title, after, flags, callback); }
 
 void praat_addAction4 (ClassInfo class1, int n1, ClassInfo class2, int n2, ClassInfo class3, int n3, ClassInfo class4, int n4,
-	const wchar_t *title, const wchar_t *after, unsigned long flags, void (*callback) (UiForm, const wchar_t *, Interpreter, const wchar_t *, bool, void *))
+	const wchar_t *title, const wchar_t *after, unsigned long flags, void (*callback) (UiForm, int, Stackel, const wchar_t *, Interpreter, const wchar_t *, bool, void *))
 {
 	try {
 		int depth = flags, unhidable = FALSE, hidden = FALSE, key = 0, attractive = 0;
@@ -176,13 +177,19 @@ void praat_addAction4 (ClassInfo class1, int n1, ClassInfo class2, int n2, Class
 
 static void deleteDynamicMenu (void) {
 	if (praatP.phase != praat_HANDLING_EVENTS) return;
+	if (actionsInvisible) return;
 	static long numberOfDeletions;
 	trace ("deletion #%ld", ++ numberOfDeletions);
 	for (int i = 1; i <= theNumberOfActions; i ++) {
 		if (theActions [i]. button) {
-			#if gtk
+			trace ("trying to destroy action %d of %d: %ls", i, (int) theNumberOfActions, theActions [i]. title);
+			#if gtk || cocoa
 				if (theActions [i]. button -> d_parent == praat_form) {
-					GuiObject_destroy (theActions [i]. button -> d_widget);   // a label or a push button or a cascade button
+					trace ("destroy a label or a push button or a cascade button");
+					GuiObject_destroy (theActions [i]. button -> d_widget);
+				} else if (praat_writeMenu && theActions [i]. button -> d_parent == praat_writeMenu) {
+					trace ("destroying Save menu item");
+					GuiObject_destroy (theActions [i]. button -> d_widget);
 				}
 			#elif motif
 				if (theActions [i]. button -> classInfo == classGuiButton && theActions [i]. button -> d_widget -> subMenuId) {   // a cascade button (not a direct child of the form)?
@@ -197,8 +204,12 @@ static void deleteDynamicMenu (void) {
 		}
 	}
 	if (praat_writeMenu) {
-		#if gtk
-			praat_writeMenu -> f_empty ();
+		#if gtk || cocoa
+			if (praat_writeMenuSeparator) {
+				trace ("destroy the Save menu separator");
+				GuiObject_destroy (praat_writeMenuSeparator -> d_widget);
+			}
+			//praat_writeMenu -> f_empty ();
 		#elif motif
 			GuiObject_destroy (praat_writeMenu -> d_xmMenuTitle);
 			GuiObject_destroy (praat_writeMenu -> d_widget);
@@ -206,6 +217,7 @@ static void deleteDynamicMenu (void) {
 		#endif
 		praat_writeMenuSeparator = NULL;
 	}
+	actionsInvisible = true;
 }
 
 static void updateDynamicMenu (void) {
@@ -467,7 +479,7 @@ static const wchar_t *objectString (int number) {
 	return number == 1 ? L"object" : L"objects";
 }
 static bool allowExecutionHook (void *closure) {
-	void (*callback) (UiForm, const wchar_t *, Interpreter, const wchar_t *, bool, void *) = (void (*) (UiForm, const wchar_t *, Interpreter, const wchar_t *, bool, void *)) closure;
+	void (*callback) (UiForm, int, Stackel, const wchar_t *, Interpreter, const wchar_t *, bool, void *) = (void (*) (UiForm, int, Stackel, const wchar_t *, Interpreter, const wchar_t *, bool, void *)) closure;
 	Melder_assert (sizeof (callback) == sizeof (void *));
 	long numberOfMatchingCallbacks = 0, firstMatchingCallback = 0;
 	for (long i = 1; i <= theNumberOfActions; i ++) {
@@ -507,17 +519,18 @@ static void do_menu (I, bool modified) {
  *	Call that callback!
  *	Catch the error queue for menu commands without dots (...).
  */
-	void (*callback) (UiForm, const wchar_t *, Interpreter, const wchar_t *, bool, void *) = (void (*) (UiForm, const wchar_t *, Interpreter, const wchar_t *, bool, void *)) void_me;
+	void (*callback) (UiForm, int, Stackel, const wchar_t *, Interpreter, const wchar_t *, bool, void *) = (void (*) (UiForm, int, Stackel, const wchar_t *, Interpreter, const wchar_t *, bool, void *)) void_me;
 	for (long i = 1; i <= theNumberOfActions; i ++) {
 		praat_Command me = & theActions [i];
 		if (my callback == callback) {
 			if (my title != NULL && ! wcsstr (my title, L"...")) {
-				UiHistory_write (L"\n");
-				UiHistory_write (my title);
+				UiHistory_write (L"\ndo (\"");
+				UiHistory_write_expandQuotes (my title);
+				UiHistory_write (L"\")");
 			}
 			Ui_setAllowExecutionHook (allowExecutionHook, (void *) callback);   // BUG: one shouldn't assign a function pointer to a void pointer
 			try {
-				callback (NULL, NULL, NULL, my title, modified, NULL);
+				callback (NULL, 0, NULL, NULL, NULL, my title, modified, NULL);
 			} catch (MelderError) {
 				Melder_error_ ("Command \"", my title, "\" not executed.");
 				Melder_flushError (NULL);
@@ -535,7 +548,7 @@ static void do_menu (I, bool modified) {
 				UiHistory_write (L"\"");
 			}
 			try {
-				DO_RunTheScriptFromAnyAddedMenuCommand (NULL, my script, NULL, NULL, false, NULL);
+				DO_RunTheScriptFromAnyAddedMenuCommand (NULL, 0, NULL, my script, NULL, NULL, false, NULL);
 			} catch (MelderError) {
 				Melder_error_ ("Command \"", my title, "\" not executed.");
 				Melder_flushError (NULL);
@@ -605,6 +618,7 @@ void praat_actions_show (void) {
 
 	/* Create a new column of buttons in the dynamic menu. */
 	if (! theCurrentPraatApplication -> batch && ! Melder_backgrounding) {
+		actionsInvisible = false;
 		GuiMenu currentSubmenu1 = NULL, currentSubmenu2 = NULL;
 		int writeMenuGoingToSeparate = FALSE;
 		int y = Machine_getMenuBarHeight () + 10;
@@ -683,6 +697,9 @@ void praat_actions_show (void) {
 void praat_actions_createWriteMenu (GuiWindow window) {
 	if (theCurrentPraatApplication -> batch) return;
 	praat_writeMenu = GuiMenu_createInWindow (window, L"Save", GuiMenu_INSENSITIVE);
+	#if gtk
+		GuiMenu_addSeparator (praat_writeMenu);
+	#endif
 }
 
 void praat_actions_init (void) {
@@ -729,7 +746,15 @@ int praat_doAction (const wchar_t *command, const wchar_t *arguments, Interprete
 	long i = 1;
 	while (i <= theNumberOfActions && (! theActions [i]. executable || wcscmp (theActions [i]. title, command))) i ++;
 	if (i > theNumberOfActions) return 0;   /* Not found. */
-	theActions [i]. callback (NULL, arguments, interpreter, command, false, NULL);
+	theActions [i]. callback (NULL, 0, NULL, arguments, interpreter, command, false, NULL);
+	return 1;
+}
+
+int praat_doAction (const wchar_t *command, int narg, Stackel args, Interpreter interpreter) {
+	long i = 1;
+	while (i <= theNumberOfActions && (! theActions [i]. executable || wcscmp (theActions [i]. title, command))) i ++;
+	if (i > theNumberOfActions) return 0;   /* Not found. */
+	theActions [i]. callback (NULL, narg, args, NULL, interpreter, command, false, NULL);
 	return 1;
 }
 

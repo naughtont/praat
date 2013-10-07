@@ -369,7 +369,7 @@ IntervalTier TextGrid_checkSpecifiedTierIsIntervalTier (TextGrid me, long tierNu
 	TextGrid_checkSpecifiedTierNumberWithinRange (me, tierNumber);
 	Function tier = (Function) my tiers -> item [tierNumber];
 	if (tier -> classInfo != classIntervalTier)
-		Melder_throw ("Tier ", tierNumber, " should be an interval tier.");
+		Melder_throw ("Tier ", tierNumber, " is not an interval tier.");
 	return (IntervalTier) tier;
 }
 
@@ -377,7 +377,7 @@ TextTier TextGrid_checkSpecifiedTierIsPointTier (TextGrid me, long tierNumber) {
 	TextGrid_checkSpecifiedTierNumberWithinRange (me, tierNumber);
 	Function tier = (Function) my tiers -> item [tierNumber];
 	if (tier -> classInfo != classTextTier)
-		Melder_throw ("Tier ", tierNumber, " should be a point tier.");
+		Melder_throw ("Tier ", tierNumber, " is not a point tier.");
 	return (TextTier) tier;
 }
 
@@ -606,7 +606,7 @@ PointProcess TextGrid_getStartingPoints (TextGrid me, long tierNumber, int which
 		IntervalTier tier = TextGrid_checkSpecifiedTierIsIntervalTier (me, tierNumber);
 		autoPointProcess thee = PointProcess_create (my xmin, my xmax, 10);
 		for (long iinterval = 1; iinterval <= tier -> intervals -> size; iinterval ++) {
-			TextInterval interval = (TextInterval) tier -> intervals -> item [iinterval];
+			TextInterval interval = tier -> f_item (iinterval);
 			if (Melder_stringMatchesCriterion (interval -> text, which_Melder_STRING, criterion)) {
 				PointProcess_addPoint (thee.peek(), interval -> xmin);
 			}
@@ -622,7 +622,7 @@ PointProcess TextGrid_getEndPoints (TextGrid me, long tierNumber, int which_Meld
 		IntervalTier tier = TextGrid_checkSpecifiedTierIsIntervalTier (me, tierNumber);
 		autoPointProcess thee = PointProcess_create (my xmin, my xmax, 10);
 		for (long iinterval = 1; iinterval <= tier -> intervals -> size; iinterval ++) {
-			TextInterval interval = (TextInterval) tier -> intervals -> item [iinterval];
+			TextInterval interval = tier -> f_item (iinterval);
 			if (Melder_stringMatchesCriterion (interval -> text, which_Melder_STRING, criterion)) {
 				PointProcess_addPoint (thee.peek(), interval -> xmax);
 			}
@@ -638,7 +638,7 @@ PointProcess TextGrid_getCentrePoints (TextGrid me, long tierNumber, int which_M
 		IntervalTier tier = TextGrid_checkSpecifiedTierIsIntervalTier (me, tierNumber);
 		autoPointProcess thee = PointProcess_create (my xmin, my xmax, 10);
 		for (long iinterval = 1; iinterval <= tier -> intervals -> size; iinterval ++) {
-			TextInterval interval = (TextInterval) tier -> intervals -> item [iinterval];
+			TextInterval interval = tier -> f_item (iinterval);
 			if (Melder_stringMatchesCriterion (interval -> text, which_Melder_STRING, criterion)) {
 				PointProcess_addPoint (thee.peek(), 0.5 * (interval -> xmin + interval -> xmax));
 			}
@@ -838,7 +838,6 @@ void IntervalTier_writeToXwaves (IntervalTier me, MelderFile file) {
 			fprintf (f, "\t%.6f 26\t%s\n", interval -> xmax, Melder_peekWcsToUtf8 (interval -> text));
 		}
 		f.close (file);
-		MelderFile_setMacTypeAndCreator (file, 'TEXT', 0);
 	} catch (MelderError) {
 		Melder_throw (me, ": not written to Xwaves file ", file, ".");
 	}
@@ -1336,7 +1335,6 @@ void TextGrid_writeToChronologicalTextFile (TextGrid me, MelderFile file) {
 		}
 		texexdent (file);
 		mfile.close ();
-		MelderFile_setMacTypeAndCreator (file, 'TEXT', 0);
 	} catch (MelderError) {
 		Melder_throw (me, ": not written to chronological text file ", file, ".");
 	}
@@ -1627,6 +1625,7 @@ void TextGrid_correctRoundingErrors (TextGrid me) {
 				TextInterval left = (TextInterval) tier -> intervals -> item [iinterval];
 				TextInterval right = (TextInterval) tier -> intervals -> item [iinterval + 1];
 				right -> xmin = left -> xmax;
+				trace ("tier %ld, interval %ld, %17g %17g", itier, iinterval, right -> xmin, right -> xmax);
 				Melder_assert (right -> xmin < right -> xmax);
 			}
 			TextInterval last = (TextInterval) tier -> intervals -> item [tier -> intervals -> size];

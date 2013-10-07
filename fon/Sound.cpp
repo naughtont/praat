@@ -887,6 +887,31 @@ void Sound_setZero (Sound me, double tmin_in, double tmax_in, int roundTimesToNe
 	}
 }
 
+Sound Sound_createAsPureTone (long numberOfChannels, double startingTime, double endTime,
+	double sampleRate, double frequency, double amplitude, double fadeInDuration, double fadeOutDuration)
+{
+	try {
+		autoSound me = Sound_create (numberOfChannels, startingTime, endTime, round ((endTime - startingTime) * sampleRate),
+			1 / sampleRate, startingTime + 0.5 / sampleRate);
+		for (long isamp = 1; isamp <= my nx; isamp ++) {
+			double time = my x1 + (isamp - 1) * my dx;
+			double value = amplitude * sin (NUM2pi * frequency * time);
+			double timeFromStart = time - startingTime;
+			if (timeFromStart < fadeInDuration)
+				value *= 0.5 - 0.5 * cos (NUMpi * timeFromStart / fadeInDuration);
+			double timeFromEnd = endTime - time;
+			if (timeFromEnd < fadeOutDuration)
+				value *= 0.5 - 0.5 * cos (NUMpi * timeFromEnd / fadeOutDuration);
+			for (long ichan = 1; ichan <= my ny; ichan ++) {
+				my z [ichan] [isamp] = value;
+			}
+		}
+		return me.transfer();
+	} catch (MelderError) {
+		Melder_throw ("Sound not created from tone complex.");
+	}
+}
+
 Sound Sound_createFromToneComplex (double startingTime, double endTime, double sampleRate,
 	int phase, double frequencyStep, double firstFrequency, double ceiling, long numberOfComponents)
 {
@@ -1064,6 +1089,43 @@ Sound Sound_extractPart (Sound me, double t1, double t2, enum kSound_windowShape
 		 * Multiply by a window that extends throughout the target domain.
 		 */
 		Sound_multiplyByWindow (thee.peek(), windowShape);
+		return thee.transfer();
+	} catch (MelderError) {
+		Melder_throw (me, ": part not extracted.");
+	}
+}
+
+Sound Sound_extractPartForOverlap (Sound me, double t1, double t2, double overlap) {
+	try {
+		if (t1 == t2) { t1 = my xmin; t2 = my xmax; };   // autowindow
+		if (overlap > 0.0) {
+			double margin = 0.5 * overlap;
+			t1 -= margin;
+			t2 += margin;
+		}
+		if (t1 < my xmin) t1 = my xmin;   // clip to my time domain
+		if (t2 > my xmax) t2 = my xmax;
+		/*
+		 * Determine index range. We use all the real or virtual samples that fit within [t1..t2].
+		 */
+		long ix1 = 1 + (long) ceil ((t1 - my x1) / my dx);
+		long ix2 = 1 + (long) floor ((t2 - my x1) / my dx);
+		if (ix2 < ix1) Melder_throw ("Extracted Sound would contain no samples.");
+		/*
+		 * Create sound.
+		 */
+		autoSound thee = Sound_create (my ny, t1, t2, ix2 - ix1 + 1, my dx, my x1 + (ix1 - 1) * my dx);
+		thy xmin = 0.0;
+		thy xmax -= t1;
+		thy x1 -= t1;
+		/*
+		 * Copy only *real* samples into the new sound.
+		 * The *virtual* samples will remain at zero.
+		 */
+		for (long channel = 1; channel <= my ny; channel ++) {
+			NUMvector_copyElements (my z [channel], thy z [channel] + 1 - ix1,
+					( ix1 < 1 ? 1 : ix1 ), ( ix2 > my nx ? my nx : ix2 ));
+		}
 		return thee.transfer();
 	} catch (MelderError) {
 		Melder_throw (me, ": part not extracted.");

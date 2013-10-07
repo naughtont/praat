@@ -2,7 +2,7 @@
 #define _Gui_h_
 /* Gui.h
  *
- * Copyright (C) 1993-2011,2012 Paul Boersma
+ * Copyright (C) 1993-2011,2012,2013 Paul Boersma, 2013 Tom Naughton
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -80,7 +80,7 @@
 #define Gui_CHECKBUTTON_HEIGHT  20
 #define Gui_LABEL_SPACING  8
 #define Gui_OPTIONMENU_HEIGHT  20
-#if gtk || cocoa
+#if gtk
 	#define Gui_PUSHBUTTON_HEIGHT  25
 #else
 	#define Gui_PUSHBUTTON_HEIGHT  20
@@ -105,24 +105,25 @@
 		- (void) setUserData: (GuiThing) userData;
 	@end
 	typedef NSObject <GuiCocoaAny> *GuiObject;
-    @interface GuiCocoaButton : NSButton <GuiCocoaAny> @end
-    @interface GuiCocoaScrollBar : NSScroller <GuiCocoaAny> @end
+	@interface GuiCocoaButton : NSButton <GuiCocoaAny> @end
+	@interface GuiCocoaCheckButton : NSButton <GuiCocoaAny> @end
+	@interface GuiCocoaDrawingArea : NSView <GuiCocoaAny> @end
 	@interface GuiCocoaLabel : NSTextField <GuiCocoaAny> @end
+	@interface GuiCocoaList : NSView <GuiCocoaAny, NSTableViewDataSource, NSTableViewDelegate>
+		@property (nonatomic, retain) NSMutableArray *contents;
+		@property (nonatomic, retain) NSTableView *tableView;
+	@end
 	@interface GuiCocoaMenu : NSMenu <GuiCocoaAny> @end
 	@interface GuiCocoaMenuButton : NSPopUpButton <GuiCocoaAny> @end
 	@interface GuiCocoaMenuItem : NSMenuItem <GuiCocoaAny> @end
-	@interface GuiCocoaText : NSTextField <GuiCocoaAny> @end
-    @interface GuiCocoaWindow : NSWindow <GuiCocoaAny> @end
-    @interface GuiCocoaScrolledWindow : NSScrollView <GuiCocoaAny> @end
-    @interface GuiCocoaCheckButton : NSButton <GuiCocoaAny> @end
-    @interface GuiCocoaDrawingArea : NSView <GuiCocoaAny> @end
-    @interface GuiCocoaOptionMenu : NSPopUpButton <GuiCocoaAny> @end
-    @interface GuiCocoaList : NSView <GuiCocoaAny, NSTableViewDataSource, NSTableViewDelegate>
-        @property (nonatomic, retain) NSMutableArray *contents;
-        @property (nonatomic, retain) NSTableView *tableView;
-    @end
-
-
+	@interface GuiCocoaOptionMenu : NSPopUpButton <GuiCocoaAny> @end
+	@interface GuiCocoaProgressBar : NSProgressIndicator <GuiCocoaAny> @end
+	@interface GuiCocoaRadioButton : NSButton <GuiCocoaAny> @end
+	@interface GuiCocoaScrollBar : NSScroller <GuiCocoaAny> @end
+	@interface GuiCocoaScrolledWindow : NSScrollView <GuiCocoaAny> @end
+	@interface GuiCocoaTextField : NSTextField <GuiCocoaAny> @end
+	@interface GuiCocoaTextView : NSTextView <GuiCocoaAny, NSTextViewDelegate> @end
+	@interface GuiCocoaWindow : NSWindow <GuiCocoaAny> @end
 #elif motif
 	typedef class structGuiObject *GuiObject;   // Opaque
 
@@ -321,6 +322,7 @@ Thing_define (GuiThing, Thing) { public:
 	/*
 	 * Methods:
 	 */
+	virtual void v_destroy ();
 	virtual void v_show ();
 	virtual void v_hide ();
 	virtual void v_setSensitive (bool sensitive);
@@ -328,6 +330,7 @@ Thing_define (GuiThing, Thing) { public:
 
 Thing_define (GuiControl, GuiThing) { public:
 	int d_left, d_right, d_top, d_bottom;
+	bool d_blockValueChangedCallbacks;
 	/*
 	 * Messages:
 	 */
@@ -365,6 +368,10 @@ Thing_define (GuiShell, GuiForm) { public:
 	int f_getShellHeight ();
 	void f_setTitle (const wchar_t *title);
 	void f_drain ();   // drain the double graphics buffer
+	/*
+	 * Overridden methods:
+	 */
+	virtual void v_destroy ();
 };
 
 /********** GuiButton **********/
@@ -407,9 +414,6 @@ typedef struct structGuiCheckButtonEvent {
 Thing_define (GuiCheckButton, GuiControl) { public:
 	void (*d_valueChangedCallback) (void *boss, GuiCheckButtonEvent event);
 	void *d_valueChangedBoss;
-	#if gtk
-		gulong d_valueChangedHandlerId;
-	#endif
 	/*
 	 * Messages:
 	 */
@@ -442,7 +446,6 @@ GuiDialog GuiDialog_create (GuiWindow parent, int x, int y, int width, int heigh
 Thing_declare (GuiDrawingArea);
 Thing_declare (GuiScrollBar);
 
-enum mouse_events { MOTION_NOTIFY = 1, BUTTON_PRESS, BUTTON_RELEASE };
 typedef struct structGuiDrawingAreaExposeEvent {
 	GuiDrawingArea widget;
 	int x, y, width, height;
@@ -452,7 +455,6 @@ typedef struct structGuiDrawingAreaClickEvent {
 	int x, y;
 	bool shiftKeyPressed, commandKeyPressed, optionKeyPressed, extraControlKeyPressed;
 	int button;
-	enum mouse_events type;
 } *GuiDrawingAreaClickEvent;
 typedef struct structGuiDrawingAreaKeyEvent {
 	GuiDrawingArea widget;
@@ -544,7 +546,7 @@ typedef struct structGuiListEvent {
 } *GuiListEvent;
 
 Thing_define (GuiList, GuiControl) { public:
-	bool d_allowMultipleSelection, d_blockSelectionChangedCallback;
+	bool d_allowMultipleSelection;
 	void (*d_selectionChangedCallback) (void *boss, GuiListEvent event);
 	void *d_selectionChangedBoss;
 	void (*d_doubleClickCallback) (void *boss, GuiListEvent event);
@@ -718,6 +720,9 @@ GuiOptionMenu GuiOptionMenu_createShown (GuiForm parent, int left, int right, in
 Thing_declare (GuiProgressBar);
 
 Thing_define (GuiProgressBar, GuiControl) { public:
+	#if cocoa
+		GuiCocoaProgressBar *d_cocoaProgressBar;
+	#endif
 	/*
 	 * Messages:
 	 */
@@ -740,8 +745,8 @@ Thing_define (GuiRadioButton, GuiControl) { public:
 	GuiRadioButton d_previous, d_next;   // there's a linked list of grouped radio buttons
 	void (*d_valueChangedCallback) (void *boss, GuiRadioButtonEvent event);
 	void *d_valueChangedBoss;
-	#if gtk
-		gulong d_valueChangedHandlerId;
+	#if cocoa
+		GuiCocoaRadioButton *d_cocoaRadioButton;
 	#endif
 	/*
 	 * Messages:
@@ -842,7 +847,10 @@ struct _history_entry_s {
 Thing_define (GuiText, GuiControl) { public:
 	void (*d_changeCallback) (void *boss, GuiTextEvent event);
 	void *d_changeBoss;
-	#if useCarbon
+	#if cocoa
+		GuiCocoaScrolledWindow *d_cocoaScrollView;
+		GuiCocoaTextView *d_cocoaTextView;
+	#elif defined (macintosh)
 		TXNObject d_macMlteObject;
 		TXNFrameID d_macMlteFrameId;
 	#else

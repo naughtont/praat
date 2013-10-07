@@ -63,11 +63,12 @@ void structEditorMenu :: v_destroy () {
 static void commonCallback (GUI_ARGS) {
 	GUI_IAM (EditorCommand);
 	if (my d_editor && my d_editor -> v_scriptable () && ! wcsstr (my itemTitle, L"...")) {
-		UiHistory_write (L"\n");
-		UiHistory_write (my itemTitle);
+		UiHistory_write (L"\ndo (\"");
+		UiHistory_write_expandQuotes (my itemTitle);
+		UiHistory_write (L"\")");
 	}
 	try {
-		my commandCallback (my d_editor, me, NULL, NULL, NULL);
+		my commandCallback (my d_editor, me, NULL, 0, NULL, NULL, NULL);
 	} catch (MelderError) {
 		Melder_error_ ("Menu command \"", my itemTitle, "\" not completed.");
 		Melder_flushError (NULL);
@@ -75,7 +76,7 @@ static void commonCallback (GUI_ARGS) {
 }
 
 GuiMenuItem EditorMenu_addCommand (EditorMenu me, const wchar_t *itemTitle, long flags,
-	void (*commandCallback) (Editor me, EditorCommand cmd, UiForm sendingForm, const wchar_t *sendingString, Interpreter interpreter))
+	void (*commandCallback) (Editor me, EditorCommand cmd, UiForm sendingForm, int narg, Stackel args, const wchar_t *sendingString, Interpreter interpreter))
 {
 	autoEditorCommand thee = Thing_new (EditorCommand);
 	thy d_editor = my d_editor;
@@ -107,7 +108,7 @@ EditorMenu Editor_addMenu (Editor me, const wchar_t *menuTitle, long flags) {
 /*GuiObject EditorMenu_getMenuWidget (EditorMenu me) { return my menuWidget; }*/
 
 GuiMenuItem Editor_addCommand (Editor me, const wchar_t *menuTitle, const wchar_t *itemTitle, long flags,
-	void (*commandCallback) (Editor me, EditorCommand cmd, UiForm sendingForm, const wchar_t *sendingString, Interpreter interpreter))
+	void (*commandCallback) (Editor me, EditorCommand cmd, UiForm sendingForm, int narg, Stackel args, const wchar_t *sendingString, Interpreter interpreter))
 {
 	try {
 		long numberOfMenus = my menus -> size;
@@ -122,8 +123,10 @@ GuiMenuItem Editor_addCommand (Editor me, const wchar_t *menuTitle, const wchar_
 	}
 }
 
-static void Editor_scriptCallback (Editor me, EditorCommand cmd, UiForm sendingForm, const wchar_t *sendingString, Interpreter interpreter) {
+static void Editor_scriptCallback (Editor me, EditorCommand cmd, UiForm sendingForm, int narg, Stackel args, const wchar_t *sendingString, Interpreter interpreter) {
 	(void) sendingForm;
+	(void) narg;
+	(void) args;
 	(void) sendingString;
 	(void) interpreter;
 	DO_RunTheScriptFromAnyAddedEditorCommand (me, cmd -> script);
@@ -189,7 +192,7 @@ EditorCommand Editor_getMenuCommand (Editor me, const wchar_t *menuTitle, const 
 	Melder_throw ("Command \"", itemTitle, "\" not found in menu \"", menuTitle, "\".");
 }
 
-void Editor_doMenuCommand (Editor me, const wchar_t *commandTitle, const wchar_t *arguments, Interpreter interpreter) {
+void Editor_doMenuCommand (Editor me, const wchar_t *commandTitle, int narg, Stackel args, const wchar_t *arguments, Interpreter interpreter) {
 	int numberOfMenus = my menus -> size;
 	for (int imenu = 1; imenu <= numberOfMenus; imenu ++) {
 		EditorMenu menu = (EditorMenu) my menus -> item [imenu];
@@ -197,7 +200,7 @@ void Editor_doMenuCommand (Editor me, const wchar_t *commandTitle, const wchar_t
 		for (long icommand = 1; icommand <= numberOfCommands; icommand ++) {
 			EditorCommand command = (EditorCommand) menu -> commands -> item [icommand];
 			if (wcsequ (commandTitle, command -> itemTitle)) {
-				command -> commandCallback (me, command, NULL, arguments, interpreter);
+				command -> commandCallback (me, command, NULL, narg, args, arguments, interpreter);
 				return;
 			}
 		}
@@ -208,12 +211,14 @@ void Editor_doMenuCommand (Editor me, const wchar_t *commandTitle, const wchar_t
 /********** class Editor **********/
 
 void structEditor :: v_destroy () {
+	trace ("enter");
 	MelderAudio_stopPlaying (MelderAudio_IMPLICIT);
 	/*
 	 * The following command must be performed before the shell is destroyed.
 	 * Otherwise, we would be forgetting dangling command dialogs here.
 	 */
 	forget (menus);
+	broadcastDestruction ();
 	if (d_windowForm) {
 		#if gtk
 			if (d_windowForm -> d_gtkWindow) {
@@ -221,13 +226,17 @@ void structEditor :: v_destroy () {
 				gtk_widget_destroy (GTK_WIDGET (d_windowForm -> d_gtkWindow));
 			}
 		#elif cocoa
+			if (d_windowForm -> d_cocoaWindow) {
+				NSWindow *cocoaWindow = d_windowForm -> d_cocoaWindow;
+				//d_windowForm -> d_cocoaWindow = NULL;
+				[cocoaWindow close];
+			}
 		#elif motif
 			if (d_windowForm -> d_xmShell) {
 				XtDestroyWidget (d_windowForm -> d_xmShell);
 			}
 		#endif
 	}
-	broadcastDestruction ();
 	forget (previousData);
 	if (d_ownData) forget (data);
 	Editor_Parent :: v_destroy ();
@@ -375,6 +384,8 @@ void structEditor :: v_do_pictureMargins (EditorCommand cmd) {
 
 static void gui_window_cb_goAway (I) {
 	iam (Editor);
+	Melder_assert (me != NULL);
+	Melder_assert (Thing_member (me, classEditor));
 	my v_goAway ();
 }
 

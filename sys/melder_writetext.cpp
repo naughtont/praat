@@ -171,7 +171,6 @@ void MelderFile_writeText (MelderFile file, const wchar_t *text, enum kMelder_te
 		}
 	}
 	f.close (file);
-	MelderFile_setMacTypeAndCreator (file, 'TEXT', 0);
 }
 
 void MelderFile_appendText (MelderFile file, const wchar_t *text) {
@@ -325,7 +324,6 @@ void MelderFile_appendText (MelderFile file, const wchar_t *text) {
 		}
 		f.close (file);
 	}
-	MelderFile_setMacTypeAndCreator (file, 'TEXT', 0);
 }
 
 static void _MelderFile_write (MelderFile file, const wchar_t *string) {
