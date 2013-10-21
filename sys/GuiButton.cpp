@@ -209,9 +209,12 @@ GuiButton GuiButton_create (GuiForm parent, int left, int right, int top, int bo
 		[button setTarget: (id) my d_widget];
 		[button setAction: @selector (_guiCocoaButton_activateCallback:)];
 		//[button setAutoresizingMask: NSViewNotSizable];
-		if (flags & GuiButton_DEFAULT) {
-			[button setKeyEquivalent: @"\r"];
-		}
+        if (flags & GuiButton_DEFAULT) {
+            [button setKeyEquivalent: @"\r"];
+        }
+        if (flags & GuiButton_CANCEL) {
+            [button setKeyEquivalent:[NSString stringWithFormat:@"%c", 0x1B]]; // escape
+        }
 		if (flags & GuiButton_ATTRACTIVE) {
 			//[button setKeyEquivalent: @"\r"];   // slow!
 			[button highlight: YES];   // lasts only till it's clicked!
