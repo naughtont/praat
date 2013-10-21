@@ -120,6 +120,7 @@
 	@interface GuiCocoaProgressBar : NSProgressIndicator <GuiCocoaAny> @end
 	@interface GuiCocoaRadioButton : NSButton <GuiCocoaAny> @end
 	@interface GuiCocoaScrollBar : NSScroller <GuiCocoaAny>
+        - (void)magnify:(CGFloat)delta;
         - (void)scrollWheel:(CGFloat)delta;
     @end
 	@interface GuiCocoaScrolledWindow : NSScrollView <GuiCocoaAny> @end
@@ -800,6 +801,7 @@ Thing_define (GuiScrollBar, GuiControl) { public:
 	 * Messages:
 	 */
 	int f_getValue ();
+    int f_getSliderSize ();
 	void f_set (double minimum, double maximum, double value, double sliderSize, double increment, double pageIncrement);
 };
 

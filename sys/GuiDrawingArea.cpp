@@ -273,7 +273,16 @@ Thing_implement (GuiDrawingArea, GuiControl, 0);
 	}
 
 - (void)magnifyWithEvent:(NSEvent *)event {
-     NSLog(@"Magnification value is %f", [event magnification]);
+    GuiDrawingArea me = (GuiDrawingArea) d_userData;
+	if (my d_horizontalScrollBar) {
+        
+        GuiCocoaScrollBar *horizontalScrollBar = (GuiCocoaScrollBar*)my d_horizontalScrollBar -> d_widget;
+        [horizontalScrollBar magnify:[event magnification]];
+	}
+	if (my d_verticalScrollBar) {
+        GuiCocoaScrollBar *verticalScrollBar = (GuiCocoaScrollBar*)my d_verticalScrollBar -> d_widget;
+        [verticalScrollBar magnify:[event deltaY]];
+	}
 }
 
 - (void)scrollWheel:(NSEvent *)event {

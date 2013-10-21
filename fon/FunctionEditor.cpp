@@ -874,30 +874,49 @@ static void menu_cb_moveEright (EDITOR_ARGS) {
 
 /********** GUI CALLBACKS **********/
 
+
 static void gui_cb_scroll (I, GuiScrollBarEvent event) {
 	iam (FunctionEditor);
 	if (my d_graphics == NULL) return;   // ignore events during creation
+    
+    int i;
+    bool draw = false;
+    double old_slider_size = (my d_endWindow - my d_startWindow) / (my d_tmax - my d_tmin) * maximumScrollBarValue - 1;
 	double value = event -> scrollBar -> f_getValue ();
+	double sliderSize = event -> scrollBar -> f_getSliderSize();
+    
+    // magnification
+	double delta = my d_tmin + (sliderSize - 1) * (my d_tmax - my d_tmin) / maximumScrollBarValue;
+    if (old_slider_size != sliderSize) {
+        draw = true;
+        my d_endWindow = my d_startWindow + delta;
+    }
+    
+    
+    // scroll
 	double shift = my d_tmin + (value - 1) * (my d_tmax - my d_tmin) / maximumScrollBarValue - my d_startWindow;
-	if (shift != 0.0) {
-		int i;
+    if (shift != 0.0 || old_slider_size != sliderSize) {
+        draw = true;
 		my d_startWindow += shift;
 		if (my d_startWindow < my d_tmin + 1e-12) my d_startWindow = my d_tmin;
 		my d_endWindow += shift;
 		if (my d_endWindow > my d_tmax - 1e-12) my d_endWindow = my d_tmax;
-		my v_updateText ();
-		/*Graphics_clearWs (my d_graphics);*/
-		drawNow (me);   /* Do not wait for expose event. */
-		if (! my group || ! my pref_synchronizedZoomAndScroll ()) return;
-		for (i = 1; i <= maxGroup; i ++) if (theGroup [i] && theGroup [i] != me) {
-			theGroup [i] -> d_startWindow = my d_startWindow;
-			theGroup [i] -> d_endWindow = my d_endWindow;
-			FunctionEditor_updateText (theGroup [i]);
-			updateScrollBar (theGroup [i]);
-			Graphics_clearWs (theGroup [i] -> d_graphics);
-			drawNow (theGroup [i]);
-		}
-	}
+    }
+    
+    if (draw) {
+        my v_updateText ();
+        /*Graphics_clearWs (my d_graphics);*/
+        drawNow (me);   /* Do not wait for expose event. */
+        if (! my group || ! my pref_synchronizedZoomAndScroll ()) return;
+        for (i = 1; i <= maxGroup; i ++) if (theGroup [i] && theGroup [i] != me) {
+            theGroup [i] -> d_startWindow = my d_startWindow;
+            theGroup [i] -> d_endWindow = my d_endWindow;
+            FunctionEditor_updateText (theGroup [i]);
+            updateScrollBar (theGroup [i]);
+            Graphics_clearWs (theGroup [i] -> d_graphics);
+            drawNow (theGroup [i]);
+        }
+    }
 }
 
 static void gui_checkbutton_cb_group (I, GuiCheckButtonEvent event) {
