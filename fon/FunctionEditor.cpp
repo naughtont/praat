@@ -888,22 +888,23 @@ static void gui_cb_scroll (I, GuiScrollBarEvent event) {
     // magnification
 	double delta = my d_tmin + (sliderSize - 1) * (my d_tmax - my d_tmin) / maximumScrollBarValue;
     if (old_slider_size != sliderSize) {
-        draw = true;
         my d_endWindow = my d_startWindow + delta;
+        draw = true;
     }
-    
     
     // scroll
 	double shift = my d_tmin + (value - 1) * (my d_tmax - my d_tmin) / maximumScrollBarValue - my d_startWindow;
     if (shift != 0.0 || old_slider_size != sliderSize) {
-        draw = true;
 		my d_startWindow += shift;
-		if (my d_startWindow < my d_tmin + 1e-12) my d_startWindow = my d_tmin;
 		my d_endWindow += shift;
-		if (my d_endWindow > my d_tmax - 1e-12) my d_endWindow = my d_tmax;
+        draw = true;
     }
     
     if (draw) {
+        
+        if (my d_startWindow < my d_tmin + 1e-12) my d_startWindow = my d_tmin;
+		if (my d_endWindow > my d_tmax - 1e-12) my d_endWindow = my d_tmax;
+
         my v_updateText ();
         /*Graphics_clearWs (my d_graphics);*/
         drawNow (me);   /* Do not wait for expose event. */
