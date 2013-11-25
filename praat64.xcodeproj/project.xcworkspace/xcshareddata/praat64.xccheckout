@@ -2,20 +2,22 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>A0708EDD-4AFE-4292-B6DB-6CB883243226</string>
+	<string>D2F2006E-F241-4B20-9BD9-3BF6D1B7F675</string>
 	<key>IDESourceControlProjectName</key>
 	<string>praat64</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>BC6C336B-8C5D-46D1-819B-B1032DBBBFED</key>
+		<key>FE869ADE-0CA9-46D6-8CA6-61642E52CB12</key>
 		<string>https://github.com/naughtont/praat.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>praat64.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>BC6C336B-8C5D-46D1-819B-B1032DBBBFED</key>
+		<key>FE869ADE-0CA9-46D6-8CA6-61642E52CB12</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
@@ -23,14 +25,14 @@
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>BC6C336B-8C5D-46D1-819B-B1032DBBBFED</string>
+	<string>FE869ADE-0CA9-46D6-8CA6-61642E52CB12</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>BC6C336B-8C5D-46D1-819B-B1032DBBBFED</string>
+			<string>FE869ADE-0CA9-46D6-8CA6-61642E52CB12</string>
 			<key>IDESourceControlWCCName</key>
 			<string>praat</string>
 		</dict>

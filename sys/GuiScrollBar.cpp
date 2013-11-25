@@ -120,7 +120,7 @@ Thing_implement (GuiScrollBar, GuiControl, 0);
     [self update];
 }
 
-- (void)scrollWheel:(CGFloat)delta {
+- (void)scrollWheelScrolled:(CGFloat)delta {
     _m_value -= delta * (_m_maximum - _m_minimum) / 1000.0;
     if (_m_value < _m_minimum)
         _m_value = _m_minimum;
@@ -313,16 +313,16 @@ void structGuiScrollBar :: f_set (double minimum, double maximum, double value, 
 }
 
 int structGuiScrollBar :: f_getValue () {
-#if gtk
-    return gtk_range_get_value (GTK_RANGE (d_widget));
-#elif cocoa
-    GuiCocoaScrollBar *scroller = (GuiCocoaScrollBar *) d_widget;
-    return [scroller m_value];
-#elif motif
-    int value, slider, incr, pincr;
-    XmScrollBarGetValues (d_widget, & value, & slider, & incr, & pincr);
-    return value;
-#endif
+    #if gtk
+        return gtk_range_get_value (GTK_RANGE (d_widget));
+    #elif cocoa
+        GuiCocoaScrollBar *scroller = (GuiCocoaScrollBar *) d_widget;
+        return [scroller m_value];
+    #elif motif
+        int value, slider, incr, pincr;
+        XmScrollBarGetValues (d_widget, & value, & slider, & incr, & pincr);
+        return value;
+    #endif
 }
 
 int structGuiScrollBar :: f_getSliderSize () {

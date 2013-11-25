@@ -155,7 +155,9 @@ static struct MelderPlay {
 	bool explicitStop, fakeMono;
 	bool (*callback) (void *closure, long samplesPlayed);
 	void *closure;
-	#if motif
+	#if cocoa
+		CFRunLoopTimerRef cocoaTimer;
+	#elif motif
 		XtWorkProcId workProcId_motif;
 	#elif gtk
 		gint workProcId_gtk;
@@ -245,7 +247,9 @@ bool MelderAudio_stopPlaying (bool explicitStop) {
 	my explicitStop = explicitStop;
 	if (! MelderAudio_isPlaying || my asynchronicity < kMelder_asynchronicityLevel_ASYNCHRONOUS) return false;
 	(void) flush ();
-	#if motif
+	#if cocoa
+		CFRunLoopRemoveTimer (CFRunLoopGetCurrent (), thePlay. cocoaTimer, kCFRunLoopCommonModes);
+	#elif motif
 		XtRemoveWorkProc (thePlay. workProcId_motif);
 	#elif gtk
 		gtk_idle_remove (thePlay. workProcId_gtk);
@@ -352,7 +356,16 @@ static bool workProc (void *closure) {
 	(void) closure;
 	return false;
 }
-#if motif
+#if cocoa
+static void workProc_cocoa (CFRunLoopTimerRef timer, void *closure) {
+	bool result = workProc (closure);
+	if (result) {
+		CFRunLoopTimerInvalidate (timer);
+		//CFRunLoopRemoveTimer (CFRunLoopGetCurrent (), timer);
+		
+	}
+}
+#elif motif
 static bool workProc_motif (XtPointer closure) {
 	return workProc ((void *) closure);
 }
@@ -508,27 +521,26 @@ void MelderAudio_play16 (const int16_t *buffer, long sampleRate, long numberOfSa
 					if (my callback && ! my callback (my closure, my samplesPlayed))
 						interrupted = true;
 					if (my asynchronicity == kMelder_asynchronicityLevel_INTERRUPTABLE && ! interrupted) {
-						#if defined (macintosh)
-							#if useCarbon
-								EventRecord event;
-								if (EventAvail (keyDownMask, & event)) {
-									/*
-									* Remove the event, even if it was a different key.
-									* Otherwise, the key will block the future availability of the Escape key.
-									*/
-									FlushEvents (keyDownMask, 0);
-									/*
-									* Catch Escape and Command-period.
-									*/
-									if ((event. message & charCodeMask) == 27 ||
-										((event. modifiers & cmdKey) && (event. message & charCodeMask) == '.'))
-									{
-										my explicitStop = MelderAudio_EXPLICIT;
-										interrupted = true;
-									}
+						#if cocoa
+							
+						#elif defined (macintosh)
+							EventRecord event;
+							if (EventAvail (keyDownMask, & event)) {
+								/*
+								* Remove the event, even if it was a different key.
+								* Otherwise, the key will block the future availability of the Escape key.
+								*/
+								FlushEvents (keyDownMask, 0);
+								/*
+								* Catch Escape and Command-period.
+								*/
+								if ((event. message & charCodeMask) == 27 ||
+									((event. modifiers & cmdKey) && (event. message & charCodeMask) == '.'))
+								{
+									my explicitStop = MelderAudio_EXPLICIT;
+									interrupted = true;
 								}
-							#else
-							#endif
+							}
 						#elif defined (_WIN32)
 							MSG event;
 							if (PeekMessage (& event, 0, 0, 0, PM_REMOVE) && event. message == WM_KEYDOWN) {
@@ -546,7 +558,12 @@ void MelderAudio_play16 (const int16_t *buffer, long sampleRate, long numberOfSa
 				}
 				Pa_StopStream (my stream);
 			} else {
-				#if motif
+				#if cocoa
+					CFRunLoopTimerContext context = { 0, NULL, NULL, NULL, NULL };
+					my cocoaTimer = CFRunLoopTimerCreate (NULL, CFAbsoluteTimeGetCurrent () + 0.02,
+						0.02, 0, 0, workProc_cocoa, & context);
+					CFRunLoopAddTimer (CFRunLoopGetCurrent (), my cocoaTimer, kCFRunLoopCommonModes);
+				#elif motif
 					my workProcId_motif = GuiAddWorkProc (workProc_motif, NULL);
 				#elif gtk
 					my workProcId_gtk = gtk_idle_add (workProc_gtk, NULL);
@@ -574,27 +591,26 @@ void MelderAudio_play16 (const int16_t *buffer, long sampleRate, long numberOfSa
 					 * Do this on the lowest level that will work.
 					 */
 					if (my asynchronicity == kMelder_asynchronicityLevel_INTERRUPTABLE && ! interrupted) {
-						#if defined (macintosh)
-							#if useCarbon
-								EventRecord event;
-								if (EventAvail (keyDownMask, & event)) {
-									/*
-									* Remove the event, even if it was a different key.
-									* Otherwise, the key will block the future availability of the Escape key.
-									*/
-									FlushEvents (keyDownMask, 0);
-									/*
-									* Catch Escape and Command-period.
-									*/
-									if ((event. message & charCodeMask) == 27 ||
-										((event. modifiers & cmdKey) && (event. message & charCodeMask) == '.'))
-									{
-										my explicitStop = MelderAudio_EXPLICIT;
-										interrupted = true;
-									}
+						#if cocoa
+							// COCOA TODO: implement
+						#elif defined (macintosh)
+							EventRecord event;
+							if (EventAvail (keyDownMask, & event)) {
+								/*
+								* Remove the event, even if it was a different key.
+								* Otherwise, the key will block the future availability of the Escape key.
+								*/
+								FlushEvents (keyDownMask, 0);
+								/*
+								* Catch Escape and Command-period.
+								*/
+								if ((event. message & charCodeMask) == 27 ||
+									((event. modifiers & cmdKey) && (event. message & charCodeMask) == '.'))
+								{
+									my explicitStop = MelderAudio_EXPLICIT;
+									interrupted = true;
 								}
-							#else
-							#endif
+							}
 						#elif defined (_WIN32)
 							MSG event;
 							if (PeekMessage (& event, 0, 0, 0, PM_REMOVE) && event. message == WM_KEYDOWN) {
@@ -616,7 +632,12 @@ void MelderAudio_play16 (const int16_t *buffer, long sampleRate, long numberOfSa
 				}
 				Pa_AbortStream (my stream);
 			} else /* my asynchronicity == kMelder_asynchronicityLevel_ASYNCHRONOUS */ {
-				#if motif
+				#if cocoa
+					CFRunLoopTimerContext context = { 0, NULL, NULL, NULL, NULL };
+					my cocoaTimer = CFRunLoopTimerCreate (NULL, CFAbsoluteTimeGetCurrent () + 0.02,
+						0.02, 0, 0, workProc_cocoa, & context);
+					CFRunLoopAddTimer (CFRunLoopGetCurrent (), my cocoaTimer, kCFRunLoopCommonModes);
+				#elif motif
 					my workProcId_motif = GuiAddWorkProc (workProc_motif, NULL);
 				#elif gtk
 					my workProcId_gtk = gtk_idle_add (workProc_gtk, NULL);

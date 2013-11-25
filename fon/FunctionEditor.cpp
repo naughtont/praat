@@ -336,6 +336,7 @@ static void drawNow (FunctionEditor me) {
 	/*
 	 * End of inner drawing.
 	 */
+	Graphics_flushWs (my d_graphics);
 	Graphics_setViewport (my d_graphics, my functionViewerLeft, my selectionViewerRight, 0, my height);
 }
 
@@ -874,7 +875,6 @@ static void menu_cb_moveEright (EDITOR_ARGS) {
 
 /********** GUI CALLBACKS **********/
 
-
 static void gui_cb_scroll (I, GuiScrollBarEvent event) {
 	iam (FunctionEditor);
 	if (my d_graphics == NULL) return;   // ignore events during creation
@@ -904,7 +904,7 @@ static void gui_cb_scroll (I, GuiScrollBarEvent event) {
         
         if (my d_startWindow < my d_tmin + 1e-12) my d_startWindow = my d_tmin;
 		if (my d_endWindow > my d_tmax - 1e-12) my d_endWindow = my d_tmax;
-
+        
         my v_updateText ();
         /*Graphics_clearWs (my d_graphics);*/
         drawNow (me);   /* Do not wait for expose event. */
@@ -1094,11 +1094,7 @@ static void gui_drawingarea_cb_click (I, GuiDrawingAreaClickEvent event) {
 		if (needsUpdate) my v_updateText ();
 		Graphics_setViewport (my d_graphics, my functionViewerLeft, my functionViewerRight, 0, my height);
 		if (needsUpdate) {
-			#if cocoa
-				Graphics_updateWs (my d_graphics);
-			#else
-				drawNow (me);
-			#endif
+			drawNow (me);
 		}
 		if (needsUpdate) updateGroup (me);
 	}

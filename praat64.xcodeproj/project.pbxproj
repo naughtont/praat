@@ -19,7 +19,6 @@
 		23056A00132CFB0B007985BD /* PairDistribution.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 230569FF132CFB0B007985BD /* PairDistribution.cpp */; };
 		2307EF870D57CF3100DA27AF /* VowelEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = 2307EF830D57CF3100DA27AF /* VowelEditor.h */; };
 		230CF8E40D06B83F00068DB5 /* Editor_enums.h in Headers */ = {isa = PBXBuildFile; fileRef = 230CF8E30D06B83F00068DB5 /* Editor_enums.h */; };
-		2313CD9F170792FC004C4BAD /* praat_mac.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2313CD9E170792FC004C4BAD /* praat_mac.plist */; };
 		2317A1B415230FF9004610E9 /* gsl__config.h in Headers */ = {isa = PBXBuildFile; fileRef = 23179D8115230FF6004610E9 /* gsl__config.h */; };
 		2317A1B515230FF9004610E9 /* gsl_blas.h in Headers */ = {isa = PBXBuildFile; fileRef = 23179D8215230FF6004610E9 /* gsl_blas.h */; };
 		2317A1B615230FF9004610E9 /* gsl_blas_types.h in Headers */ = {isa = PBXBuildFile; fileRef = 23179D8315230FF6004610E9 /* gsl_blas_types.h */; };
@@ -1215,6 +1214,9 @@
 		2343C2370BAE1567003D66E8 /* Distributions.h in Headers */ = {isa = PBXBuildFile; fileRef = 2343C2350BAE1567003D66E8 /* Distributions.h */; };
 		2343C2B40BAE20C1003D66E8 /* PairDistribution_def.h in Headers */ = {isa = PBXBuildFile; fileRef = 2343C2B10BAE20C1003D66E8 /* PairDistribution_def.h */; };
 		2343C2B60BAE20C1003D66E8 /* PairDistribution.h in Headers */ = {isa = PBXBuildFile; fileRef = 2343C2B30BAE20C1003D66E8 /* PairDistribution.h */; };
+		2346F7B1181735D700871FC6 /* SampledXY_def.h in Headers */ = {isa = PBXBuildFile; fileRef = 2346F7B0181735D700871FC6 /* SampledXY_def.h */; };
+		2346F7B31817375F00871FC6 /* SampledXY.h in Headers */ = {isa = PBXBuildFile; fileRef = 2346F7B21817375F00871FC6 /* SampledXY.h */; };
+		2346F7B518173C8F00871FC6 /* SampledXY.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2346F7B418173C8F00871FC6 /* SampledXY.cpp */; };
 		2347C0D616DFD684006B83AD /* TimeSoundEditor_prefs.h in Headers */ = {isa = PBXBuildFile; fileRef = 2347C0D516DFD684006B83AD /* TimeSoundEditor_prefs.h */; };
 		2347C0D816DFF720006B83AD /* ManipulationEditor_prefs.h in Headers */ = {isa = PBXBuildFile; fileRef = 2347C0D716DFF720006B83AD /* ManipulationEditor_prefs.h */; };
 		2347C0EF16E1EA9E006B83AD /* FormantGridEditor_prefs.h in Headers */ = {isa = PBXBuildFile; fileRef = 2347C0EE16E1EA9E006B83AD /* FormantGridEditor_prefs.h */; };
@@ -1895,6 +1897,9 @@
 		23F50CA70F71893F007D645B /* abcio_enums.h in Headers */ = {isa = PBXBuildFile; fileRef = 23F50CA60F71893F007D645B /* abcio_enums.h */; };
 		23F50E530F75E444007D645B /* FormantGrid_extensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 23F50E520F75E444007D645B /* FormantGrid_extensions.h */; };
 		23FDF6A409FCFF06001B23B7 /* sendpraat.c in Sources */ = {isa = PBXBuildFile; fileRef = 23FDF6A309FCFF06001B23B7 /* sendpraat.c */; };
+		23FE185F181AF9E3002FFFFD /* Photo_def.h in Headers */ = {isa = PBXBuildFile; fileRef = 23FE185C181AF9E3002FFFFD /* Photo_def.h */; };
+		23FE1860181AF9E3002FFFFD /* Photo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23FE185D181AF9E3002FFFFD /* Photo.cpp */; };
+		23FE1861181AF9E3002FFFFD /* Photo.h in Headers */ = {isa = PBXBuildFile; fileRef = 23FE185E181AF9E3002FFFFD /* Photo.h */; };
 		23FE2D390E4F3D3B003EEE43 /* KNN.h in Headers */ = {isa = PBXBuildFile; fileRef = 23FE2D310E4F3D3B003EEE43 /* KNN.h */; };
 		23FE2D3A0E4F3D3B003EEE43 /* FeatureWeights_def.h in Headers */ = {isa = PBXBuildFile; fileRef = 23FE2D320E4F3D3B003EEE43 /* FeatureWeights_def.h */; };
 		23FE2D3B0E4F3D3B003EEE43 /* FeatureWeights.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23FE2D330E4F3D3B003EEE43 /* FeatureWeights.cpp */; };
@@ -3119,6 +3124,9 @@
 		2343C2350BAE1567003D66E8 /* Distributions.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = Distributions.h; path = stat/Distributions.h; sourceTree = "<group>"; };
 		2343C2B10BAE20C1003D66E8 /* PairDistribution_def.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = PairDistribution_def.h; path = stat/PairDistribution_def.h; sourceTree = "<group>"; };
 		2343C2B30BAE20C1003D66E8 /* PairDistribution.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = PairDistribution.h; path = stat/PairDistribution.h; sourceTree = "<group>"; };
+		2346F7B0181735D700871FC6 /* SampledXY_def.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SampledXY_def.h; path = fon/SampledXY_def.h; sourceTree = "<group>"; };
+		2346F7B21817375F00871FC6 /* SampledXY.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SampledXY.h; path = fon/SampledXY.h; sourceTree = "<group>"; };
+		2346F7B418173C8F00871FC6 /* SampledXY.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SampledXY.cpp; path = fon/SampledXY.cpp; sourceTree = "<group>"; };
 		2347C0D516DFD684006B83AD /* TimeSoundEditor_prefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TimeSoundEditor_prefs.h; path = fon/TimeSoundEditor_prefs.h; sourceTree = "<group>"; };
 		2347C0D716DFF720006B83AD /* ManipulationEditor_prefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ManipulationEditor_prefs.h; path = fon/ManipulationEditor_prefs.h; sourceTree = "<group>"; };
 		2347C0EE16E1EA9E006B83AD /* FormantGridEditor_prefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FormantGridEditor_prefs.h; path = fon/FormantGridEditor_prefs.h; sourceTree = "<group>"; };
@@ -3776,12 +3784,10 @@
 		23E5CEFE09A22A51004E41D5 /* CCA_def.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CCA_def.h; path = dwtools/CCA_def.h; sourceTree = "<group>"; };
 		23E5CF0009A22A51004E41D5 /* SVD_def.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SVD_def.h; path = dwsys/SVD_def.h; sourceTree = "<group>"; };
 		23E5CF0209A22A51004E41D5 /* NUMfft_core.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NUMfft_core.h; path = dwsys/NUMfft_core.h; sourceTree = "<group>"; };
-		23E5CF3509A22A55004E41D5 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
 		23E5CF3709A22A55004E41D5 /* Procrustes_def.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Procrustes_def.h; path = dwtools/Procrustes_def.h; sourceTree = "<group>"; };
 		23E5CF3909A22A55004E41D5 /* Permutation_def.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Permutation_def.h; path = dwsys/Permutation_def.h; sourceTree = "<group>"; };
 		23E5CF3B09A22A55004E41D5 /* Index_def.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Index_def.h; path = dwsys/Index_def.h; sourceTree = "<group>"; };
 		23E5CF3F09A22A56004E41D5 /* oo_undef.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = oo_undef.h; path = sys/oo_undef.h; sourceTree = "<group>"; };
-		23E5D21F09A22ACD004E41D5 /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = /System/Library/Frameworks/QuickTime.framework; sourceTree = "<absolute>"; };
 		23E8D02016E2E0550041AE87 /* Praat.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = Praat.icns; path = main/Praat.icns; sourceTree = "<group>"; };
 		23EDAB8A0F30D5630037490E /* KlattGridEditors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KlattGridEditors.h; path = dwtools/KlattGridEditors.h; sourceTree = "<group>"; };
 		23EE67C509F2E61200E660F9 /* melder_atof.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = melder_atof.cpp; path = sys/melder_atof.cpp; sourceTree = "<group>"; };
@@ -3802,6 +3808,9 @@
 		23F50CA60F71893F007D645B /* abcio_enums.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = abcio_enums.h; path = sys/abcio_enums.h; sourceTree = "<group>"; };
 		23F50E520F75E444007D645B /* FormantGrid_extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FormantGrid_extensions.h; path = dwtools/FormantGrid_extensions.h; sourceTree = "<group>"; };
 		23FDF6A309FCFF06001B23B7 /* sendpraat.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = sendpraat.c; path = sys/sendpraat.c; sourceTree = "<group>"; };
+		23FE185C181AF9E3002FFFFD /* Photo_def.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Photo_def.h; path = fon/Photo_def.h; sourceTree = "<group>"; };
+		23FE185D181AF9E3002FFFFD /* Photo.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = Photo.cpp; path = fon/Photo.cpp; sourceTree = "<group>"; };
+		23FE185E181AF9E3002FFFFD /* Photo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Photo.h; path = fon/Photo.h; sourceTree = "<group>"; };
 		23FE2D310E4F3D3B003EEE43 /* KNN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KNN.h; path = contrib/ola/KNN.h; sourceTree = "<group>"; };
 		23FE2D320E4F3D3B003EEE43 /* FeatureWeights_def.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FeatureWeights_def.h; path = contrib/ola/FeatureWeights_def.h; sourceTree = "<group>"; };
 		23FE2D330E4F3D3B003EEE43 /* FeatureWeights.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FeatureWeights.cpp; path = contrib/ola/FeatureWeights.cpp; sourceTree = "<group>"; };
@@ -5020,8 +5029,8 @@
 				23E5CA2C09A228FF004E41D5 /* stat */,
 				23E5CAFE09A22901004E41D5 /* sys */,
 				23E5CB3509A22902004E41D5 /* sys editors */,
-				23E5CB4509A22902004E41D5 /* sys/Graphics */,
 				23E5CB5409A22902004E41D5 /* sys/Gui */,
+				23E5CB4509A22902004E41D5 /* sys/Graphics */,
 				23E5CB6009A22902004E41D5 /* sys/melder */,
 				23E5CB6809A22902004E41D5 /* kar */,
 				239954830DAD954400FB871A /* num */,
@@ -5554,6 +5563,9 @@
 				2320641413F5627000F22019 /* ParamCurve_def.h */,
 				23E5CA7909A22900004E41D5 /* ParamCurve.h */,
 				23E5CA7809A22900004E41D5 /* ParamCurve.cpp */,
+				23FE185C181AF9E3002FFFFD /* Photo_def.h */,
+				23FE185E181AF9E3002FFFFD /* Photo.h */,
+				23FE185D181AF9E3002FFFFD /* Photo.cpp */,
 				23760E9B0D0C7B370037FD07 /* Pitch_enums.h */,
 				23E5CE7609A22A37004E41D5 /* Pitch_def.h */,
 				23E5CA7B09A22900004E41D5 /* Pitch.h */,
@@ -5588,6 +5600,9 @@
 				23E5CEE209A22A4A004E41D5 /* Sampled_def.h */,
 				23E5CA9509A22900004E41D5 /* Sampled.h */,
 				23E5CA9409A22900004E41D5 /* Sampled.cpp */,
+				2346F7B0181735D700871FC6 /* SampledXY_def.h */,
+				2346F7B21817375F00871FC6 /* SampledXY.h */,
+				2346F7B418173C8F00871FC6 /* SampledXY.cpp */,
 				23E5CE7809A22A37004E41D5 /* Sound_enums.h */,
 				23E5CA9709A22900004E41D5 /* Sound.h */,
 				23E5CA9609A22900004E41D5 /* Sound.cpp */,
@@ -5956,12 +5971,10 @@
 		23E5CF3409A22A55004E41D5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				23E5CF3509A22A55004E41D5 /* Carbon.framework */,
 				23BB67CE1534C3E500AA4597 /* Cocoa.framework */,
 				2300228A0B33473600A7FE19 /* AudioToolbox.framework */,
 				2300229C0B33474000A7FE19 /* AudioUnit.framework */,
 				230022B00B33476C00A7FE19 /* CoreAudio.framework */,
-				23E5D21F09A22ACD004E41D5 /* QuickTime.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -6021,6 +6034,7 @@
 				23E5CF7009A22A57004E41D5 /* FFNet_Eigen.h in Headers */,
 				23E5CF7209A22A57004E41D5 /* FFNet_Matrix.h in Headers */,
 				23E5CF7409A22A57004E41D5 /* FFNet_Pattern.h in Headers */,
+				23FE1861181AF9E3002FFFFD /* Photo.h in Headers */,
 				23E5CF7609A22A57004E41D5 /* FFNet_Pattern_Activation.h in Headers */,
 				23E5CF7809A22A57004E41D5 /* FFNet_Pattern_Categories.h in Headers */,
 				23E5CF7C09A22A57004E41D5 /* LPC.h in Headers */,
@@ -6086,6 +6100,7 @@
 				23E5D00809A22A57004E41D5 /* Excitation_to_Formant.h in Headers */,
 				23E5D00A09A22A57004E41D5 /* Formant.h in Headers */,
 				23E5D00C09A22A57004E41D5 /* FormantTier.h in Headers */,
+				2346F7B31817375F00871FC6 /* SampledXY.h in Headers */,
 				23E5D00E09A22A57004E41D5 /* Function.h in Headers */,
 				23E5D01009A22A57004E41D5 /* Harmonicity.h in Headers */,
 				23E5D01209A22A57004E41D5 /* Image.h in Headers */,
@@ -6316,6 +6331,7 @@
 				2356B60E0D03972F00A12FAE /* enums_getValue.h in Headers */,
 				2356B6390D03995C00A12FAE /* TimeSoundAnalysisEditor_enums.h in Headers */,
 				2356B6650D039CB400A12FAE /* enums.h in Headers */,
+				2346F7B1181735D700871FC6 /* SampledXY_def.h in Headers */,
 				2356B6680D039D3F00A12FAE /* melder_enums.h in Headers */,
 				2356B66C0D039FA100A12FAE /* Graphics_enums.h in Headers */,
 				230CF8E40D06B83F00068DB5 /* Editor_enums.h in Headers */,
@@ -6674,6 +6690,7 @@
 				2317A5D615230FFA004610E9 /* mad_layer12.h in Headers */,
 				2317A5D815230FFA004610E9 /* mad_stream.h in Headers */,
 				2317A5DA15230FFA004610E9 /* mad_synth.h in Headers */,
+				23FE185F181AF9E3002FFFFD /* Photo_def.h in Headers */,
 				2317A5DC15230FFA004610E9 /* mad_timer.h in Headers */,
 				2317A5DE15230FFA004610E9 /* mad_version.h in Headers */,
 				2317A5E015230FFA004610E9 /* mp3.h in Headers */,
@@ -6753,6 +6770,12 @@
 		23E5C91309A228F8004E41D5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastUpgradeCheck = 0460;
+				TargetAttributes = {
+					23E5C91D09A228F9004E41D5 = {
+						DevelopmentTeam = 22URMERCLE;
+					};
+				};
 			};
 			buildConfigurationList = 23E5C91409A228F8004E41D5 /* Build configuration list for PBXProject "praat64" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -6777,7 +6800,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				23E8D02116E2E0550041AE87 /* Praat.icns in Resources */,
-				2313CD9F170792FC004C4BAD /* praat_mac.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6835,6 +6857,7 @@
 				23E5CFFB09A22A57004E41D5 /* Cochleagram_and_Excitation.cpp in Sources */,
 				23E5D00109A22A57004E41D5 /* Distributions_and_Transition.cpp in Sources */,
 				23E5D00309A22A57004E41D5 /* DurationTier.cpp in Sources */,
+				2346F7B518173C8F00871FC6 /* SampledXY.cpp in Sources */,
 				23E5D00509A22A57004E41D5 /* Excitation.cpp in Sources */,
 				23E5D00709A22A57004E41D5 /* Excitation_to_Formant.cpp in Sources */,
 				23E5D00909A22A57004E41D5 /* Formant.cpp in Sources */,
@@ -7673,6 +7696,7 @@
 				2317A42315230FF9004610E9 /* gsl_specfunc__bessel_zero.c in Sources */,
 				2317A42415230FF9004610E9 /* gsl_specfunc__beta.c in Sources */,
 				2317A42515230FF9004610E9 /* gsl_specfunc__beta_inc.c in Sources */,
+				23FE1860181AF9E3002FFFFD /* Photo.cpp in Sources */,
 				2317A42815230FF9004610E9 /* gsl_specfunc__clausen.c in Sources */,
 				2317A42A15230FF9004610E9 /* gsl_specfunc__coulomb.c in Sources */,
 				2317A42B15230FF9004610E9 /* gsl_specfunc__coulomb_bound.c in Sources */,
@@ -7987,8 +8011,8 @@
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = NO;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				SDKROOT = macosx;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				SDKROOT = macosx10.8;
 				VALID_ARCHS = x86_64;
 				WARNING_CFLAGS = "";
 			};
@@ -7999,7 +8023,9 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
+				COMBINE_HIDPI_IMAGES = YES;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)";
 				GCC_ALTIVEC_EXTENSIONS = NO;
 				GCC_CHAR_IS_UNSIGNED_CHAR = NO;
@@ -8046,18 +8072,17 @@
 				INFOPLIST_PREFIX_HEADER = sys/praat_version.h;
 				INFOPLIST_PREPROCESS = YES;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				OTHER_CFLAGS = (
 					"-DuseCarbon=0",
 					"-Dmacintosh",
 					"$(OTHER_CFLAGS)",
 				);
-				PREBINDING = YES;
 				PRODUCT_NAME = Praat;
 				PROVISIONING_PROFILE = "";
 				REZ_SCRIPT_TYPE = Roman;
 				REZ_SUPPRESS_REDECLARED_RESOURCE_TYPE_WARNINGS = NO;
-				SDKROOT = macosx;
+				SDKROOT = macosx10.8;
 				SEPARATE_STRIP = NO;
 				STRIP_INSTALLED_PRODUCT = NO;
 				USER_HEADER_SEARCH_PATHS = "";
