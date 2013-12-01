@@ -900,11 +900,15 @@ static void gui_cb_scroll (I, GuiScrollBarEvent event) {
         draw = true;
     }
     
+    if (my d_startWindow < my d_tmin + 1e-12) my d_startWindow = my d_tmin;
+    if (my d_endWindow > my d_tmax - 1e-12) my d_endWindow = my d_tmax;
+    
     if (draw) {
         
-        if (my d_startWindow < my d_tmin + 1e-12) my d_startWindow = my d_tmin;
-		if (my d_endWindow > my d_tmax - 1e-12) my d_endWindow = my d_tmax;
-        
+#if cocoa
+        NSView *view = 	(NSView *) my drawingArea -> d_widget;
+        [view setNeedsDisplay:YES];
+#else
         my v_updateText ();
         /*Graphics_clearWs (my d_graphics);*/
         drawNow (me);   /* Do not wait for expose event. */
@@ -917,6 +921,8 @@ static void gui_cb_scroll (I, GuiScrollBarEvent event) {
             Graphics_clearWs (theGroup [i] -> d_graphics);
             drawNow (theGroup [i]);
         }
+#endif
+        
     }
 }
 
