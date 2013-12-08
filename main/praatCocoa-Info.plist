@@ -439,5 +439,7 @@
 	<string>Copyright © 1992-PRAAT_YEAR by Paul Boersma and David Weenink</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>NSHighResolutionCapable</key>
+	<true/>
 </dict>
 </plist>
