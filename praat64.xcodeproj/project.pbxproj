@@ -1933,7 +1933,6 @@
 		E2A451AD186D22A5003A044A /* melder_alloc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2339E6FC0B2C77CB00B6B6A7 /* melder_alloc.cpp */; };
 		E2A451AE186D22A5003A044A /* melder_atof.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23EE67C509F2E61200E660F9 /* melder_atof.cpp */; };
 		E2A451AF186D22A5003A044A /* melder_audio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23E5CB6309A22902004E41D5 /* melder_audio.cpp */; };
-		E2A451B0186D22A5003A044A /* melder_audiofiles.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23E5CB6409A22902004E41D5 /* melder_audiofiles.cpp */; };
 		E2A451B1186D22A5003A044A /* melder_console.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A9342D0D110ED900D51876 /* melder_console.cpp */; };
 		E2A451B2186D22A5003A044A /* melder_debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23E5CB6509A22902004E41D5 /* melder_debug.cpp */; };
 		E2A451B3186D22A5003A044A /* melder_error.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 232F3EE613228727008CA57F /* melder_error.cpp */; };
@@ -1948,6 +1947,58 @@
 		E2A451BC186D22A5003A044A /* melder_time.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23660A620D510E4600FB6B8B /* melder_time.cpp */; };
 		E2A451BD186D22A5003A044A /* melder_token.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23EE67C909F2E63900E660F9 /* melder_token.cpp */; };
 		E2A451BE186D22A5003A044A /* melder_writetext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2336B8F40EC1B02C002F03AD /* melder_writetext.cpp */; };
+		E2A451BF186D26B5003A044A /* regularExp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23B6C16C0C0633CB0090DBBB /* regularExp.cpp */; };
+		E2A451C0186D26D5003A044A /* flac_stream_decoder.c in Sources */ = {isa = PBXBuildFile; fileRef = 2317A19515230FF9004610E9 /* flac_stream_decoder.c */; };
+		E2A451C1186D26F3003A044A /* flac_format.c in Sources */ = {isa = PBXBuildFile; fileRef = 2317A17B15230FF9004610E9 /* flac_format.c */; };
+		E2A451C2186D2714003A044A /* flac_md5.c in Sources */ = {isa = PBXBuildFile; fileRef = 2317A17D15230FF9004610E9 /* flac_md5.c */; };
+		E2A451C3186D271D003A044A /* flac_stream_encoder.c in Sources */ = {isa = PBXBuildFile; fileRef = 2317A19615230FF9004610E9 /* flac_stream_encoder.c */; };
+		E2A451C4186D2775003A044A /* flac_stream_encoder_framing.c in Sources */ = {isa = PBXBuildFile; fileRef = 2317A19715230FF9004610E9 /* flac_stream_encoder_framing.c */; };
+		E2A451C5186D27B6003A044A /* flac_bitmath.c in Sources */ = {isa = PBXBuildFile; fileRef = 2317A16B15230FF9004610E9 /* flac_bitmath.c */; };
+		E2A451C6186D27B6003A044A /* flac_bitreader.c in Sources */ = {isa = PBXBuildFile; fileRef = 2317A16C15230FF9004610E9 /* flac_bitreader.c */; };
+		E2A451C7186D27B6003A044A /* flac_bitwriter.c in Sources */ = {isa = PBXBuildFile; fileRef = 2317A16D15230FF9004610E9 /* flac_bitwriter.c */; };
+		E2A451C8186D27B6003A044A /* flac_cpu.c in Sources */ = {isa = PBXBuildFile; fileRef = 2317A16E15230FF9004610E9 /* flac_cpu.c */; };
+		E2A451C9186D27B6003A044A /* flac_crc.c in Sources */ = {isa = PBXBuildFile; fileRef = 2317A16F15230FF9004610E9 /* flac_crc.c */; };
+		E2A451CA186D27B6003A044A /* flac_fixed.c in Sources */ = {isa = PBXBuildFile; fileRef = 2317A17015230FF9004610E9 /* flac_fixed.c */; };
+		E2A451CB186D27B6003A044A /* flac_float.c in Sources */ = {isa = PBXBuildFile; fileRef = 2317A17A15230FF9004610E9 /* flac_float.c */; };
+		E2A451CC186D27B6003A044A /* flac_lpc.c in Sources */ = {isa = PBXBuildFile; fileRef = 2317A17C15230FF9004610E9 /* flac_lpc.c */; };
+		E2A451CD186D27B6003A044A /* flac_memory.c in Sources */ = {isa = PBXBuildFile; fileRef = 2317A17E15230FF9004610E9 /* flac_memory.c */; };
+		E2A451CE186D27B6003A044A /* flac_metadata_iterators.c in Sources */ = {isa = PBXBuildFile; fileRef = 2317A17F15230FF9004610E9 /* flac_metadata_iterators.c */; };
+		E2A451CF186D27B6003A044A /* flac_metadata_object.c in Sources */ = {isa = PBXBuildFile; fileRef = 2317A18015230FF9004610E9 /* flac_metadata_object.c */; };
+		E2A451D0186D27B6003A044A /* flac_window.c in Sources */ = {isa = PBXBuildFile; fileRef = 2317A19815230FF9004610E9 /* flac_window.c */; };
+		E2A451D1186D27FF003A044A /* pa_allocation.c in Sources */ = {isa = PBXBuildFile; fileRef = 2317A14A15230FF9004610E9 /* pa_allocation.c */; };
+		E2A451D2186D27FF003A044A /* pa_converters.c in Sources */ = {isa = PBXBuildFile; fileRef = 2317A14C15230FF9004610E9 /* pa_converters.c */; };
+		E2A451D3186D27FF003A044A /* pa_cpuload.c in Sources */ = {isa = PBXBuildFile; fileRef = 2317A14E15230FF9004610E9 /* pa_cpuload.c */; };
+		E2A451D4186D27FF003A044A /* pa_dither.c in Sources */ = {isa = PBXBuildFile; fileRef = 2317A15015230FF9004610E9 /* pa_dither.c */; };
+		E2A451D5186D27FF003A044A /* pa_front.c in Sources */ = {isa = PBXBuildFile; fileRef = 2317A15315230FF9004610E9 /* pa_front.c */; };
+		E2A451DA186D27FF003A044A /* pa_mac_util.c in Sources */ = {isa = PBXBuildFile; fileRef = 2317A15D15230FF9004610E9 /* pa_mac_util.c */; };
+		E2A451DB186D27FF003A044A /* pa_process.c in Sources */ = {isa = PBXBuildFile; fileRef = 2317A15F15230FF9004610E9 /* pa_process.c */; };
+		E2A451DC186D27FF003A044A /* pa_ringbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 2317A16115230FF9004610E9 /* pa_ringbuffer.c */; };
+		E2A451DD186D27FF003A044A /* pa_stream.c in Sources */ = {isa = PBXBuildFile; fileRef = 2317A16315230FF9004610E9 /* pa_stream.c */; };
+		E2A451DE186D27FF003A044A /* pa_trace.c in Sources */ = {isa = PBXBuildFile; fileRef = 2317A16515230FF9004610E9 /* pa_trace.c */; };
+		E2A451DF186D2A03003A044A /* abcio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23E5CB0909A22901004E41D5 /* abcio.cpp */; };
+		E2A451E0186D2A48003A044A /* NUM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 239954870DAD957200FB871A /* NUM.cpp */; };
+		E2A451E1186D2A48003A044A /* NUMarrays.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 239954890DAD957200FB871A /* NUMarrays.cpp */; };
+		E2A451E2186D2A48003A044A /* NUMear.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2399548A0DAD957200FB871A /* NUMear.cpp */; };
+		E2A451E3186D2A48003A044A /* NUMlinprog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 239956410DB0CB6900FB871A /* NUMlinprog.cpp */; };
+		E2A451E4186D2A48003A044A /* NUMrandom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2399548B0DAD957200FB871A /* NUMrandom.cpp */; };
+		E2A451E5186D2A48003A044A /* NUMsort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2399548C0DAD957200FB871A /* NUMsort.cpp */; };
+		E2A451E6186D2A86003A044A /* NUM2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23DB9911135F8F1F007ED21D /* NUM2.cpp */; };
+		E2A451E7186D2AB5003A044A /* Collection_extensions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23DB990B135F8F08007ED21D /* Collection_extensions.cpp */; };
+		E2A451E8186D2ADC003A044A /* Command.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23DAFE8313BBCEC500B7FBF7 /* Command.cpp */; };
+		E2A451E9186D2ADC003A044A /* DLL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D2D2D413B4DF53001B6704 /* DLL.cpp */; };
+		E2A451EB186D2ADC003A044A /* FileInMemory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2317A5E8152310E5004610E9 /* FileInMemory.cpp */; };
+		E2A451EC186D2ADC003A044A /* Graphics_extensions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 236A830F16330460007267CE /* Graphics_extensions.cpp */; };
+		E2A451EE186D2ADC003A044A /* NUMcblas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23E5C98C09A228FD004E41D5 /* NUMcblas.cpp */; };
+		E2A451EF186D2ADC003A044A /* NUMclapack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23E5C98E09A228FD004E41D5 /* NUMclapack.cpp */; };
+		E2A451F0186D2ADC003A044A /* NUMf2c.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23E5C99009A228FD004E41D5 /* NUMf2c.cpp */; };
+		E2A451F1186D2ADC003A044A /* NUMfft_d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2330E2B813C4B02700F41766 /* NUMfft_d.cpp */; };
+		E2A451F2186D2ADC003A044A /* NUMhuber.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23E18AD6138AD0AC00915DC0 /* NUMhuber.cpp */; };
+		E2A451F3186D2ADC003A044A /* NUMlapack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23E5C99409A228FD004E41D5 /* NUMlapack.cpp */; };
+		E2A451F4186D2ADC003A044A /* NUMmachar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23E5C99609A228FD004E41D5 /* NUMmachar.cpp */; };
+		E2A451F5186D2ADC003A044A /* NUMmathlib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 236A830B16330451007267CE /* NUMmathlib.cpp */; };
+		E2A451F6186D2ADC003A044A /* NUMsort2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23E18AD8138AD0B500915DC0 /* NUMsort2.cpp */; };
+		E2A451F7186D2ADC003A044A /* NUMstring.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 236A831116330480007267CE /* NUMstring.cpp */; };
+		E2A451FA186D2ADC003A044A /* Simple_extensions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2327C7561384122500CCBCFB /* Simple_extensions.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -8206,29 +8257,80 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E2A451D5186D27FF003A044A /* pa_front.c in Sources */,
+				E2A451CA186D27B6003A044A /* flac_fixed.c in Sources */,
+				E2A451DD186D27FF003A044A /* pa_stream.c in Sources */,
+				E2A451C1186D26F3003A044A /* flac_format.c in Sources */,
+				E2A451E1186D2A48003A044A /* NUMarrays.cpp in Sources */,
+				E2A451C5186D27B6003A044A /* flac_bitmath.c in Sources */,
+				E2A451CF186D27B6003A044A /* flac_metadata_object.c in Sources */,
 				E2A451B8186D22A5003A044A /* melder_readtext.cpp in Sources */,
 				E2A451AD186D22A5003A044A /* melder_alloc.cpp in Sources */,
 				E2A451AC186D22A5003A044A /* melder.cpp in Sources */,
+				E2A451DC186D27FF003A044A /* pa_ringbuffer.c in Sources */,
+				E2A451CE186D27B6003A044A /* flac_metadata_iterators.c in Sources */,
+				E2A451CC186D27B6003A044A /* flac_lpc.c in Sources */,
+				E2A451DA186D27FF003A044A /* pa_mac_util.c in Sources */,
+				E2A451D3186D27FF003A044A /* pa_cpuload.c in Sources */,
+				E2A451DB186D27FF003A044A /* pa_process.c in Sources */,
 				E2A451B5186D22A5003A044A /* melder_info.cpp in Sources */,
+				E2A451C4186D2775003A044A /* flac_stream_encoder_framing.c in Sources */,
+				E2A451F3186D2ADC003A044A /* NUMlapack.cpp in Sources */,
+				E2A451C2186D2714003A044A /* flac_md5.c in Sources */,
+				E2A451E8186D2ADC003A044A /* Command.cpp in Sources */,
 				E2A451BE186D22A5003A044A /* melder_writetext.cpp in Sources */,
 				E2A451BB186D22A5003A044A /* melder_textencoding.cpp in Sources */,
+				E2A451EF186D2ADC003A044A /* NUMclapack.cpp in Sources */,
+				E2A451BF186D26B5003A044A /* regularExp.cpp in Sources */,
+				E2A451D4186D27FF003A044A /* pa_dither.c in Sources */,
+				E2A451F4186D2ADC003A044A /* NUMmachar.cpp in Sources */,
+				E2A451C6186D27B6003A044A /* flac_bitreader.c in Sources */,
+				E2A451F0186D2ADC003A044A /* NUMf2c.cpp in Sources */,
 				E2A451BC186D22A5003A044A /* melder_time.cpp in Sources */,
 				E21D396C186D224C0022D531 /* PTAppDelegate.m in Sources */,
+				E2A451E7186D2AB5003A044A /* Collection_extensions.cpp in Sources */,
+				E2A451F5186D2ADC003A044A /* NUMmathlib.cpp in Sources */,
+				E2A451CD186D27B6003A044A /* flac_memory.c in Sources */,
 				E2A451B4186D22A5003A044A /* melder_files.cpp in Sources */,
+				E2A451D1186D27FF003A044A /* pa_allocation.c in Sources */,
 				E2A451B3186D22A5003A044A /* melder_error.cpp in Sources */,
+				E2A451D0186D27B6003A044A /* flac_window.c in Sources */,
+				E2A451F2186D2ADC003A044A /* NUMhuber.cpp in Sources */,
 				E2A451AF186D22A5003A044A /* melder_audio.cpp in Sources */,
 				E21D3975186D224C0022D531 /* PTFirstViewController.m in Sources */,
+				E2A451C9186D27B6003A044A /* flac_crc.c in Sources */,
+				E2A451E3186D2A48003A044A /* NUMlinprog.cpp in Sources */,
+				E2A451DE186D27FF003A044A /* pa_trace.c in Sources */,
+				E2A451C7186D27B6003A044A /* flac_bitwriter.c in Sources */,
 				E2A451B9186D22A5003A044A /* melder_strings.cpp in Sources */,
+				E2A451EC186D2ADC003A044A /* Graphics_extensions.cpp in Sources */,
 				E2A451BD186D22A5003A044A /* melder_token.cpp in Sources */,
+				E2A451E4186D2A48003A044A /* NUMrandom.cpp in Sources */,
+				E2A451C0186D26D5003A044A /* flac_stream_decoder.c in Sources */,
+				E2A451CB186D27B6003A044A /* flac_float.c in Sources */,
 				E21D3978186D224C0022D531 /* PTSecondViewController.m in Sources */,
+				E2A451E5186D2A48003A044A /* NUMsort.cpp in Sources */,
+				E2A451EE186D2ADC003A044A /* NUMcblas.cpp in Sources */,
+				E2A451E0186D2A48003A044A /* NUM.cpp in Sources */,
 				E2A451AE186D22A5003A044A /* melder_atof.cpp in Sources */,
+				E2A451F1186D2ADC003A044A /* NUMfft_d.cpp in Sources */,
 				E2A451B6186D22A5003A044A /* melder_ftoa.cpp in Sources */,
 				E2A451B7186D22A5003A044A /* melder_quantity.cpp in Sources */,
-				E2A451B0186D22A5003A044A /* melder_audiofiles.cpp in Sources */,
+				E2A451E2186D2A48003A044A /* NUMear.cpp in Sources */,
 				E2A451B1186D22A5003A044A /* melder_console.cpp in Sources */,
 				E2A451BA186D22A5003A044A /* melder_sysenv.cpp in Sources */,
+				E2A451D2186D27FF003A044A /* pa_converters.c in Sources */,
 				E2A451B2186D22A5003A044A /* melder_debug.cpp in Sources */,
+				E2A451EB186D2ADC003A044A /* FileInMemory.cpp in Sources */,
+				E2A451FA186D2ADC003A044A /* Simple_extensions.cpp in Sources */,
+				E2A451F7186D2ADC003A044A /* NUMstring.cpp in Sources */,
+				E2A451E9186D2ADC003A044A /* DLL.cpp in Sources */,
+				E2A451DF186D2A03003A044A /* abcio.cpp in Sources */,
+				E2A451C3186D271D003A044A /* flac_stream_encoder.c in Sources */,
+				E2A451E6186D2A86003A044A /* NUM2.cpp in Sources */,
 				E21D3968186D224C0022D531 /* main.m in Sources */,
+				E2A451C8186D27B6003A044A /* flac_cpu.c in Sources */,
+				E2A451F6186D2ADC003A044A /* NUMsort2.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

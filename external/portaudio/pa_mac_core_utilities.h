@@ -156,7 +156,7 @@ typedef struct {
 } MutexAndBool ;
 
 OSStatus propertyProc(
-    AudioDeviceID inDevice, 
+    AudioDeviceID inDevice,
     UInt32 inChannel, 
     Boolean isInput, 
     AudioDevicePropertyID inPropertyID, 
