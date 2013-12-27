@@ -825,8 +825,8 @@ static void charDraw (I, int xDC, int yDC, _Graphics_widechar *lc,
 				my d_macGraphicsContext = (CGContextRef) [[NSGraphicsContext currentContext] graphicsPort];
 			}
             CGContextSaveGState (my d_macGraphicsContext);
-            CGContextTranslateCTM (my d_macGraphicsContext, xDC, yDC + descent);
             if (my yIsZeroAtTheTop) CGContextScaleCTM (my d_macGraphicsContext, 1.0, -1.0);
+                CGContextTranslateCTM (my d_macGraphicsContext, xDC, - yDC - descent);
             CGContextRotateCTM (my d_macGraphicsContext, my textRotation * NUMpi / 180.0);
 
 			//CGContextRef context = (CGContextRef) [[NSGraphicsContext currentContext] graphicsPort];
@@ -841,6 +841,12 @@ static void charDraw (I, int xDC, int yDC, _Graphics_widechar *lc,
             } else {
                 CTFrameDraw (frame, my d_macGraphicsContext);
             }
+    
+        // Debug rectangles
+#if 0
+        CGContextAddPath(my d_macGraphicsContext,  path);
+        CGContextStrokePath(my d_macGraphicsContext);
+#endif
             CGContextRestoreGState (my d_macGraphicsContext);
             //CGContextRestoreGState (my d_macGraphicsContext);
 
