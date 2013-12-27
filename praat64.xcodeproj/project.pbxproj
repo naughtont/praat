@@ -1913,7 +1913,52 @@
 		23FE2D480E4F3D44003EEE43 /* Pattern_to_Categories_cluster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23FE2D430E4F3D44003EEE43 /* Pattern_to_Categories_cluster.cpp */; };
 		23FE2D490E4F3D44003EEE43 /* Pattern_to_Categories_cluster.h in Headers */ = {isa = PBXBuildFile; fileRef = 23FE2D440E4F3D44003EEE43 /* Pattern_to_Categories_cluster.h */; };
 		23FE2D4A0E4F3D44003EEE43 /* praat_contrib_Ola_KNN.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23FE2D450E4F3D44003EEE43 /* praat_contrib_Ola_KNN.cpp */; };
+		E21D395C186D224C0022D531 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E21D395B186D224C0022D531 /* Foundation.framework */; };
+		E21D395E186D224C0022D531 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E21D395D186D224C0022D531 /* CoreGraphics.framework */; };
+		E21D3960186D224C0022D531 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E21D395F186D224C0022D531 /* UIKit.framework */; };
+		E21D3966186D224C0022D531 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E21D3964186D224C0022D531 /* InfoPlist.strings */; };
+		E21D3968186D224C0022D531 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E21D3967186D224C0022D531 /* main.m */; };
+		E21D396C186D224C0022D531 /* PTAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E21D396B186D224C0022D531 /* PTAppDelegate.m */; };
+		E21D396F186D224C0022D531 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E21D396D186D224C0022D531 /* Main_iPhone.storyboard */; };
+		E21D3972186D224C0022D531 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E21D3970186D224C0022D531 /* Main_iPad.storyboard */; };
+		E21D3975186D224C0022D531 /* PTFirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E21D3974186D224C0022D531 /* PTFirstViewController.m */; };
+		E21D3978186D224C0022D531 /* PTSecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E21D3977186D224C0022D531 /* PTSecondViewController.m */; };
+		E21D397A186D224C0022D531 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E21D3979186D224C0022D531 /* Images.xcassets */; };
+		E21D3981186D224C0022D531 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E21D3980186D224C0022D531 /* XCTest.framework */; };
+		E21D3982186D224C0022D531 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E21D395B186D224C0022D531 /* Foundation.framework */; };
+		E21D3983186D224C0022D531 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E21D395F186D224C0022D531 /* UIKit.framework */; };
+		E21D398B186D224D0022D531 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E21D3989186D224D0022D531 /* InfoPlist.strings */; };
+		E21D398D186D224D0022D531 /* PraatTouchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E21D398C186D224D0022D531 /* PraatTouchTests.m */; };
+		E2A451AC186D22A5003A044A /* melder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23E5CB6109A22902004E41D5 /* melder.cpp */; };
+		E2A451AD186D22A5003A044A /* melder_alloc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2339E6FC0B2C77CB00B6B6A7 /* melder_alloc.cpp */; };
+		E2A451AE186D22A5003A044A /* melder_atof.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23EE67C509F2E61200E660F9 /* melder_atof.cpp */; };
+		E2A451AF186D22A5003A044A /* melder_audio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23E5CB6309A22902004E41D5 /* melder_audio.cpp */; };
+		E2A451B0186D22A5003A044A /* melder_audiofiles.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23E5CB6409A22902004E41D5 /* melder_audiofiles.cpp */; };
+		E2A451B1186D22A5003A044A /* melder_console.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A9342D0D110ED900D51876 /* melder_console.cpp */; };
+		E2A451B2186D22A5003A044A /* melder_debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23E5CB6509A22902004E41D5 /* melder_debug.cpp */; };
+		E2A451B3186D22A5003A044A /* melder_error.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 232F3EE613228727008CA57F /* melder_error.cpp */; };
+		E2A451B4186D22A5003A044A /* melder_files.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23E5CB6609A22902004E41D5 /* melder_files.cpp */; };
+		E2A451B5186D22A5003A044A /* melder_info.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2339E4AD0B29EBFC00B6B6A7 /* melder_info.cpp */; };
+		E2A451B6186D22A5003A044A /* melder_ftoa.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23EE67C709F2E62700E660F9 /* melder_ftoa.cpp */; };
+		E2A451B7186D22A5003A044A /* melder_quantity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2343BF7F0BAC1526003D66E8 /* melder_quantity.cpp */; };
+		E2A451B8186D22A5003A044A /* melder_readtext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 237BD3C50EC0E4A000823A87 /* melder_readtext.cpp */; };
+		E2A451B9186D22A5003A044A /* melder_strings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2339E2E00B2618D000B6B6A7 /* melder_strings.cpp */; };
+		E2A451BA186D22A5003A044A /* melder_sysenv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23E5CB6709A22902004E41D5 /* melder_sysenv.cpp */; };
+		E2A451BB186D22A5003A044A /* melder_textencoding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2336B8F20EC1B01F002F03AD /* melder_textencoding.cpp */; };
+		E2A451BC186D22A5003A044A /* melder_time.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23660A620D510E4600FB6B8B /* melder_time.cpp */; };
+		E2A451BD186D22A5003A044A /* melder_token.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23EE67C909F2E63900E660F9 /* melder_token.cpp */; };
+		E2A451BE186D22A5003A044A /* melder_writetext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2336B8F40EC1B02C002F03AD /* melder_writetext.cpp */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E21D3984186D224C0022D531 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 23E5C91309A228F8004E41D5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E21D3959186D224C0022D531;
+			remoteInfo = PraatTouch;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		2300228A0B33473600A7FE19 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = /System/Library/Frameworks/AudioToolbox.framework; sourceTree = "<absolute>"; };
@@ -3824,6 +3869,28 @@
 		23FE2D430E4F3D44003EEE43 /* Pattern_to_Categories_cluster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Pattern_to_Categories_cluster.cpp; path = contrib/ola/Pattern_to_Categories_cluster.cpp; sourceTree = "<group>"; };
 		23FE2D440E4F3D44003EEE43 /* Pattern_to_Categories_cluster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Pattern_to_Categories_cluster.h; path = contrib/ola/Pattern_to_Categories_cluster.h; sourceTree = "<group>"; };
 		23FE2D450E4F3D44003EEE43 /* praat_contrib_Ola_KNN.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = praat_contrib_Ola_KNN.cpp; path = contrib/ola/praat_contrib_Ola_KNN.cpp; sourceTree = "<group>"; };
+		E21D395A186D224C0022D531 /* PraatTouch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PraatTouch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E21D395B186D224C0022D531 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		E21D395D186D224C0022D531 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		E21D395F186D224C0022D531 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		E21D3963186D224C0022D531 /* PraatTouch-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PraatTouch-Info.plist"; sourceTree = "<group>"; };
+		E21D3965186D224C0022D531 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		E21D3967186D224C0022D531 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		E21D3969186D224C0022D531 /* PraatTouch-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PraatTouch-Prefix.pch"; sourceTree = "<group>"; };
+		E21D396A186D224C0022D531 /* PTAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PTAppDelegate.h; sourceTree = "<group>"; };
+		E21D396B186D224C0022D531 /* PTAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PTAppDelegate.m; sourceTree = "<group>"; };
+		E21D396E186D224C0022D531 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
+		E21D3971186D224C0022D531 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
+		E21D3973186D224C0022D531 /* PTFirstViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PTFirstViewController.h; sourceTree = "<group>"; };
+		E21D3974186D224C0022D531 /* PTFirstViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PTFirstViewController.m; sourceTree = "<group>"; };
+		E21D3976186D224C0022D531 /* PTSecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PTSecondViewController.h; sourceTree = "<group>"; };
+		E21D3977186D224C0022D531 /* PTSecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PTSecondViewController.m; sourceTree = "<group>"; };
+		E21D3979186D224C0022D531 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		E21D397F186D224C0022D531 /* PraatTouchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PraatTouchTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E21D3980186D224C0022D531 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		E21D3988186D224D0022D531 /* PraatTouchTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PraatTouchTests-Info.plist"; sourceTree = "<group>"; };
+		E21D398A186D224D0022D531 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		E21D398C186D224D0022D531 /* PraatTouchTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PraatTouchTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3835,6 +3902,26 @@
 				2300228B0B33473600A7FE19 /* AudioToolbox.framework in Frameworks */,
 				2300229D0B33474000A7FE19 /* AudioUnit.framework in Frameworks */,
 				230022B10B33476C00A7FE19 /* CoreAudio.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E21D3957186D224C0022D531 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E21D395E186D224C0022D531 /* CoreGraphics.framework in Frameworks */,
+				E21D3960186D224C0022D531 /* UIKit.framework in Frameworks */,
+				E21D395C186D224C0022D531 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E21D397C186D224C0022D531 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E21D3981186D224C0022D531 /* XCTest.framework in Frameworks */,
+				E21D3983186D224C0022D531 /* UIKit.framework in Frameworks */,
+				E21D3982186D224C0022D531 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5035,6 +5122,8 @@
 				23E5CB6809A22902004E41D5 /* kar */,
 				239954830DAD954400FB871A /* num */,
 				23179D7F15230FF6004610E9 /* external */,
+				E21D3961186D224C0022D531 /* PraatTouch */,
+				E21D3986186D224C0022D531 /* PraatTouchTests */,
 				23E5CF3409A22A55004E41D5 /* Frameworks */,
 				23E5C92109A228FA004E41D5 /* Products */,
 			);
@@ -5044,6 +5133,8 @@
 			isa = PBXGroup;
 			children = (
 				23E5C92009A228FA004E41D5 /* Praat.app */,
+				E21D395A186D224C0022D531 /* PraatTouch.app */,
+				E21D397F186D224C0022D531 /* PraatTouchTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -5975,6 +6066,10 @@
 				2300228A0B33473600A7FE19 /* AudioToolbox.framework */,
 				2300229C0B33474000A7FE19 /* AudioUnit.framework */,
 				230022B00B33476C00A7FE19 /* CoreAudio.framework */,
+				E21D395B186D224C0022D531 /* Foundation.framework */,
+				E21D395D186D224C0022D531 /* CoreGraphics.framework */,
+				E21D395F186D224C0022D531 /* UIKit.framework */,
+				E21D3980186D224C0022D531 /* XCTest.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -6007,6 +6102,52 @@
 				23FE2D430E4F3D44003EEE43 /* Pattern_to_Categories_cluster.cpp */,
 			);
 			name = ola;
+			sourceTree = "<group>";
+		};
+		E21D3961186D224C0022D531 /* PraatTouch */ = {
+			isa = PBXGroup;
+			children = (
+				E21D396A186D224C0022D531 /* PTAppDelegate.h */,
+				E21D396B186D224C0022D531 /* PTAppDelegate.m */,
+				E21D396D186D224C0022D531 /* Main_iPhone.storyboard */,
+				E21D3970186D224C0022D531 /* Main_iPad.storyboard */,
+				E21D3973186D224C0022D531 /* PTFirstViewController.h */,
+				E21D3974186D224C0022D531 /* PTFirstViewController.m */,
+				E21D3976186D224C0022D531 /* PTSecondViewController.h */,
+				E21D3977186D224C0022D531 /* PTSecondViewController.m */,
+				E21D3979186D224C0022D531 /* Images.xcassets */,
+				E21D3962186D224C0022D531 /* Supporting Files */,
+			);
+			path = PraatTouch;
+			sourceTree = "<group>";
+		};
+		E21D3962186D224C0022D531 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				E21D3963186D224C0022D531 /* PraatTouch-Info.plist */,
+				E21D3964186D224C0022D531 /* InfoPlist.strings */,
+				E21D3967186D224C0022D531 /* main.m */,
+				E21D3969186D224C0022D531 /* PraatTouch-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E21D3986186D224C0022D531 /* PraatTouchTests */ = {
+			isa = PBXGroup;
+			children = (
+				E21D398C186D224D0022D531 /* PraatTouchTests.m */,
+				E21D3987186D224D0022D531 /* Supporting Files */,
+			);
+			path = PraatTouchTests;
+			sourceTree = "<group>";
+		};
+		E21D3987186D224D0022D531 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				E21D3988186D224D0022D531 /* PraatTouchTests-Info.plist */,
+				E21D3989186D224D0022D531 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -6764,6 +6905,41 @@
 			productReference = 23E5C92009A228FA004E41D5 /* Praat.app */;
 			productType = "com.apple.product-type.application";
 		};
+		E21D3959186D224C0022D531 /* PraatTouch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E21D3990186D224D0022D531 /* Build configuration list for PBXNativeTarget "PraatTouch" */;
+			buildPhases = (
+				E21D3956186D224C0022D531 /* Sources */,
+				E21D3957186D224C0022D531 /* Frameworks */,
+				E21D3958186D224C0022D531 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PraatTouch;
+			productName = PraatTouch;
+			productReference = E21D395A186D224C0022D531 /* PraatTouch.app */;
+			productType = "com.apple.product-type.application";
+		};
+		E21D397E186D224C0022D531 /* PraatTouchTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E21D3991186D224D0022D531 /* Build configuration list for PBXNativeTarget "PraatTouchTests" */;
+			buildPhases = (
+				E21D397B186D224C0022D531 /* Sources */,
+				E21D397C186D224C0022D531 /* Frameworks */,
+				E21D397D186D224C0022D531 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E21D3985186D224C0022D531 /* PBXTargetDependency */,
+			);
+			name = PraatTouchTests;
+			productName = PraatTouchTests;
+			productReference = E21D397F186D224C0022D531 /* PraatTouchTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -6775,6 +6951,9 @@
 					23E5C91D09A228F9004E41D5 = {
 						DevelopmentTeam = 22URMERCLE;
 					};
+					E21D397E186D224C0022D531 = {
+						TestTargetID = 23E5C91D09A228F9004E41D5;
+					};
 				};
 			};
 			buildConfigurationList = 23E5C91409A228F8004E41D5 /* Build configuration list for PBXProject "praat64" */;
@@ -6783,6 +6962,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 23E5C91109A228F6004E41D5;
 			productRefGroup = 23E5C92109A228FA004E41D5 /* Products */;
@@ -6790,6 +6970,8 @@
 			projectRoot = "";
 			targets = (
 				23E5C91D09A228F9004E41D5 /* praat64_mac */,
+				E21D3959186D224C0022D531 /* PraatTouch */,
+				E21D397E186D224C0022D531 /* PraatTouchTests */,
 			);
 		};
 /* End PBXProject section */
@@ -6800,6 +6982,25 @@
 			buildActionMask = 2147483647;
 			files = (
 				23E8D02116E2E0550041AE87 /* Praat.icns in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E21D3958186D224C0022D531 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E21D3972186D224C0022D531 /* Main_iPad.storyboard in Resources */,
+				E21D397A186D224C0022D531 /* Images.xcassets in Resources */,
+				E21D396F186D224C0022D531 /* Main_iPhone.storyboard in Resources */,
+				E21D3966186D224C0022D531 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E21D397D186D224C0022D531 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E21D398B186D224D0022D531 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8001,7 +8202,88 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E21D3956186D224C0022D531 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E2A451B8186D22A5003A044A /* melder_readtext.cpp in Sources */,
+				E2A451AD186D22A5003A044A /* melder_alloc.cpp in Sources */,
+				E2A451AC186D22A5003A044A /* melder.cpp in Sources */,
+				E2A451B5186D22A5003A044A /* melder_info.cpp in Sources */,
+				E2A451BE186D22A5003A044A /* melder_writetext.cpp in Sources */,
+				E2A451BB186D22A5003A044A /* melder_textencoding.cpp in Sources */,
+				E2A451BC186D22A5003A044A /* melder_time.cpp in Sources */,
+				E21D396C186D224C0022D531 /* PTAppDelegate.m in Sources */,
+				E2A451B4186D22A5003A044A /* melder_files.cpp in Sources */,
+				E2A451B3186D22A5003A044A /* melder_error.cpp in Sources */,
+				E2A451AF186D22A5003A044A /* melder_audio.cpp in Sources */,
+				E21D3975186D224C0022D531 /* PTFirstViewController.m in Sources */,
+				E2A451B9186D22A5003A044A /* melder_strings.cpp in Sources */,
+				E2A451BD186D22A5003A044A /* melder_token.cpp in Sources */,
+				E21D3978186D224C0022D531 /* PTSecondViewController.m in Sources */,
+				E2A451AE186D22A5003A044A /* melder_atof.cpp in Sources */,
+				E2A451B6186D22A5003A044A /* melder_ftoa.cpp in Sources */,
+				E2A451B7186D22A5003A044A /* melder_quantity.cpp in Sources */,
+				E2A451B0186D22A5003A044A /* melder_audiofiles.cpp in Sources */,
+				E2A451B1186D22A5003A044A /* melder_console.cpp in Sources */,
+				E2A451BA186D22A5003A044A /* melder_sysenv.cpp in Sources */,
+				E2A451B2186D22A5003A044A /* melder_debug.cpp in Sources */,
+				E21D3968186D224C0022D531 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E21D397B186D224C0022D531 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E21D398D186D224D0022D531 /* PraatTouchTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E21D3985186D224C0022D531 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E21D3959186D224C0022D531 /* PraatTouch */;
+			targetProxy = E21D3984186D224C0022D531 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		E21D3964186D224C0022D531 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E21D3965186D224C0022D531 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		E21D396D186D224C0022D531 /* Main_iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E21D396E186D224C0022D531 /* Base */,
+			);
+			name = Main_iPhone.storyboard;
+			sourceTree = "<group>";
+		};
+		E21D3970186D224C0022D531 /* Main_iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E21D3971186D224C0022D531 /* Base */,
+			);
+			name = Main_iPad.storyboard;
+			sourceTree = "<group>";
+		};
+		E21D3989186D224D0022D531 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E21D398A186D224D0022D531 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		23E5C91509A228F8004E41D5 /* Configuration64 */ = {
@@ -8094,6 +8376,112 @@
 			};
 			name = Configuration64;
 		};
+		E21D398E186D224D0022D531 /* Configuration64 */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "PraatTouch/PraatTouch-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "PraatTouch/PraatTouch-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = (
+					"-DuseCarbon=0",
+					"-Dmacintosh",
+					"-DcocoaTouch",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Configuration64;
+		};
+		E21D398F186D224D0022D531 /* Configuration64 */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Praat.app/Contents/MacOS/Praat";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "PraatTouch/PraatTouch-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "PraatTouchTests/PraatTouchTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Configuration64;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -8109,6 +8497,22 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				23E5C92E09A228FB004E41D5 /* Configuration64 */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Configuration64;
+		};
+		E21D3990186D224D0022D531 /* Build configuration list for PBXNativeTarget "PraatTouch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E21D398E186D224D0022D531 /* Configuration64 */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Configuration64;
+		};
+		E21D3991186D224D0022D531 /* Build configuration list for PBXNativeTarget "PraatTouchTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E21D398F186D224D0022D531 /* Configuration64 */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Configuration64;

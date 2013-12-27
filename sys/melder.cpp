@@ -187,7 +187,9 @@ static bool waitWhileProgress (double progress, const wchar_t *message, GuiDialo
 				}
 			}
 			do { XtNextEvent ((XEvent *) & event); XtDispatchEvent ((XEvent *) & event); } while (event.what);
-		#else
+		#elif defined (cocoaTouch)
+    
+        #else
 			NSEvent *nsEvent = [NSApp
 				nextEventMatchingMask: NSAnyEventMask
 				untilDate: [NSDate distantPast]
@@ -755,6 +757,8 @@ void Melder_beep (void) {
 	#ifdef macintosh
 		#if useCarbon
 			SysBeep (0);
+        #elif defined (cocoaTouch)
+
 		#else
             AudioServicesPlayAlertSound (kSystemSoundID_UserPreferredAlert);
 		#endif
@@ -786,7 +790,12 @@ int Melder_assert_ (const char *condition, const char *fileName, int lineNumber)
 
 #ifndef CONSOLE_APPLICATION
 
+
 #if defined (macintosh)
+
+#if defined (cocoaTouch) 
+
+#else
 static void mac_message (NSAlertStyle macAlertType, const wchar_t *messageW) {
 	static unichar messageU [4000];
 	int messageLength = wcslen (messageW);
@@ -801,7 +810,7 @@ static void mac_message (NSAlertStyle macAlertType, const wchar_t *messageW) {
 			messageU [j ++] = 0xDC00 | (kar & 0x3FF);
 		}
 	}
-
+    
 	/*
 	 * Split up the message between header (will appear in bold) and rest.
 	 * The split is done at the first line break, except if the first line ends in a colon,
@@ -820,49 +829,52 @@ static void mac_message (NSAlertStyle macAlertType, const wchar_t *messageW) {
 			}
 		}
 	}
-	#if useCarbon
-        DialogRef dialog;
-		CFStringRef messageCF = CFStringCreateWithCharacters (NULL, messageU, j);
-		CreateStandardAlert (macAlertType, messageCF, NULL, NULL, & dialog);
-		CFRelease (messageCF);
-		RunStandardAlert (dialog, NULL, NULL);
-	#elif fhgfdghdggfkdsgfXXX
-		NSString *header = NULL, *rest = NULL;
-		header = [[NSString alloc] initWithCharacters: messageU   length: lineBreak - messageU];   // note: init can change the object pointer!
-		if (lineBreak - messageU != j) {
-			rest = [[NSString alloc] initWithCharacters: lineBreak + 1   length: j - 1 - (lineBreak - messageU)];
-		}
-		NSRunAlertPanel (header, rest, NULL, NULL, NULL);
-		[header release];
-		if (rest) [rest release];
-	#else
-		/*
-		 * Create an alert dialog with an icon that is appropriate for the level.
-		 */
-		NSAlert *alert = [[NSAlert alloc] init];
-		[alert setAlertStyle: macAlertType];
-		/*
-		 * Add the header in bold.
-		 */
-		NSString *header = [[NSString alloc] initWithCharacters: messageU   length: lineBreak - messageU];   // note: init can change the object pointer!
-		[alert setMessageText: header];
-		[header release];
-		/*
-		 * Add the rest of the message in small type.
-		 */
-		if (lineBreak - messageU != j) {
-			NSString *rest = [[NSString alloc] initWithCharacters: lineBreak + 1   length: j - 1 - (lineBreak - messageU)];
-			[alert setInformativeText: rest];
-			[rest release];
-		}
-		/*
-		 * Display the alert dialog and synchronously wait for the user to click OK.
-		 */
-		[alert runModal];
-		[alert release];
-	#endif
+#if useCarbon
+    DialogRef dialog;
+    CFStringRef messageCF = CFStringCreateWithCharacters (NULL, messageU, j);
+    CreateStandardAlert (macAlertType, messageCF, NULL, NULL, & dialog);
+    CFRelease (messageCF);
+    RunStandardAlert (dialog, NULL, NULL);
+#elif fhgfdghdggfkdsgfXXX
+    NSString *header = NULL, *rest = NULL;
+    header = [[NSString alloc] initWithCharacters: messageU   length: lineBreak - messageU];   // note: init can change the object pointer!
+    if (lineBreak - messageU != j) {
+        rest = [[NSString alloc] initWithCharacters: lineBreak + 1   length: j - 1 - (lineBreak - messageU)];
+    }
+    NSRunAlertPanel (header, rest, NULL, NULL, NULL);
+    [header release];
+    if (rest) [rest release];
+#else
+    /*
+     * Create an alert dialog with an icon that is appropriate for the level.
+     */
+    NSAlert *alert = [[NSAlert alloc] init];
+    [alert setAlertStyle: macAlertType];
+    /*
+     * Add the header in bold.
+     */
+    NSString *header = [[NSString alloc] initWithCharacters: messageU   length: lineBreak - messageU];   // note: init can change the object pointer!
+    [alert setMessageText: header];
+    [header release];
+    /*
+     * Add the rest of the message in small type.
+     */
+    if (lineBreak - messageU != j) {
+        NSString *rest = [[NSString alloc] initWithCharacters: lineBreak + 1   length: j - 1 - (lineBreak - messageU)];
+        [alert setInformativeText: rest];
+        [rest release];
+    }
+    /*
+     * Display the alert dialog and synchronously wait for the user to click OK.
+     */
+    [alert runModal];
+    [alert release];
+#endif
 }
 #endif
+
+#endif
+
 
 #define theMessageFund_SIZE  100000
 static char * theMessageFund = NULL;
@@ -875,7 +887,10 @@ static void gui_fatal (const wchar_t *message) {
 		gtk_dialog_run (GTK_DIALOG (dialog));
 		gtk_widget_destroy (GTK_WIDGET (dialog));
 	#elif defined (macintosh)
-		#if useCarbon
+        #if defined (cocoaTouch)
+    
+    
+		#elif useCarbon
 			mac_message (NSCriticalAlertStyle, message);
 			SysError (11);
 		#else
@@ -901,7 +916,8 @@ static void gui_error (const wchar_t *message) {
 		trace ("destroy dialog");
 		gtk_widget_destroy (GTK_WIDGET (dialog));
 	#elif defined (macintosh)
-		#if useCarbon
+        #if defined cocoaTouch
+		#elif useCarbon
 			mac_message (NSWarningAlertStyle, message);
 			XmUpdateDisplay (0);
 		#else
@@ -919,7 +935,8 @@ static void gui_error (const wchar_t *message) {
 				gtk_dialog_run (GTK_DIALOG (dialog));
 				gtk_widget_destroy (GTK_WIDGET (dialog));
 			#elif defined (macintosh)
-				#if useCarbon
+                #if defined cocoaTouch
+				#elif useCarbon
 					mac_message (NSCriticalAlertStyle, L"Praat is very low on memory.\nSave your work and quit Praat.\nIf you don't do that, Praat may crash.");
 					XmUpdateDisplay (0);
 				#else
@@ -939,7 +956,9 @@ static void gui_warning (const wchar_t *message) {
 		gtk_dialog_run (GTK_DIALOG (dialog));
 		gtk_widget_destroy (GTK_WIDGET (dialog));
 	#elif defined (macintosh)
-		#if useCarbon
+        #if defined cocoaTouch
+    
+		#elif useCarbon
 			mac_message (NSInformationalAlertStyle, message);
 			XmUpdateDisplay (0);
 		#else
