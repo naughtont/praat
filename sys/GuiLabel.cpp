@@ -45,7 +45,6 @@ Thing_implement (GuiLabel, GuiControl, 0);
 		GuiLabel me = d_userData;
 		forget (me);
 		trace ("deleting a label");
-		[super dealloc];
 	}
 	- (GuiThing) userData {
 		return d_userData;
@@ -90,19 +89,19 @@ GuiLabel GuiLabel_create (GuiForm parent, int left, int right, int top, int bott
 		trace ("set user data");
 		[label setUserData: me];
 		trace ("set bezel style");
-		[label setBezelStyle: NSRoundedBezelStyle];
-		trace ("set bordered");
-		[label setBordered: NO];
-		trace ("set selectable");
-		[label setSelectable: NO];
-		trace ("title");
-		[label setTitleWithMnemonic: (NSString *) Melder_peekWcsToCfstring (labelText)];
-        [label setAlignment:( flags & GuiLabel_RIGHT ? NSRightTextAlignment : flags & GuiLabel_CENTRE ? NSCenterTextAlignment : NSLeftTextAlignment )];
-		static NSFont *theLabelFont;
-		if (! theLabelFont) {
-			theLabelFont = [NSFont systemFontOfSize: 13.0];
-		}
-		[label setFont: theLabelFont];
+//		[label setBezelStyle: NSRoundedBezelStyle];
+//		trace ("set bordered");
+//		[label setBordered: NO];
+//		trace ("set selectable");
+//		[label setSelectable: NO];
+//		trace ("title");
+//		[label setTitleWithMnemonic: (NSString *) Melder_peekWcsToCfstring (labelText)];
+//        [label setAlignment:( flags & GuiLabel_RIGHT ? NSRightTextAlignment : flags & GuiLabel_CENTRE ? NSCenterTextAlignment : NSLeftTextAlignment )];
+//		static NSFont *theLabelFont;
+//		if (! theLabelFont) {
+//			theLabelFont = [NSFont systemFontOfSize: 13.0];
+//		}
+//		[label setFont: theLabelFont];
 	#elif win
 		my d_widget = _Gui_initializeWidget (xmLabelWidgetClass, parent -> d_widget, labelText);
 		_GuiObject_setUserData (my d_widget, me);
@@ -145,7 +144,7 @@ void structGuiLabel :: f_setString (const wchar_t *text) {
 	#if gtk
 		gtk_label_set_text (GTK_LABEL (d_widget), Melder_peekWcsToUtf8 (text));
 	#elif cocoa
-		[(NSTextField *) d_widget setTitleWithMnemonic: (NSString *) Melder_peekWcsToCfstring (text)];
+//		[(UITextField *) d_widget setTitleWithMnemonic: (__bridge NSString *) Melder_peekWcsToCfstring (text)];
 	#elif motif
 		Melder_free (d_widget -> name);
 		d_widget -> name = Melder_wcsdup_f (text);

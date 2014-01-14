@@ -71,45 +71,43 @@ Thing_implement (GuiList, GuiControl, 0);
 	 * Override NSObject methods.
 	 */
 	- (void) dealloc {
-		[_contents release];
 		GuiThing me = d_userData;
 		forget (me);
 		Melder_casual ("deleting a list");
-		[super dealloc];
 	}
 
 	/*
 	 * Override NSView methods.
 	 */
-	- (id) initWithFrame: (NSRect) frameRect {
+	- (id) initWithFrame: (CGRect) frameRect {
 		self = [super initWithFrame: frameRect];
 		if (self) {
-			_tableView = [[NSTableView alloc] initWithFrame: frameRect];
-			Melder_assert ([_tableView retainCount] == 1);   // this asserts that ARC is off (if ARC were on, the retain count would be 2, because tableView is a retain property)
-			NSTableColumn *tc = [[NSTableColumn alloc] initWithIdentifier: @"list"];
-			tc.width = frameRect. size. width;
-			[tc setEditable: NO];
-			[_tableView addTableColumn: tc];
+//			_tableView = [[NSTableView alloc] initWithFrame: frameRect];
+//			Melder_assert ([_tableView retainCount] == 1);   // this asserts that ARC is off (if ARC were on, the retain count would be 2, because tableView is a retain property)
+//			NSTableColumn *tc = [[NSTableColumn alloc] initWithIdentifier: @"list"];
+//			tc.width = frameRect. size. width;
+//			[tc setEditable: NO];
+//			[_tableView addTableColumn: tc];
 			
-			_tableView. delegate = self;
-			_tableView. dataSource = self;
-			_tableView. allowsEmptySelection = YES;
-			_tableView. headerView = nil;
-			_tableView. target = self;
-			_tableView. action = @selector (_GuiCocoaList_clicked:);
-			
-			NSScrollView *sv = [[NSScrollView alloc] initWithFrame: frameRect];
-			[sv setAutoresizingMask: NSViewWidthSizable | NSViewHeightSizable];
-			[sv setBorderType: NSGrooveBorder];
-			[sv setDocumentView: _tableView];   // this retains the table view
-			[sv setHasVerticalScroller: YES];
+//			_tableView. delegate = self;
+//			_tableView. dataSource = self;
+//			_tableView. allowsEmptySelection = YES;
+//			_tableView. headerView = nil;
+//			_tableView. target = self;
+//			_tableView. action = @selector (_GuiCocoaList_clicked:);
+//
+//			NSScrollView *sv = [[NSScrollView alloc] initWithFrame: frameRect];
+//			[sv setAutoresizingMask: NSViewWidthSizable | NSViewHeightSizable];
+//			[sv setBorderType: NSGrooveBorder];
+//			[sv setDocumentView: _tableView];   // this retains the table view
+//			[sv setHasVerticalScroller: YES];
 			//[sv setHasHorizontalScroller: YES];
 			
-			[self addSubview: sv];   // this retains the scroll view
+//			[self addSubview: sv];   // this retains the scroll view
 			//Melder_assert ([sv retainCount] == 2);   // not always true on 10.6
-			[sv release];
-			Melder_assert ([_tableView retainCount] == 2);
-			[_tableView release];
+//			[sv release];
+//			Melder_assert ([_tableView retainCount] == 2);
+//			[_tableView release];
 			
 			_contents = [[NSMutableArray alloc] init];
 		}
@@ -142,15 +140,15 @@ Thing_implement (GuiList, GuiControl, 0);
 	/*
 	 * Override TableViewDataSource methods.
 	 */
-	- (NSInteger) numberOfRowsInTableView: (NSTableView *) tableView {
-		(void) tableView;
-		return [_contents count];
-	}
-	- (id) tableView:  (NSTableView *) tableView   objectValueForTableColumn: (NSTableColumn *) tableColumn   row: (NSInteger) row {
-		(void) tableColumn;
-		(void) tableView;
-		return [_contents   objectAtIndex: row];
-	}
+//	- (NSInteger) numberOfRowsInTableView: (NSTableView *) tableView {
+//		(void) tableView;
+//		return [_contents count];
+//	}
+//	- (id) tableView:  (NSTableView *) tableView   objectValueForTableColumn: (NSTableColumn *) tableColumn   row: (NSInteger) row {
+//		(void) tableColumn;
+//		(void) tableView;
+//		return [_contents   objectAtIndex: row];
+//	}
 
 	/*
 	 * Override TableViewDelegate methods.
@@ -528,12 +526,12 @@ void structGuiList :: f_deselectAllItems () {
 	#if gtk
 		GtkTreeSelection *selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (d_widget));
 		gtk_tree_selection_unselect_all (selection);
-	#elif cocoa
+	#elif cocoaT
 		GuiCocoaList *list = (GuiCocoaList *) d_widget;
 		[list.tableView deselectAll:nil];
 	#elif win
 		ListBox_SetSel (d_widget -> window, False, -1);
-	#elif mac
+	#elif macT
 		long n = (** d_macListHandle). dataBounds. bottom;
 		Cell cell; cell.h = 0;
 		_GuiMac_clipOnParent (d_widget);
@@ -555,12 +553,12 @@ void structGuiList :: f_deselectItem (long position) {
 		if (gtk_tree_model_iter_nth_child (tree_model, & iter, NULL, (gint) (position - 1))) {
 			gtk_tree_selection_unselect_iter (selection, & iter);
 		}
-	#elif cocoa
+	#elif cocoaT
 		GuiCocoaList *list = (GuiCocoaList *) d_widget;
 		[list. tableView   deselectRow: position - 1];
 	#elif win
 		ListBox_SetSel (d_widget -> window, False, position - 1);
-	#elif mac
+	#elif macT
 		Cell cell;
 		cell. h = 0;
 		cell. v = position - 1; 
@@ -592,7 +590,7 @@ long * structGuiList :: f_getSelectedPositions (long *numberOfSelectedPositions)
 			g_list_free (list);
 		}
 		return selectedPositions;
-	#elif cocoa
+	#elif cocoaT
 		GuiCocoaList *list = (GuiCocoaList *) d_widget;
 		NSIndexSet *indexSet = [list. tableView   selectedRowIndexes];
 		*numberOfSelectedPositions = 0;
@@ -624,7 +622,7 @@ long * structGuiList :: f_getSelectedPositions (long *numberOfSelectedPositions)
 			selectedPositions [ipos] = indices [ipos - 1] + 1;   // convert from zero-based list of zero-based indices
 		}
 		Melder_free (indices);
-	#elif mac
+	#elif macT
 		long n = (** d_macListHandle). dataBounds. bottom;
 		Cell cell; cell.h = 0;
 		if (n < 1) {
@@ -733,7 +731,6 @@ void structGuiList :: f_insertItem (const wchar_t *itemText, long position) {
 		else
 			[[list contents]   addObject: nsString];   // insert at end
 		//Melder_assert ([nsString retainCount] == 2);
-		[nsString release];
 		[[list tableView] reloadData];
 	#elif win
 		if (position)
@@ -776,8 +773,6 @@ void structGuiList :: f_replaceItem (const wchar_t *itemText, long position) {
 		GuiCocoaList *list = (GuiCocoaList *) d_widget;
 		NSString *nsString = [[NSString alloc] initWithUTF8String: Melder_peekWcsToUtf8 (itemText)];
 		[[list contents]   replaceObjectAtIndex: position - 1   withObject: nsString];
-		Melder_assert ([nsString retainCount] == 2);
-		[nsString release];
 		[[list tableView] reloadData];
 	#elif win
 		long nativePosition = position - 1;   // convert from 1-based to zero-based
@@ -811,9 +806,9 @@ void structGuiList :: f_selectItem (long position) {
 //		gtk_tree_selection_select_iter (selection, & iter);
 	#elif cocoa
 		NSIndexSet *indexSet = [[NSIndexSet alloc] initWithIndex: position - 1];
-		GuiCocoaList *list = (GuiCocoaList *) d_widget;
-		[[list tableView]   selectRowIndexes: indexSet   byExtendingSelection: d_allowMultipleSelection];
-		[indexSet release];
+//		GuiCocoaList *list = (GuiCocoaList *) d_widget;
+//		[[list tableView]   selectRowIndexes: indexSet   byExtendingSelection: d_allowMultipleSelection];
+//		[indexSet release];
 	#elif win
 		if (! d_allowMultipleSelection) {
 			ListBox_SetCurSel (d_widget -> window, position - 1);

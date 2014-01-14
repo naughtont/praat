@@ -74,7 +74,7 @@ static int _GuiRadioButton_getPosition (GuiRadioButton me) {
 		GuiRadioButton me = d_userData;
 		forget (me);
 		trace ("deleting a radio button");
-		[super dealloc];
+//		[super dealloc];
 	}
 	- (GuiThing) userData {
 		return d_userData;
@@ -91,10 +91,10 @@ static int _GuiRadioButton_getPosition (GuiRadioButton me) {
 		 * Deselect the sister buttons.
 		 */
 		for (GuiRadioButton sibling = my d_previous; sibling != NULL; sibling = sibling -> d_previous) {
-			[sibling -> d_cocoaRadioButton   setState: NSOffState];
+//			[sibling -> d_cocoaRadioButton   setState: NSOffState];
 		}
 		for (GuiRadioButton sibling = my d_next; sibling != NULL; sibling = sibling -> d_next) {
-			[sibling -> d_cocoaRadioButton   setState: NSOffState];
+//			[sibling -> d_cocoaRadioButton   setState: NSOffState];
 		}
 		if (my d_valueChangedCallback != NULL) {
 			Melder_assert (! my d_blockValueChangedCallbacks);
@@ -202,7 +202,7 @@ GuiRadioButton GuiRadioButton_create (GuiForm parent, int left, int right, int t
 		}
 		[my d_cocoaRadioButton setTarget: my d_cocoaRadioButton];
 		[my d_cocoaRadioButton setAction: @selector (_guiCocoaRadioButton_activateCallback:)];
-	#elif cocoa
+	#elif cocoaT
 		my d_cocoaRadioButton = [[GuiCocoaRadioButton alloc] init];
 		my d_widget = my d_cocoaRadioButton;
 		my v_positionInForm (my d_widget, left, right, top, bottom, parent);
@@ -218,7 +218,7 @@ GuiRadioButton GuiRadioButton_create (GuiForm parent, int left, int right, int t
 		}
 		[my d_cocoaRadioButton setTarget: my d_cocoaRadioButton];
 		[my d_cocoaRadioButton setAction: @selector (_guiCocoaRadioButton_activateCallback:)];
-	#elif cocoa
+	#elif cocoaT
 		NSRect matrixRect = NSMakeRect (20.0, 20.0, 125.0, 125.0);
 		my d_cocoaRadioButton = [[GuiCocoaRadioButton alloc] initWithFrame:matrixRect];
 		[my d_cocoaRadioButton   setUserData: me];
@@ -253,7 +253,7 @@ GuiRadioButton GuiRadioButton_create (GuiForm parent, int left, int right, int t
 		if (flags & GuiRadioButton_SET) {
 			Button_SetCheck (my d_widget -> window, BST_CHECKED);
 		}
-	#elif mac
+	#elif macT
 		my d_widget = _Gui_initializeWidget (xmToggleButtonWidgetClass, parent -> d_widget, buttonText);
 		_GuiObject_setUserData (my d_widget, me);
 		my d_widget -> isRadioButton = true;
@@ -291,11 +291,11 @@ bool structGuiRadioButton :: f_getValue () {
 	bool value = false;
 	#if gtk
 		value = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (d_widget));   // gtk_check_button inherits from gtk_toggle_button
-	#elif cocoa
+	#elif cocoaT
         value = [d_cocoaRadioButton state] == NSOnState;
 	#elif win
 		value = (Button_GetState (d_widget -> window) & 0x0003) == BST_CHECKED;
-	#elif mac
+	#elif macT
 		value = GetControlValue (d_widget -> nat.control.handle);
 	#endif
 	return value;
@@ -305,7 +305,7 @@ void structGuiRadioButton :: f_set () {
 	GuiControlBlockValueChangedCallbacks block (this);   // the value should be set without calling the valueChanged callback (crucial on GTK)
 	#if gtk
 		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (d_widget), TRUE);
-	#elif cocoa
+	#elif cocoaT
 		[d_cocoaRadioButton   setState: NSOnState];
 		/*
 		 * Deselect the sister buttons.
@@ -327,7 +327,7 @@ void structGuiRadioButton :: f_set () {
 		for (GuiRadioButton sibling = d_next; sibling != NULL; sibling = sibling -> d_next) {
 			Button_SetCheck (sibling -> d_widget -> window, BST_UNCHECKED);
 		}
-	#elif mac
+	#elif macT
 		SetControlValue (d_widget -> nat.control.handle, true);
 		/*
 		 * Deselect the sister buttons.

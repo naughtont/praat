@@ -930,7 +930,7 @@ void praat_dontUsePictureWindow (void) { praatP.dontUsePictureWindow = TRUE; }
 		if (l > 0 && text [l - 1] == '\"') text [l - 1] = '\0';
 		sendpraatW (NULL, Melder_peekUtf8ToWcs (praatP.title), 0, text);
 	}
-#elif cocoa
+#elif cocoaT
 	static int (*theUserMessageCallbackA) (char *message);
 	static int (*theUserMessageCallbackW) (wchar_t *message);
 	static void mac_setUserMessageCallbackA (int (*userMessageCallback) (char *message)) {
@@ -1052,7 +1052,7 @@ void praat_init (const char *title, unsigned int argc, char **argv) {
 		setlocale (LC_ALL, "en_US");   // required to make swprintf work correctly; the default "C" locale does not do that!
 	#endif
 	char *p;
-	#ifdef macintosh
+	#ifdef macintoshT
 		SInt32 macSystemVersion;
 		Gestalt ('sysv', & macSystemVersion);
 		Melder_systemVersion = macSystemVersion;
@@ -1241,11 +1241,11 @@ void praat_init (const char *title, unsigned int argc, char **argv) {
 				Gui_setQuitApplicationCallback (cb_quitApplication);
 			}
 		#else
-			if (! Melder_batch) {
-				mac_setUserMessageCallbackA (cb_userMessageA);
-				mac_setUserMessageCallbackW (cb_userMessageW);
-				Gui_setQuitApplicationCallback (cb_quitApplication);
-			}
+//			if (! Melder_batch) {
+//				mac_setUserMessageCallbackA (cb_userMessageA);
+//				mac_setUserMessageCallbackW (cb_userMessageW);
+//				Gui_setQuitApplicationCallback (cb_quitApplication);
+//			}
 		#endif
 	#endif
 
@@ -1318,7 +1318,7 @@ void praat_init (const char *title, unsigned int argc, char **argv) {
 		praat_addFixedButtons (NULL);
 	} else {
 
-		#ifdef macintosh
+		#ifdef macintoshT
 			#if ! useCarbon
 				AEInstallEventHandler (758934755, 0, (AEEventHandlerProcPtr) (mac_processSignalA), 0, false);
 				AEInstallEventHandler (758934756, 0, (AEEventHandlerProcPtr) (mac_processSignalW), 0, false);
@@ -1588,7 +1588,7 @@ void praat_run (void) {
 			trace ("start the GTK event loop");
 			trace ("locale is %s", setlocale (LC_ALL, NULL));
 			gtk_main ();
-		#elif cocoa
+		#elif cocoaT
 			[NSApp run];
 		#elif motif
 			#if defined (_WIN32)

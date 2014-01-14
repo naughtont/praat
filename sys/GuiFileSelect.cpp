@@ -51,7 +51,7 @@ SortedSetOfString GuiFileSelect_getInfileNames (GuiWindow parent, const wchar_t 
 		}
 		gtk_widget_destroy (GTK_WIDGET (dialog));
 		setlocale (LC_ALL, "C");
-	#elif cocoa
+	#elif cocoaT
 		(void) parent;
 		NSOpenPanel	*openPanel = [NSOpenPanel openPanel];
 		[openPanel setTitle: [NSString stringWithUTF8String: Melder_peekWcsToUtf8 (title)]];
@@ -65,7 +65,7 @@ SortedSetOfString GuiFileSelect_getInfileNames (GuiWindow parent, const wchar_t 
 			}
 		}
 		setlocale (LC_ALL, "en_US");
-	#elif mac
+	#elif macT
 		(void) parent;
 		OSStatus err;
 		NavDialogRef dialogRef;
@@ -173,7 +173,7 @@ wchar_t * GuiFileSelect_getOutfileName (GuiWindow parent, const wchar_t *title, 
 		}
 		gtk_widget_destroy (GTK_WIDGET (dialog));
 		setlocale (LC_ALL, "C");
-	#elif cocoa
+	#elif cocoaT
 		(void) parent;
 		NSSavePanel	*savePanel = [NSSavePanel savePanel];
 		[savePanel setTitle: [NSString stringWithUTF8String: Melder_peekWcsToUtf8 (title)]];
@@ -185,7 +185,7 @@ wchar_t * GuiFileSelect_getOutfileName (GuiWindow parent, const wchar_t *title, 
 			outfileName = Melder_wcsdup (file. path);
 		}
 		setlocale (LC_ALL, "en_US");
-	#elif mac
+	#elif macT
 		(void) parent;
 		const wchar_t *lastSlash = wcsrchr (defaultName, Melder_DIRECTORY_SEPARATOR);
 		OSStatus err;
@@ -279,7 +279,7 @@ wchar_t * GuiFileSelect_getDirectoryName (GuiWindow parent, const wchar_t *title
 		}
 		gtk_widget_destroy (GTK_WIDGET (dialog));
 		setlocale (LC_ALL, "C");
-	#elif cocoa
+	#elif cocoaT
 		(void) parent;
 		NSOpenPanel	*openPanel = [NSOpenPanel openPanel];
 		[openPanel setTitle: [NSString stringWithUTF8String: Melder_peekWcsToUtf8 (title)]];
@@ -296,7 +296,7 @@ wchar_t * GuiFileSelect_getDirectoryName (GuiWindow parent, const wchar_t *title
 			}
 		}
 		setlocale (LC_ALL, "en_US");
-	#elif mac
+	#elif macT
 		(void) parent;
 		OSStatus err;
 		NavDialogRef dialogRef;

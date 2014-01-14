@@ -24,7 +24,7 @@
 
 #define ooSTRUCT Index
 oo_DEFINE_CLASS (Index, Data)
-	static_cast<int>()
+	oo_OBJECT (Ordered, 0, classes)
 	oo_LONG (numberOfElements)
 	oo_LONG_VECTOR (classIndex, numberOfElements)
 

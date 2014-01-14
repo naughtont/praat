@@ -2825,12 +2825,12 @@ void Dissimilarities_Configuration_indscal (Dissimilarities dissims, Configurati
         int normalizeScalarProducts, double tolerance, long numberOfIterations, int showProgress,
         Configuration *out1, Salience *out2) {
 	try {
-		*out1 = 0; *out2 = 0;
-		autoDistances distances = Dissimilarities_Configuration_monotoneRegression (dissims, conf, tiesProcessing);
-		auto Salience weights = Distances_Configuration_to_Salience (distances.peek(), conf, normalizeScalarProducts);
-		double vaf;
-		Dissimilarities_Configuration_Salience_indscal (dissims, conf, weights, tiesProcessing, normalizeScalarProducts,
-		        tolerance, numberOfIterations, showProgress, out1, out2, &vaf);
+//		*out1 = 0; *out2 = 0;
+//		autoDistances distances = Dissimilarities_Configuration_monotoneRegression (dissims, conf, tiesProcessing);
+//		auto Salience weights = Distances_Configuration_to_Salience (distances.peek(), conf, normalizeScalarProducts);
+//		double vaf;
+//		Dissimilarities_Configuration_Salience_indscal (dissims, conf, weights, tiesProcessing, normalizeScalarProducts,
+//		        tolerance, numberOfIterations, showProgress, out1, out2, &vaf);
 	} catch (MelderError) {
 		Melder_throw ("No indscal performed.");
 	}

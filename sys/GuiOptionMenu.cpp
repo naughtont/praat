@@ -44,13 +44,13 @@ Thing_implement (GuiOptionMenu, GuiControl, 0);
 	}
 	- (void) dealloc {   // override
 		GuiOptionMenu me = d_userData;
-        [self removeAllItems];
-        [self setMenu:nil];
+ //       [self removeAllItems];
+//        [self setMenu:nil];
         
         forget (my d_options);
 		forget (me);   
 		trace ("deleting an option menu");
-		[super dealloc];
+//		[super dealloc];
 	}
 	- (GuiThing) userData {
 		return d_userData;
@@ -167,7 +167,7 @@ void structGuiOptionMenu:: f_addOption (const wchar_t *text) {
 		Collection_addItem (d_options, menuItem);
     #elif cocoa
         GuiCocoaOptionMenu *menu = (GuiCocoaOptionMenu* ) d_widget;
-        [menu addItemWithTitle: [NSString stringWithUTF8String: Melder_peekWcsToUtf8 (text)]];
+//        [menu addItemWithTitle: [NSString stringWithUTF8String: Melder_peekWcsToUtf8 (text)]];
 	#endif
 }
 
@@ -184,7 +184,7 @@ int structGuiOptionMenu :: f_getValue () {
 		}
     #elif cocoa
 		GuiCocoaOptionMenu *menu = (GuiCocoaOptionMenu *) d_widget;
-		d_value = [menu indexOfSelectedItem] + 1;
+//		d_value = [menu indexOfSelectedItem] + 1;
 	#endif
 	return d_value;
 }
@@ -194,7 +194,7 @@ void structGuiOptionMenu :: f_setValue (int value) {
 		gtk_combo_box_set_active (GTK_COMBO_BOX (d_widget), value - 1);
 	#elif cocoa
         GuiCocoaOptionMenu *menu = (GuiCocoaOptionMenu*)d_widget;
-        [menu selectItemAtIndex:value - 1];
+//        [menu selectItemAtIndex:value - 1];
 	#elif motif
 		for (int i = 1; i <= d_options -> size; i ++) {
 			GuiMenuItem menuItem = static_cast <GuiMenuItem> (d_options -> item [i]);

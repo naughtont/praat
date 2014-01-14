@@ -58,7 +58,6 @@ Thing_implement (GuiButton, GuiControl, 0);
 		GuiButton me = d_userData;
 		forget (me);
 		trace ("deleting a button");
-		[super dealloc];
 	}
 	- (GuiThing) userData {
 		return d_userData;
@@ -191,7 +190,7 @@ GuiButton GuiButton_create (GuiForm parent, int left, int right, int top, int bo
 //		if (flags & GuiButton_CANCEL) {
 //			parent -> shell -> cancelButton = parent -> cancelButton = my widget;
 //		}
-	#elif cocoa
+	#elif cocoaT
 		GuiCocoaButton *button = [[GuiCocoaButton alloc] init];
 		my d_widget = (GuiObject) button;
 		my v_positionInForm (my d_widget, left, right, top, bottom, parent);
@@ -239,7 +238,7 @@ GuiButton GuiButton_create (GuiForm parent, int left, int right, int top, int bo
 		if (flags & GuiButton_CANCEL) {
 			parent -> d_widget -> shell -> cancelButton = parent -> d_widget -> cancelButton = my d_widget;
 		}
-	#elif mac
+	#elif macT
 		my d_widget = _Gui_initializeWidget (xmPushButtonWidgetClass, parent -> d_widget, buttonText);
 		_GuiObject_setUserData (my d_widget, me);
 		CreatePushButtonControl (my d_widget -> macWindow, & my d_widget -> rect, NULL, & my d_widget -> nat.control.handle);
@@ -275,8 +274,8 @@ GuiButton GuiButton_createShown (GuiForm parent, int left, int right, int top, i
 void structGuiButton :: f_setString (const wchar_t *text) {
 	#if gtk
 		gtk_button_set_label (GTK_BUTTON (d_widget), Melder_peekWcsToUtf8 (text));
-	#elif cocoa
-		[(NSButton *) d_widget setTitle: (NSString *) Melder_peekWcsToCfstring (text)];
+	#elif cocoaT
+		[(UIButton *) d_widget setTitle: (NSString *) Melder_peekWcsToCfstring (text)];
 	#elif motif
 		Melder_free (d_widget -> name);
 		d_widget -> name = Melder_wcsdup_f (text);

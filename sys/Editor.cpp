@@ -225,7 +225,7 @@ void structEditor :: v_destroy () {
 				Melder_assert (GTK_IS_WIDGET (d_windowForm -> d_gtkWindow));
 				gtk_widget_destroy (GTK_WIDGET (d_windowForm -> d_gtkWindow));
 			}
-		#elif cocoa
+		#elif cocoaT
 			if (d_windowForm -> d_cocoaWindow) {
 				NSWindow *cocoaWindow = d_windowForm -> d_cocoaWindow;
 				//d_windowForm -> d_cocoaWindow = NULL;
@@ -282,7 +282,7 @@ static void menu_cb_undo (EDITOR_ARGS) {
 	else wcscpy (my undoText, L"Undo?");
 	#if gtk
 		gtk_label_set_label (GTK_LABEL (gtk_bin_get_child (GTK_BIN (my undoButton -> d_widget))), Melder_peekWcsToUtf8 (my undoText));
-	#elif cocoa
+	#elif cocoaT
 		[(GuiCocoaMenuItem *) my undoButton -> d_widget   setTitle: (NSString *) Melder_peekWcsToCfstring (my undoText)];
 	#elif motif
 		char *text_utf8 = Melder_peekWcsToUtf8 (my undoText);
@@ -500,7 +500,7 @@ void Editor_save (Editor me, const wchar_t *text) {
 	swprintf (my undoText, 100, L"Undo %ls", text);
 	#if gtk
 		gtk_label_set_label (GTK_LABEL (gtk_bin_get_child (GTK_BIN (my undoButton -> d_widget))), Melder_peekWcsToUtf8 (my undoText));
-	#elif cocoa
+	#elif cocoaT
 		[(GuiCocoaMenuItem *) my undoButton -> d_widget   setTitle: (NSString *) Melder_peekWcsToCfstring (my undoText)];
 	#elif motif
 		char *text_utf8 = Melder_peekWcsToUtf8 (my undoText);

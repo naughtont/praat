@@ -68,11 +68,11 @@ void Printer_prefs (void) {
 }
 
 #if defined (macintosh)
-	static PMPrintSession theMacPrintSession;
-	static PMPageFormat theMacPageFormat;
-	static PMPrintSettings theMacPrintSettings;
-	static GrafPtr theMacPort;
-	static PMRect paperSize;
+//	static PMPrintSession theMacPrintSession;
+//	static PMPageFormat theMacPageFormat;
+//	static PMPrintSettings theMacPrintSettings;
+//	static GrafPtr theMacPort;
+//	static PMRect paperSize;
 #endif
 #ifdef _WIN32
 	static PRINTDLG theWinPrint;

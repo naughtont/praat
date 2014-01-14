@@ -35,16 +35,21 @@ bool structGraphicsScreen :: v_mouseStillDown () {
 		gdk_event_free (gevent);
 		return gdkEventType != GDK_BUTTON_RELEASE;
 	#elif cocoa
-		Graphics_flushWs (this);
-		NSEvent *nsEvent = [[d_macView window]
-			nextEventMatchingMask: NSLeftMouseUpMask | NSLeftMouseDraggedMask | NSKeyDownMask
-			untilDate: [NSDate distantFuture]
-			inMode: NSEventTrackingRunLoopMode
-			dequeue: YES
-			];
-		NSUInteger nsEventType = [nsEvent type];
-		if (nsEventType == NSKeyDown) NSBeep ();
-		return nsEventType != NSLeftMouseUp;
+    
+        #if cocoaTouch
+            return NO;
+        #else
+            Graphics_flushWs (this);
+            NSEvent *nsEvent = [[d_macView window]
+                nextEventMatchingMask: NSLeftMouseUpMask | NSLeftMouseDraggedMask | NSKeyDownMask
+                untilDate: [NSDate distantFuture]
+                inMode: NSEventTrackingRunLoopMode
+                dequeue: YES
+                ];
+            NSUInteger nsEventType = [nsEvent type];
+            if (nsEventType == NSKeyDown) NSBeep ();
+            return nsEventType != NSLeftMouseUp;
+        #endif
 	#elif win
 		return motif_win_mouseStillDown ();
 	#elif mac
@@ -61,6 +66,7 @@ void structGraphicsScreen :: v_getMouseLocation (double *xWC, double *yWC) {
 		gint xDC, yDC;
 		gdk_window_get_pointer (d_window, & xDC, & yDC, NULL);
 		Graphics_DCtoWC (this, xDC, yDC, xWC, yWC);
+    #elif cocoaTouch
 	#elif cocoa
         NSPoint mouseLoc = [[d_macView window]  mouseLocationOutsideOfEventStream];
         mouseLoc = [d_macView   convertPoint: mouseLoc   fromView: nil];

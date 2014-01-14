@@ -214,7 +214,7 @@ void Demo_waitForInput (Interpreter interpreter) {
 				do {
 					gtk_main_iteration ();
 				} while (! theDemoEditor -> clicked && ! theDemoEditor -> keyPressed && ! theDemoEditor -> userWantsToClose);
-			#elif cocoa
+			#elif cocoaT
 				do {
 					NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 					[theDemoEditor -> d_windowForm -> d_cocoaWindow   flushWindow];
@@ -237,9 +237,9 @@ void Demo_waitForInput (Interpreter interpreter) {
 				} while (! theDemoEditor -> clicked && ! theDemoEditor -> keyPressed && ! theDemoEditor -> userWantsToClose);
 			#elif defined (macintosh)
 				do {
-					XEvent event;
-					GuiNextEvent (& event);
-					XtDispatchEvent (& event);
+//					XEvent event;
+//					GuiNextEvent (& event);
+//					XtDispatchEvent (& event);
 				} while (! theDemoEditor -> clicked && ! theDemoEditor -> keyPressed && ! theDemoEditor -> userWantsToClose);
 			#endif
 		} catch (MelderError) {

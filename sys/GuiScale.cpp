@@ -52,7 +52,6 @@ Thing_implement (GuiScale, GuiControl, 0);
 		GuiScale me = d_userData;
 		forget (me);
 		trace ("deleting a progress bar");
-		[super dealloc];
 	}
 	- (GuiThing) userData {
 		return d_userData;
@@ -95,7 +94,7 @@ GuiScale GuiScale_create (GuiForm parent, int left, int right, int top, int bott
 		_GuiObject_setUserData (my d_widget, me);
 		my v_positionInForm (my d_widget, left, right, top, bottom, parent);
 		g_signal_connect (G_OBJECT (my d_widget), "destroy", G_CALLBACK (_GuiGtkScale_destroyCallback), me);
-	#elif cocoa
+	#elif cocoaT
 		my d_cocoaScale = [[GuiCocoaScale alloc] init];
 		my d_widget = my d_cocoaScale;
 		my v_positionInForm (my d_widget, left, right, top, bottom, parent);
@@ -129,7 +128,7 @@ GuiScale GuiScale_createShown (GuiForm parent, int left, int right, int top, int
 void structGuiScale :: f_setValue (int value) {
 	#if gtk
 		gtk_range_set_value (GTK_RANGE (d_widget), value);
-	#elif cocoa
+	#elif cocoaT
 		[d_cocoaScale   setDoubleValue: value];
 	#elif motif
 		XmScaleSetValue (d_widget, value);

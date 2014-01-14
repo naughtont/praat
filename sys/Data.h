@@ -26,7 +26,7 @@
 typedef struct structData_Description {
 	const wchar_t *name;   /* The name of this field. */
 	int type;   /* bytewa..inheritwa, see below */
-	int offset;   /* The offset of this field in the enveloping struct. */
+	long offset;   /* The offset of this field in the enveloping struct. */
 	int size;   /* The size of this field if it is in an array. */
 	const wchar_t *tagName;   /* For structs: tag; for classes: class name; for enums: type name. */
 	void *tagType;   /* For structs: offset table; for classes: class pointer; for enums: enum pointer. */

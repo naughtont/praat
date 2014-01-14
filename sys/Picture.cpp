@@ -331,9 +331,9 @@ void Picture_copyToClipboard (Picture me) {
 	/*
 	 * Find the clipboard and clear it.
 	 */
-	PasteboardRef clipboard = NULL;
-	PasteboardCreate (kPasteboardClipboard, & clipboard);
-	PasteboardClear (clipboard);
+//	PasteboardRef clipboard = NULL;
+//	PasteboardCreate (kPasteboardClipboard, & clipboard);
+//	PasteboardClear (clipboard);
 	/*
 	 * Add a PDF flavour to the clipboard.
 	 */
@@ -347,12 +347,12 @@ void Picture_copyToClipboard (Picture me) {
 	Graphics graphics = Graphics_create_pdf (context, resolution, my selx1, my selx2, my sely1, my sely2);
 	Graphics_play ((Graphics) my graphics, graphics);
 	forget (graphics);
-	PasteboardPutItemFlavor (clipboard, (PasteboardItemID) 1, kUTTypePDF, data, kPasteboardFlavorNoFlags);
+//	PasteboardPutItemFlavor (clipboard, (PasteboardItemID) 1, kUTTypePDF, data, kPasteboardFlavorNoFlags);
 	CFRelease (data);
 	/*
 	 * Forget the clipboard.
 	 */
-	CFRelease (clipboard);
+//	CFRelease (clipboard);
 }
 #endif
 

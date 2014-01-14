@@ -1020,7 +1020,7 @@ SoundRecorder SoundRecorder_create (int numberOfChannels) {
 					waveInGetDevCaps (i, & caps, sizeof (WAVEINCAPS));
 					/*Melder_casual ("Name of device %d: %s", i, caps. szPname);*/
 				}
-			#elif defined (macintosh)
+			#elif defined (macintoshT)
 				SInt32 soundFeatures;
 				if (Gestalt (gestaltSoundAttr, & soundFeatures) ||
 						! (soundFeatures & (1 << gestaltSoundIOMgrPresent)) ||

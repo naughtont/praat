@@ -551,13 +551,13 @@ static void cb_openDocument (MelderFile file) {
 
 #if cocoa
 DIRECT (praat_cut)
-	[[[NSApp keyWindow] fieldEditor: YES forObject: nil] cut: nil];
+//	[[[NSApp keyWindow] fieldEditor: YES forObject: nil] cut: nil];
 END
 DIRECT (praat_copy)
-	[[[NSApp keyWindow] fieldEditor: YES forObject: nil] copy: nil];
+//	[[[NSApp keyWindow] fieldEditor: YES forObject: nil] copy: nil];
 END
 DIRECT (praat_paste)
-	[[[NSApp keyWindow] fieldEditor: YES forObject: nil] pasteAsPlainText: nil];
+//	[[[NSApp keyWindow] fieldEditor: YES forObject: nil] pasteAsPlainText: nil];
 END
 #endif
 

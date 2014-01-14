@@ -62,14 +62,19 @@ Thing_define (GraphicsScreen, Graphics) {
 			bool d_fatNonSolid;
 			bool d_useGdiplus;
 		#elif defined (macintosh)
-            #if useCarbon
+    
+            #if defined cocoaTouch
+                UIView *d_macView;
+                CGColorRef d_macColour;
+            #elif useCarbon
                 GrafPtr d_macPort;
+                RGBColor d_macColour;
             #else
                 NSView *d_macView;
+                CGColorRef d_macColour;
             #endif
 			int d_macFont, d_macStyle;
 			int d_depth;
-			RGBColor d_macColour;
 			CGContextRef d_macGraphicsContext;
 		#endif
 	// overridden methods:

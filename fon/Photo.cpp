@@ -22,7 +22,7 @@
 #include "Formula.h"
 #if defined (macintosh)
 	#include "macport_on.h"
-	#include <Cocoa/Cocoa.h>
+	#include <UIKit/UIKit.h>
 	#include "macport_off.h"
 #endif
 
@@ -106,7 +106,7 @@ Photo Photo_readFromImageFile (MelderFile file) {
 		(void) file;
 		Melder_throw ("Cannot read image files on Windows yet. Try the Mac.");
 		// NYI
-	#elif defined (macintosh)
+	#elif defined (macintoshT)
 		char utf8 [500];
 		Melder_wcsTo8bitFileRepresentation_inline (file -> path, utf8);
 		CFStringRef path = CFStringCreateWithCString (NULL, utf8, kCFStringEncodingUTF8);
@@ -160,7 +160,7 @@ Photo Photo_readFromImageFile (MelderFile file) {
 	}
 #endif
 
-#ifdef macintosh
+#ifdef macintoshT
 void structPhoto :: _mac_saveAsImageFile (MelderFile file, const void *which) {
 		long bytesPerRow = this -> nx * 4;
 		long numberOfRows = this -> ny;
@@ -202,49 +202,49 @@ void structPhoto :: _mac_saveAsImageFile (MelderFile file, const void *which) {
 #endif
 
 void structPhoto :: f_saveAsPNG (MelderFile file) {
-	#ifdef macintosh
+	#ifdef macintoshT
 		_mac_saveAsImageFile (file, kUTTypePNG);
 	#endif
 }
 
 void structPhoto :: f_saveAsTIFF (MelderFile file) {
-	#ifdef macintosh
+	#ifdef macintoshT
 		_mac_saveAsImageFile (file, kUTTypeTIFF);
 	#endif
 }
 
 void structPhoto :: f_saveAsGIF (MelderFile file) {
-	#ifdef macintosh
+	#ifdef macintosht
 		_mac_saveAsImageFile (file, kUTTypeGIF);
 	#endif
 }
 
 void structPhoto :: f_saveAsWindowsBitmapFile (MelderFile file) {
-	#ifdef macintosh
+	#ifdef macintoshT
 		_mac_saveAsImageFile (file, kUTTypeBMP);
 	#endif
 }
 
 void structPhoto :: f_saveAsJPEG (MelderFile file) {
-	#ifdef macintosh
+	#ifdef macintoshT
 		_mac_saveAsImageFile (file, kUTTypeJPEG);
 	#endif
 }
 
 void structPhoto :: f_saveAsJPEG2000 (MelderFile file) {
-	#ifdef macintosh
+	#ifdef macintoshT
 		_mac_saveAsImageFile (file, kUTTypeJPEG2000);
 	#endif
 }
 
 void structPhoto :: f_saveAsAppleIconFile (MelderFile file) {
-	#ifdef macintosh
+	#ifdef macintoshT
 		_mac_saveAsImageFile (file, kUTTypeAppleICNS);
 	#endif
 }
 
 void structPhoto :: f_saveAsWindowsIconFile (MelderFile file) {
-	#ifdef macintosh
+	#ifdef macintoshT
 		_mac_saveAsImageFile (file, kUTTypeICO);
 	#endif
 }

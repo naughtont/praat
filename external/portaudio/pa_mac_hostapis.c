@@ -62,7 +62,7 @@ extern "C"
 
 PaUtilHostApiInitializer *paHostApiInitializers[] =
 {
-    PaMacCore_Initialize,
+//    PaMacCore_Initialize,
     
     0   /* NULL terminated array */
 };

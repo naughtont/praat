@@ -23,28 +23,30 @@
 int structGuiControl :: f_getX () {
 	#if gtk
 		return GTK_WIDGET (d_widget) -> allocation.x;
-	#elif cocoa
+	#elif cocoaT
 		return [(NSView *) d_widget frame]. origin. x;
 	#elif motif
 		return d_widget -> x;
 	#endif
+    return nil;
 }
 
 int structGuiControl :: f_getY () {
 	#if gtk
 		return GTK_WIDGET (d_widget) -> allocation.y;
-	#elif cocoa
+	#elif cocoaT
 		return [(NSView *) d_widget frame]. origin. y;
 	#elif motif
 		return d_widget -> y;
 	#endif
+    return nil;
 }
 
 int structGuiControl :: f_getWidth () {
 	#if gtk
 		return GTK_WIDGET (d_widget) -> allocation.width;
 	#elif cocoa
-		return [(NSView *) d_widget frame]. size. width;
+		return [(UIView *) d_widget frame]. size. width;
 	#elif motif
 		return d_widget -> width;
 	#endif
@@ -54,7 +56,7 @@ int structGuiControl :: f_getHeight () {
 	#if gtk
 		return GTK_WIDGET (d_widget) -> allocation.height;
 	#elif cocoa
-		return [(NSView *) d_widget frame]. size. height;
+		return [(UIView *) d_widget frame]. size. height;
 	#elif motif
 		return d_widget -> height;
 	#endif
@@ -106,7 +108,7 @@ void structGuiControl :: v_positionInForm (GuiObject widget, int left, int right
 		trace ("fixed: parent width %d height %d", parentWidth, parentHeight);
 		gtk_widget_set_size_request (GTK_WIDGET (widget), right - left, bottom - top);
 		gtk_fixed_put (GTK_FIXED (parent -> d_widget), GTK_WIDGET (widget), left, top);
-	#elif cocoa
+	#elif cocoaT
         NSView *superView = (NSView *) parent -> d_widget;
         NSView *widgetView = (NSView *) widget;
 		NSRect parentRect = [superView frame];
@@ -188,7 +190,7 @@ void structGuiControl :: v_positionInScrolledWindow (GuiObject widget, int width
 		Melder_assert (GTK_IS_SCROLLED_WINDOW (parent -> d_widget));
 		gtk_widget_set_size_request (GTK_WIDGET (widget), width, height);
 		gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (parent -> d_widget), GTK_WIDGET (widget));
-	#elif cocoa
+	#elif cocoaT
 		GuiCocoaScrolledWindow *scrolledWindow = (GuiCocoaScrolledWindow *) parent -> d_widget;
 		NSView *widgetView = (NSView *) widget;
 		NSRect rect = NSMakeRect (0, 0, width, height);

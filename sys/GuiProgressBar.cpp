@@ -35,7 +35,6 @@ Thing_implement (GuiProgressBar, GuiControl, 0);
 		GuiProgressBar me = d_userData;
 		forget (me);
 		trace ("deleting a progress bar");
-		[super dealloc];
 	}
 	- (GuiThing) userData {
 		return d_userData;
@@ -69,8 +68,8 @@ GuiProgressBar GuiProgressBar_create (GuiForm parent, int left, int right, int t
 		my d_widget = my d_cocoaProgressBar;
 		my v_positionInForm (my d_widget, left, right, top, bottom, parent);
 		[my d_cocoaProgressBar   setUserData: me];
-		[my d_cocoaProgressBar   setIndeterminate: false];
-		[my d_cocoaProgressBar   setMaxValue: 1.0];
+//		[my d_cocoaProgressBar   setIndeterminate: false];
+//		[my d_cocoaProgressBar   setMaxValue: 1.0];
 	#elif motif
 		my d_widget = XmCreateScale (parent -> d_widget, "scale", NULL, 0);
 		_GuiObject_setUserData (my d_widget, me);
@@ -107,7 +106,7 @@ void structGuiProgressBar :: f_setValue (double value) {
 	#if gtk
 		gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (d_widget), value);
 	#elif cocoa
-		[d_cocoaProgressBar   setDoubleValue: value];
+//		[d_cocoaProgressBar   setDoubleValue: value];
 	#elif motif
 		XmScaleSetValue (d_widget, round (value * 10000));
 	#endif

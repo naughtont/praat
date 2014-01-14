@@ -50,94 +50,94 @@ void structGuiMenu :: v_destroy () {
 	void Gui_setOpenDocumentCallback (void (*openDocumentCallback) (MelderFile file)) {
 		theOpenDocumentCallback = openDocumentCallback;
 	}
-	static NSMenu *theMenuBar;
-	static int theNumberOfMenuBarItems = 0;
-	static NSMenuItem *theMenuBarItems [30];
+//	static NSMenu *theMenuBar;
+//	static int theNumberOfMenuBarItems = 0;
+//	static NSMenuItem *theMenuBarItems [30];
 	@implementation GuiCocoaApplication
 	/*
 	 * Override sendEvent() to capture navigation keys (Tab and Shift-Tab) as menu shortcuts
 	 * and to capture text-editing keys (Option-Backspace) as menu shortcuts.
 	 */
-	- (void) sendEvent: (NSEvent *) nsEvent {
-		if ([nsEvent type] == NSKeyDown) {
-			NSString *characters = [nsEvent characters];
-			unichar character = [characters characterAtIndex: 0];
-			if (Melder_getTracing ()) {
-				for (NSUInteger i = 0; i < [characters length]; i ++) {
-					unichar kar = [characters characterAtIndex: 0];
-					trace ("character [%d]: %d", (int) i, (int) kar);
-				}
-				trace ("modifiers: %d", (int) [nsEvent modifierFlags]);
-			}
-			if (character == NSTabCharacter) {
-				NSWindow *cocoaKeyWindow = [NSApp keyWindow];
-				if ([cocoaKeyWindow class] == [GuiCocoaWindow class]) {
-					GuiWindow window = (GuiWindow) [(GuiCocoaWindow *) cocoaKeyWindow userData];
-					if (window -> d_tabCallback) {
-						try {
-							struct structGuiMenuItemEvent event = { NULL, 0 };
-							window -> d_tabCallback (window -> d_tabBoss, & event);
-						} catch (MelderError) {
-							Melder_flushError ("Tab key not completely handled.");
-						}
-						return;
-					}
-				}
-			} else if (character == NSBackTabCharacter) {
-				NSWindow *cocoaKeyWindow = [NSApp keyWindow];
-				if ([cocoaKeyWindow class] == [GuiCocoaWindow class]) {
-					GuiWindow window = (GuiWindow) [(GuiCocoaWindow *) cocoaKeyWindow userData];
-					Melder_assert ([nsEvent modifierFlags] & NSShiftKeyMask);
-					if (window -> d_shiftTabCallback) {
-						try {
-							struct structGuiMenuItemEvent event = { NULL, 0 };
-							window -> d_shiftTabCallback (window -> d_shiftTabBoss, & event);
-						} catch (MelderError) {
-							Melder_flushError ("Tab key not completely handled.");
-						}
-						return;
-					}
-				}
-			} else if (character == NSDeleteCharacter) {
-				NSWindow *cocoaKeyWindow = [NSApp keyWindow];
-				if ([cocoaKeyWindow class] == [GuiCocoaWindow class]) {
-					GuiWindow window = (GuiWindow) [(GuiCocoaWindow *) cocoaKeyWindow userData];
-					if (([nsEvent modifierFlags] & NSAlternateKeyMask) && window -> d_optionBackspaceCallback) {
-						try {
-							struct structGuiMenuItemEvent event = { NULL, 0 };
-							window -> d_optionBackspaceCallback (window -> d_optionBackspaceBoss, & event);
-						} catch (MelderError) {
-							Melder_flushError ("Option-Backspace not completely handled.");
-						}
-						return;
-					}
-				}
-			}
-		}
-		[super sendEvent: nsEvent];   // the default action
-	}
-	/*
-	 * The delegate methods.
-	 */
-	- (void) applicationWillFinishLaunching: (NSNotification *) note
-	{
-		(void) note;
-		for (int imenu = 1; imenu <= theNumberOfMenuBarItems; imenu ++) {
-			[[NSApp mainMenu] addItem: theMenuBarItems [imenu]];   // the menu will retain the item...
-			[theMenuBarItems [imenu] release];   // ... so we can release the item
-		}
-	}
-	- (void) application: (NSApplication *) sender openFiles: (NSArray *) fileNames
-	{
-		(void) sender;
-		for (NSUInteger i = 1; i <= [fileNames count]; i ++) {
-			NSString *cocoaFileName = [fileNames objectAtIndex: i - 1];
-			structMelderFile file = { 0 };
-			Melder_8bitFileRepresentationToWcs_inline ([cocoaFileName UTF8String], file. path);
-			if (theOpenDocumentCallback)
-				theOpenDocumentCallback (& file);
-		}
-	}
+//	- (void) sendEvent: (NSEvent *) nsEvent {
+//		if ([nsEvent type] == NSKeyDown) {
+//			NSString *characters = [nsEvent characters];
+//			unichar character = [characters characterAtIndex: 0];
+//			if (Melder_getTracing ()) {
+//				for (NSUInteger i = 0; i < [characters length]; i ++) {
+//					unichar kar = [characters characterAtIndex: 0];
+//					trace ("character [%d]: %d", (int) i, (int) kar);
+//				}
+//				trace ("modifiers: %d", (int) [nsEvent modifierFlags]);
+//			}
+//			if (character == NSTabCharacter) {
+//				NSWindow *cocoaKeyWindow = [NSApp keyWindow];
+//				if ([cocoaKeyWindow class] == [GuiCocoaWindow class]) {
+//					GuiWindow window = (GuiWindow) [(GuiCocoaWindow *) cocoaKeyWindow userData];
+//					if (window -> d_tabCallback) {
+//						try {
+//							struct structGuiMenuItemEvent event = { NULL, 0 };
+//							window -> d_tabCallback (window -> d_tabBoss, & event);
+//						} catch (MelderError) {
+//							Melder_flushError ("Tab key not completely handled.");
+//						}
+//						return;
+//					}
+//				}
+//			} else if (character == NSBackTabCharacter) {
+//				NSWindow *cocoaKeyWindow = [NSApp keyWindow];
+//				if ([cocoaKeyWindow class] == [GuiCocoaWindow class]) {
+//					GuiWindow window = (GuiWindow) [(GuiCocoaWindow *) cocoaKeyWindow userData];
+//					Melder_assert ([nsEvent modifierFlags] & NSShiftKeyMask);
+//					if (window -> d_shiftTabCallback) {
+//						try {
+//							struct structGuiMenuItemEvent event = { NULL, 0 };
+//							window -> d_shiftTabCallback (window -> d_shiftTabBoss, & event);
+//						} catch (MelderError) {
+//							Melder_flushError ("Tab key not completely handled.");
+//						}
+//						return;
+//					}
+//				}
+//			} else if (character == NSDeleteCharacter) {
+//				NSWindow *cocoaKeyWindow = [NSApp keyWindow];
+//				if ([cocoaKeyWindow class] == [GuiCocoaWindow class]) {
+//					GuiWindow window = (GuiWindow) [(GuiCocoaWindow *) cocoaKeyWindow userData];
+//					if (([nsEvent modifierFlags] & NSAlternateKeyMask) && window -> d_optionBackspaceCallback) {
+//						try {
+//							struct structGuiMenuItemEvent event = { NULL, 0 };
+//							window -> d_optionBackspaceCallback (window -> d_optionBackspaceBoss, & event);
+//						} catch (MelderError) {
+//							Melder_flushError ("Option-Backspace not completely handled.");
+//						}
+//						return;
+//					}
+//				}
+//			}
+//		}
+//		[super sendEvent: nsEvent];   // the default action
+//	}
+//	/*
+//	 * The delegate methods.
+//	 */
+//	- (void) applicationWillFinishLaunching: (NSNotification *) note
+//	{
+//		(void) note;
+//		for (int imenu = 1; imenu <= theNumberOfMenuBarItems; imenu ++) {
+//			[[NSApp mainMenu] addItem: theMenuBarItems [imenu]];   // the menu will retain the item...
+//			[theMenuBarItems [imenu] release];   // ... so we can release the item
+//		}
+//	}
+//	- (void) application: (NSApplication *) sender openFiles: (NSArray *) fileNames
+//	{
+//		(void) sender;
+//		for (NSUInteger i = 1; i <= [fileNames count]; i ++) {
+//			NSString *cocoaFileName = [fileNames objectAtIndex: i - 1];
+//			structMelderFile file = { 0 };
+//			Melder_8bitFileRepresentationToWcs_inline ([cocoaFileName UTF8String], file. path);
+//			if (theOpenDocumentCallback)
+//				theOpenDocumentCallback (& file);
+//		}
+//	}
 	@end
 #elif motif
 	static void _guiMotifMenu_destroyCallback (GuiObject widget, XtPointer void_me, XtPointer call) {
@@ -220,7 +220,6 @@ void structGuiMenu :: f_empty () {
 		GuiMenu me = d_userData;
 		forget (me);
 		trace ("deleting a menu button");
-		[super dealloc];
 	}
 	- (GuiThing) userData {
 		return d_userData;
@@ -237,7 +236,6 @@ void structGuiMenu :: f_empty () {
 		GuiMenu me = d_userData;
 		forget (me);
 		trace ("deleting a menu");
-		[super dealloc];
 	}
 	- (GuiThing) userData {
 		return d_userData;
@@ -266,7 +264,7 @@ GuiMenu GuiMenu_createInWindow (GuiWindow window, const wchar_t *title, long fla
 		gtk_menu_set_accel_group (GTK_MENU (my d_widget), ag);
 		gtk_menu_item_set_submenu (GTK_MENU_ITEM (my d_gtkMenuTitle), GTK_WIDGET (my d_widget));
 		_GuiObject_setUserData (my d_widget, me);
-	#elif cocoa
+	#elif cocoaT
 		if (! theMenuBar) {
 			int numberOfMenus = [[[NSApp mainMenu] itemArray] count];
 			trace ("Number of menus: %d.", numberOfMenus);
@@ -394,7 +392,7 @@ GuiMenu GuiMenu_createInMenu (GuiMenu supermenu, const wchar_t *title, long flag
 		gtk_widget_show (GTK_WIDGET (my d_widget));
 		gtk_widget_show (GTK_WIDGET (my d_menuItem -> d_widget));
 		_GuiObject_setUserData (my d_widget, me);
-	#elif cocoa
+	#elif cocoaT
 		trace ("creating menu item %ls", title);
 		NSMenuItem *item = [[NSMenuItem alloc]
 			initWithTitle: (NSString *) Melder_peekWcsToCfstring (title)
@@ -488,7 +486,7 @@ GuiMenu GuiMenu_createInForm (GuiForm form, int left, int right, int top, int bo
 		gtk_button_set_alignment (GTK_BUTTON (my d_cascadeButton -> d_widget), 0.0f, 0.5f);
 		_GuiObject_setUserData (my d_widget, me);
 		_GuiObject_setUserData (my d_cascadeButton -> d_widget, me);
-	#elif cocoa
+	#elif cocoaT
 		my d_cascadeButton -> d_widget = my d_cocoaMenuButton = [[GuiCocoaMenuButton alloc] init];
 		my d_cascadeButton -> v_positionInForm (my d_cocoaMenuButton, left, right, top, bottom, form);
 		[my d_cocoaMenuButton   setUserData: me];

@@ -115,7 +115,6 @@ Thing_implement (GuiWindow, GuiShell, 0);
 		my d_cocoaWindow = NULL;   // this is already under destruction, so undangle
 		forget (me);
 		trace ("deleting a window");
-		[super dealloc];
 	}
 	- (GuiThing) userData {
 		return d_userData;
@@ -124,9 +123,9 @@ Thing_implement (GuiWindow, GuiShell, 0);
 		Melder_assert (userData == NULL || Thing_member (userData, classGuiWindow));
 		d_userData = static_cast <GuiWindow> (userData);
 	}
-	- (void) keyDown: (NSEvent *) theEvent {
-		trace ("key down");
-	}
+//	- (void) keyDown: (NSEvent *) theEvent {
+//		trace ("key down");
+//	}
 	//@end
 	//@interface GuiCocoaWindowDelegate : NSObject <NSWindowDelegate> { } @end
 	//@implementation GuiCocoaWindowDelegate {
@@ -139,7 +138,7 @@ Thing_implement (GuiWindow, GuiShell, 0);
 			my d_goAwayCallback (my d_goAwayBoss);
 		} else {
 			trace ("hiding window");
-			[widget orderOut: nil];
+// 			[widget orderOut: nil];
 		}
 		return FALSE;
 	}
@@ -185,7 +184,7 @@ GuiWindow GuiWindow_create (int x, int y, int width, int height,
 		gtk_widget_set_size_request (GTK_WIDGET (my d_widget), width, height);
 		gtk_container_add (GTK_CONTAINER (my d_gtkWindow), GTK_WIDGET (my d_widget));
 		g_signal_connect (G_OBJECT (my d_widget), "size-allocate", G_CALLBACK (_GuiWindow_resizeCallback), me);
-	#elif cocoa
+	#elif cocoaT
 		NSRect rect = { { x, y }, { width, height } };
 		my d_cocoaWindow = [[GuiCocoaWindow alloc]
 			initWithContentRect: rect
@@ -257,7 +256,7 @@ bool structGuiWindow :: f_setDirty (bool dirty) {
 		(void) dirty;
 		return false;
 	#elif cocoa
-		[d_cocoaWindow setDocumentEdited: dirty];
+//		[d_cocoaWindow setDocumentEdited: dirty];
 		return true;
 	#elif win
 		(void) dirty;

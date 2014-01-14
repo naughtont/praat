@@ -46,7 +46,7 @@ void gui_information (const wchar_t *message) {
 	 */
 	#if cocoa
 		//[theInfoEditor -> d_windowForm -> d_cocoaWindow   displayIfNeeded];   // apparently, this does not suffice
-		[theInfoEditor -> d_windowForm -> d_cocoaWindow   display];   // this displays the menu as well as the text
+//		[theInfoEditor -> d_windowForm -> d_cocoaWindow   display];   // this displays the menu as well as the text
 		//[theInfoEditor -> textWidget -> d_cocoaTextView   displayIfNeeded];   // this displays only the text
 		//[theInfoEditor -> textWidget -> d_cocoaTextView   display];
 	#elif defined (macintosh)

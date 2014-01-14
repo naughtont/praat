@@ -125,7 +125,7 @@ static void NativeMenuItem_setText (GuiObject me) {
 		GuiMenuItem me = d_userData;
 		forget (me);
 		trace ("deleting a menu item");
-		[super dealloc];
+//		[super dealloc];
 	}
 	- (GuiThing) userData {
 		return d_userData;
@@ -197,7 +197,7 @@ GuiMenuItem GuiMenu_addItem (GuiMenu menu, const wchar_t *title, long flags,
 		Melder_assert (menu -> d_widget);
 		gtk_menu_shell_append (GTK_MENU_SHELL (menu -> d_widget), GTK_WIDGET (my d_widget));
 		_GuiObject_setUserData (my d_widget, me);
-	#elif cocoa
+	#elif cocoaT
 		NSString *string = (NSString *) Melder_peekWcsToCfstring (title);
 		GuiCocoaMenuItem *menuItem = [[GuiCocoaMenuItem alloc]
 			initWithTitle:string
@@ -228,7 +228,7 @@ GuiMenuItem GuiMenu_addItem (GuiMenu menu, const wchar_t *title, long flags,
 	if (flags & GuiMenu_TOGGLE_ON)
 		#if gtk
 			gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (my d_widget), TRUE);
-		#elif cocoa
+		#elif cocoaT
 			[menuItem setState: NSOnState];
 		#elif motif
 			XmToggleButtonGadgetSetState (my d_widget, True, False);
@@ -268,7 +268,7 @@ GuiMenuItem GuiMenu_addItem (GuiMenu menu, const wchar_t *title, long flags,
 				gtk_widget_add_accelerator (GTK_WIDGET (my d_widget), toggle ? "toggled" : "activate",
 					ag, key, modifiers, GTK_ACCEL_VISIBLE);
 
-		#elif cocoa
+		#elif cocoaT
 			accelerator = tolower (accelerator);   // otherwise, a Shift key is introduced in the mask
 			NSUInteger mask = 0;
 			if (flags & GuiMenu_COMMAND) mask |= NSCommandKeyMask;
@@ -357,7 +357,7 @@ GuiMenuItem GuiMenu_addItem (GuiMenu menu, const wchar_t *title, long flags,
 			gtk_widget_set_sensitive (GTK_WIDGET (my d_widget), FALSE);
 		}
 		gtk_widget_show (GTK_WIDGET (my d_widget));
-	#elif cocoa
+	#elif cocoaT
 		[(NSMenuItem *) my d_widget setTarget: (id) my d_widget];
 		[(NSMenuItem *) my d_widget setAction: @selector (_guiCocoaMenuItem_activateCallback:)];
 	#elif motif
@@ -386,7 +386,7 @@ GuiMenuItem GuiMenu_addSeparator (GuiMenu menu) {
 		my d_widget = gtk_separator_menu_item_new ();
 		gtk_menu_shell_append (GTK_MENU_SHELL (menu -> d_widget), GTK_WIDGET (my d_widget));
 		gtk_widget_show (GTK_WIDGET (my d_widget));
-	#elif cocoa
+	#elif cocoaT
 		my d_widget = (GuiObject) [GuiCocoaMenuItem separatorItem];
 		trace ("install separator in menu %p", menu);
 		trace ("installing separator in GuiMenu %p (NSMenu %p); retain count = %d", menu, menu -> d_cocoaMenu, [((NSMenuItem *) my d_widget) retainCount]);
@@ -416,7 +416,7 @@ void structGuiMenuItem :: f_check (bool check) {
 		d_callbackBlocked = true;
 		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (d_widget), check);
 		d_callbackBlocked = false;
-	#elif cocoa
+	#elif cocoaT
 		GuiCocoaMenuItem *item = (GuiCocoaMenuItem*)d_widget;
 		[item   setState: check];
 	#elif motif

@@ -77,7 +77,7 @@ void praat_reportGraphicalProperties () {
 	Gui_getWindowPositioningBounds (& x, & y, & width, & height);
 	MelderInfo_writeLine (L"Window positioning area: x = ", Melder_double (x), L", y = ", Melder_double (y),
 		L", width = ", Melder_double (width), L", height = ", Melder_double (height));
-	#if defined (macintosh)
+	#if defined (macintoshT)
 		CGDirectDisplayID screen = CGMainDisplayID ();
 		CGSize screenSize_mm = CGDisplayScreenSize (screen);
 		double diagonal_mm = sqrt (screenSize_mm. width * screenSize_mm. width + screenSize_mm. height * screenSize_mm. height);

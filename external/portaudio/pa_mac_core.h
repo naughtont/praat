@@ -90,7 +90,7 @@ void PaMacCore_SetupChannelMap( PaMacCoreStreamInfo *data, const SInt32 * const 
  *
  * @return A valid AudioDeviceID, or NULL if an error occurred.
  */
-AudioDeviceID PaMacCore_GetStreamInputDevice( PaStream* s );
+//AudioDeviceID PaMacCore_GetStreamInputDevice( PaStream* s );
  
 /*
  * Retrieve the AudioDeviceID of the output device assigned to an open stream
@@ -99,7 +99,7 @@ AudioDeviceID PaMacCore_GetStreamInputDevice( PaStream* s );
  *
  * @return A valid AudioDeviceID, or NULL if an error occurred.
  */
-AudioDeviceID PaMacCore_GetStreamOutputDevice( PaStream* s );
+//AudioDeviceID PaMacCore_GetStreamOutputDevice( PaStream* s );
 
 /*
  * Returns a statically allocated string with the device's name

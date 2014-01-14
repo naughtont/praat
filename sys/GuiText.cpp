@@ -868,7 +868,7 @@ void _GuiText_exit (void) {
 		GuiText me = d_userData;
 		forget (me);
 		trace ("deleting a text field");
-		[super dealloc];
+//		[super dealloc];
 	}
 	- (GuiThing) userData {
 		return d_userData;
@@ -893,7 +893,6 @@ void _GuiText_exit (void) {
 		GuiText me = d_userData;
 		forget (me);
 		trace ("deleting a text view");
-		[super dealloc];
 	}
 	- (GuiThing) userData {
 		return d_userData;
@@ -907,18 +906,18 @@ void _GuiText_exit (void) {
 	 * While NSTextDelegate simply has textDidChange:, that method doesn't seem to respond when the text is changed programmatically.
 	 */
 //	- (void) textDidChange: (NSNotification *) notification {
-	- (BOOL) textView: (NSTextView *) aTextView   shouldChangeTextInRange: (NSRange) affectedCharRange   replacementString: (NSString *) replacementString {
-		(void) aTextView;
-		(void) affectedCharRange;
-		(void) replacementString;
-		trace ("changing text to: %s", [replacementString UTF8String]);
-		GuiText me = d_userData;
-		if (me && my d_changeCallback) {
-			struct structGuiTextEvent event = { me };
-			my d_changeCallback (my d_changeBoss, & event);
-		}
-		return YES;
-	}
+//	- (BOOL) textView: (NSTextView *) aTextView   shouldChangeTextInRange: (NSRange) affectedCharRange   replacementString: (NSString *) replacementString {
+//		(void) aTextView;
+//		(void) affectedCharRange;
+//		(void) replacementString;
+//		trace ("changing text to: %s", [replacementString UTF8String]);
+//		GuiText me = d_userData;
+//		if (me && my d_changeCallback) {
+//			struct structGuiTextEvent event = { me };
+//			my d_changeCallback (my d_changeBoss, & event);
+//		}
+//		return YES;
+//	}
 	@end
 #elif win
 #elif mac
@@ -968,7 +967,7 @@ GuiText GuiText_create (GuiForm parent, int left, int right, int top, int bottom
 		my d_undo_item = NULL;
 		my d_redo_item = NULL;
 		g_signal_connect (G_OBJECT (my d_widget), "destroy", G_CALLBACK (_GuiGtkText_destroyCallback), me);
-	#elif cocoa
+	#elif cocoaT
 		if (flags & GuiText_SCROLLED) {
 			my d_cocoaScrollView = [[GuiCocoaScrolledWindow alloc] init];
 			[my d_cocoaScrollView setUserData: NULL];   // because those user data can only be GuiScrolledWindow
@@ -1040,7 +1039,7 @@ GuiText GuiText_create (GuiForm parent, int left, int right, int top, int bottom
 		if (! my d_widget -> shell -> textFocus) {
 			my d_widget -> shell -> textFocus = my d_widget;   /* Even if not-yet-managed. But in that case it will not receive global focus. */
 		}
-	#elif mac
+	#elif macT
 		if (flags & GuiText_SCROLLED) {
 			my d_widget = _Gui_initializeWidget (xmTextWidgetClass, parent -> d_widget, L"scrolledText");
 			_GuiObject_setUserData (my d_widget, me);
@@ -1103,7 +1102,7 @@ void structGuiText :: f_copy () {
 			GtkClipboard *cb = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
 			gtk_text_buffer_copy_clipboard (buffer, cb);
 		}
-	#elif cocoa
+	#elif cocoaT
 		if (d_cocoaTextView) {
 			[d_cocoaTextView copy: nil];
 		} else {
@@ -1112,7 +1111,7 @@ void structGuiText :: f_copy () {
 	#elif win
 		if (! NativeText_getSelectionRange (d_widget, NULL, NULL)) return;
 		SendMessage (d_widget -> window, WM_COPY, 0, 0);
-	#elif mac
+	#elif macT
 		if (! NativeText_getSelectionRange (d_widget, NULL, NULL)) return;
 		if (isTextControl (d_widget)) {
 			HandleControlKey (d_widget -> nat.control.handle, 0, 'C', cmdKey);
@@ -1131,7 +1130,7 @@ void structGuiText :: f_cut () {
 			GtkClipboard *cb = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
 			gtk_text_buffer_cut_clipboard (buffer, cb, gtk_text_view_get_editable (GTK_TEXT_VIEW (d_widget)));
 		}
-	#elif cocoa
+	#elif cocoaT
 		if (d_cocoaTextView) {
 			[d_cocoaTextView cut: nil];
 		} else {
@@ -1141,7 +1140,7 @@ void structGuiText :: f_cut () {
 		if (! d_editable || ! NativeText_getSelectionRange (d_widget, NULL, NULL)) return;
 		SendMessage (d_widget -> window, WM_CUT, 0, 0);   // this will send the EN_CHANGE message, hence no need to call the valueChangedCallbacks
 		UpdateWindow (d_widget -> window);
-	#elif mac
+	#elif macT
 		if (! d_editable || ! NativeText_getSelectionRange (d_widget, NULL, NULL)) return;
 		if (isTextControl (d_widget)) {
 			_GuiMac_clipOnParent (d_widget);
@@ -1264,7 +1263,7 @@ wchar_t * structGuiText :: f_getStringAndSelectionPosition (long *first, long *l
 			return result;
 		}
 		return NULL;
-	#elif cocoa
+	#elif cocoaT
 		if (d_cocoaTextView) {
 			NSString *nsString = [d_cocoaTextView string];
 			wchar_t *result = Melder_utf8ToWcs ([nsString UTF8String]);
@@ -1298,14 +1297,15 @@ wchar_t * structGuiText :: f_getStringAndSelectionPosition (long *first, long *l
 		Melder_killReturns_inlineW (result);
 		return result;
 	#elif mac
-		long length = NativeText_getLength (d_widget);   // UTF-16 length; should be enough for UTF-32 buffer
-		wchar_t *result = Melder_malloc_f (wchar_t, length + 1);
-		NativeText_getText (d_widget, result, length);
-		NativeText_getSelectionRange (d_widget, first, last);   // 'first' and 'last' are expressed in UTF-16 words
+//		long length = NativeText_getLength (d_widget);   // UTF-16 length; should be enough for UTF-32 buffer
+    wchar_t *result = 0;// Melder_malloc_f (wchar_t, length + 1);
+//		NativeText_getText (d_widget, result, length);
+//		NativeText_getSelectionRange (d_widget, first, last);   // 'first' and 'last' are expressed in UTF-16 words
 		for (long i = 0; i < *first; i ++) if (result [i] > 0xFFFF) { (*first) --; (*last) --; }
 		for (long i = *first; i < *last; i ++) if (result [i] > 0xFFFF) { (*last) --; }
 		Melder_killReturns_inlineW (result);
-		return result;
+    return result;
+
 	#endif
 }
 
@@ -1318,7 +1318,7 @@ void structGuiText :: f_paste () {
 			GtkClipboard *cb = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
 			gtk_text_buffer_paste_clipboard (buffer, cb, NULL, gtk_text_view_get_editable (GTK_TEXT_VIEW (d_widget)));
 		}
-	#elif cocoa
+	#elif cocoaT
 		if (d_cocoaTextView) {
 			[d_cocoaTextView pasteAsPlainText: nil];
 		} else {
@@ -1328,7 +1328,7 @@ void structGuiText :: f_paste () {
 		if (! d_editable) return;
 		SendMessage (d_widget -> window, WM_PASTE, 0, 0);   // this will send the EN_CHANGE message, hence no need to call the valueChangedCallbacks
 		UpdateWindow (d_widget -> window);
-	#elif mac
+	#elif macT
 		if (! d_editable) return;
 		if (isTextControl (d_widget)) {
 			_GuiMac_clipOnParent (d_widget);
@@ -1402,7 +1402,7 @@ void structGuiText :: f_replace (long from_pos, long to_pos, const wchar_t *text
 			gtk_text_buffer_insert_interactive (buffer, & from_it, newText, g_utf8_strlen (newText, -1),
 				gtk_text_view_get_editable (GTK_TEXT_VIEW (d_widget)));
 		}
-	#elif cocoa
+	#elif cocoaT
 		if (d_cocoaTextView) {
 			long numberOfLeadingHighUnicodeValues = 0, numberOfSelectedHighUnicodeValues = 0;
 			{// scope
@@ -1435,7 +1435,7 @@ void structGuiText :: f_replace (long from_pos, long to_pos, const wchar_t *text
 		Edit_ReplaceSel (d_widget -> window, winText);
 		Melder_free (winText);
 		UpdateWindow (d_widget -> window);
-	#elif mac
+	#elif macT
 		long length = wcslen (text), i;
 		wchar_t *macText = Melder_malloc_f (wchar_t, length + 1);
 		Melder_assert (d_widget -> widgetClass == xmTextWidgetClass);
@@ -1524,7 +1524,7 @@ void structGuiText :: f_setFontSize (int size) {
 		trace ("after initializing Pango: locale is %s", setlocale (LC_ALL, NULL));
 		modStyle -> font_desc = fontDesc;
 		gtk_widget_modify_style (GTK_WIDGET (d_widget), modStyle);
-	#elif cocoa
+	#elif cocoaT
 		if (d_cocoaTextView) {
 			[d_cocoaTextView setFont: [NSFont systemFontOfSize: size]];
 		}
@@ -1549,7 +1549,7 @@ void structGuiText :: f_setFontSize (int size) {
 		Melder_free (text);
 		f_setSelection (first, last);
 		UpdateWindow (d_widget -> window);
-	#elif mac
+	#elif macT
 		if (isMLTE (this)) {
 			TXNTypeAttributes attr;
 			attr. tag = kTXNQDFontSizeAttribute;
@@ -1660,7 +1660,7 @@ void structGuiText :: f_setString (const wchar_t *text) {
 			gtk_text_buffer_delete_interactive (textBuffer, & start, & end, gtk_text_view_get_editable (GTK_TEXT_VIEW (d_widget)));
 			gtk_text_buffer_insert_interactive (textBuffer, & start, textUtf8, strlen (textUtf8), gtk_text_view_get_editable (GTK_TEXT_VIEW (d_widget)));
 		}
-	#elif cocoa
+	#elif cocoaT
 		trace ("title");
 		if (d_cocoaTextView) {
 			NSRange nsRange = NSMakeRange (0, [[d_cocoaTextView textStorage] length]);
@@ -1686,7 +1686,7 @@ void structGuiText :: f_setString (const wchar_t *text) {
 		SetWindowText (d_widget -> window, winText);
 		Melder_free (winText);
 		UpdateWindow (d_widget -> window);
-	#elif mac
+	#elif macT
 		long length_utf32 = wcslen (text), length_utf16 = wcslen_utf16 (text, false);
 		UniChar *macText = Melder_malloc_f (UniChar, length_utf16 + 1);
 		Melder_assert (d_widget -> widgetClass == xmTextWidgetClass);

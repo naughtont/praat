@@ -905,7 +905,7 @@ static void gui_cb_scroll (I, GuiScrollBarEvent event) {
     
     if (draw) {
         
-#if cocoa
+#if cocoaT
         NSView *view = 	(NSView *) my drawingArea -> d_widget;
         [view setNeedsDisplay:YES];
 #else
@@ -1168,7 +1168,7 @@ void structFunctionEditor :: v_createChildren () {
 		#if gtk
 			Melder_assert (text -> d_widget);
 			gtk_widget_grab_focus (GTK_WIDGET (text -> d_widget));   // BUG: can hardly be correct (the text should grab the focus of the window, not the global focus)
-		#elif cocoa
+		#elif cocoaT
 			Melder_assert ([(NSView *) text -> d_widget window]);
 			//[[(NSView *) text -> d_widget window] setInitialFirstResponder: (NSView *) text -> d_widget];
 			[[(NSView *) text -> d_widget window] makeFirstResponder: (NSView *) text -> d_widget];

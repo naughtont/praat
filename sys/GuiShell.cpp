@@ -23,7 +23,7 @@
 Thing_implement (GuiShell, GuiForm, 0);
 
 void structGuiShell :: v_destroy () {
-	#if cocoa
+	#if cocoaT
 		if (d_cocoaWindow) {
 			[d_cocoaWindow setUserData: NULL];   // undangle reference to this
 			Melder_fatal ("ordering out?");
@@ -63,11 +63,11 @@ int structGuiShell :: f_getShellHeight () {
 void structGuiShell :: f_setTitle (const wchar_t *title) {
 	#if gtk
 		gtk_window_set_title (d_gtkWindow, Melder_peekWcsToUtf8 (title));
-	#elif cocoa
+	#elif cocoaT
 		[d_cocoaWindow setTitle: (NSString *) Melder_peekWcsToCfstring (title)];
 	#elif win
 		SetWindowText (d_xmShell -> window, title);
-	#elif mac
+	#elif macT
 		SetWindowTitleWithCFString (d_xmShell -> nat.window.ptr, (CFStringRef) Melder_peekWcsToCfstring (title));
 	#endif
 }
@@ -76,12 +76,12 @@ void structGuiShell :: f_drain () {
 	#if gtk
 		//gdk_window_flush (gtk_widget_get_window (me));
 		gdk_flush ();
-	#elif cocoa
+	#elif cocoaT
         //[d_cocoaWindow displayIfNeeded];
         [d_cocoaWindow flushWindow];
 		[d_cocoaWindow display];
 	#elif win
-	#elif mac
+	#elif macT
 		Melder_assert (d_xmShell != NULL);
 		Melder_assert (d_xmShell -> nat.window.ptr != NULL);
 		QDFlushPortBuffer (GetWindowPort (d_xmShell -> nat.window.ptr), NULL);
