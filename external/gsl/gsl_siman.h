@@ -49,8 +49,8 @@ typedef void (*gsl_siman_destroy_t) (void *xp);
    initial guess. */
 
 typedef struct {
-  int n_tries;          /* how many points to try for each step */
-  int iters_fixed_T;    /* how many iterations at each temperature? */
+  long n_tries;          /* how many points to try for each step */
+  long iters_fixed_T;    /* how many iterations at each temperature? */
   double step_size;     /* max step size in the random walk */
   /* the following parameters are for the Boltzmann distribution */
   double k, t_initial, mu_t, t_min;
