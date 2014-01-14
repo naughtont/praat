@@ -54,7 +54,8 @@
         #include <Carbon/Carbon.h>
     #endif
     #if defined cocoaTouch
-        #include <UIKit/UIKit.h>
+#include <Foundation/Foundation.h>
+#include <UIKit/UIKit.h>
     #else
         #include <Cocoa/Cocoa.h>
     #endif

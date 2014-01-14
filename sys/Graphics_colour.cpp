@@ -104,7 +104,7 @@ void _Graphics_setColour (Graphics graphics, Graphics_Colour colour) {
 			SelectBrush (my d_gdiGraphicsContext, GetStockBrush (NULL_BRUSH));
 			DeleteObject (my d_winBrush);
 			my d_winBrush = CreateSolidBrush (my d_winForegroundColour);
-		#elif mac
+		#elif macT
         CGFloat components[] = {colour.red, colour.green, colour.blue, 1.0};
         my d_macColour = CGColorCreate(CGColorSpaceCreateDeviceRGB(), components);
 		#endif
