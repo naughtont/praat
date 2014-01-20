@@ -793,7 +793,7 @@ int Melder_assert_ (const char *condition, const char *fileName, int lineNumber)
 
 #if defined (macintosh)
 
-#if defined (cocoaTouch) 
+#if defined (cocoaTouch)
 
 #else
 static void mac_message (NSAlertStyle macAlertType, const wchar_t *messageW) {

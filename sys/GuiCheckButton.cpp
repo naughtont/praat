@@ -85,7 +85,7 @@ Thing_implement (GuiCheckButton, GuiControl, 0);
 			my d_valueChangedCallback (my d_valueChangedBoss, & event);
 		}
 	}
-#elif mac
+#elif useCarbon
 	void _GuiMacCheckButton_destroy (GuiObject widget) {
 		iam_checkbutton;
 		_GuiNativeControl_destroy (widget);

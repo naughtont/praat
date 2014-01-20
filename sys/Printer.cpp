@@ -79,18 +79,19 @@ void Printer_prefs (void) {
 	static HDC theWinDC;
 #endif
 
-#if defined (_WIN32) || defined (macintosh)
+#if defined (_WIN32) || useCarbon
 	int Printer_postScript_printf (void *stream, const char *format, ... ) {
 		#if defined (_WIN32)
 			static union { char chars [3002]; short shorts [1501]; } theLine;
-		#elif defined (macintosh)
+		#elif defined useCarbon
 			static Handle theLine;
 		#endif
 		int length;
 		va_list args;
 		va_start (args, format);
 		(void) stream;
-		#if cocoa
+		#if cocoaTouch
+        #elfif cocoa
 		#elif defined (_WIN32)
 			vsprintf (theLine.chars + 2, format, args);
 			length = strlen (theLine.chars + 2);
@@ -102,7 +103,7 @@ void Printer_prefs (void) {
 				length ++;
 			}
 			Escape (theWinDC, POSTSCRIPT_PASSTHROUGH, length + 2, theLine.chars, NULL);
-		#elif defined (macintosh)
+		#elif useCarbon
 			if (! theLine) {
 				theLine = NewHandle (3000);
 				HLock (theLine);
@@ -150,7 +151,7 @@ Printer_postScript_printf (NULL, "8 8 scale initclip\n");
 #elif defined (_WIN32)
 	static void initPrinter (void) {
 	}
-#elif defined (macintosh)
+#elif useCarbon
 	static void initPrinter (void) {
 		Boolean result;
 		PMResolution res300 = { 300, 300 }, res600 = { 600, 600 };
@@ -191,7 +192,7 @@ void Printer_nextPage (void) {
 			SetBkMode (theWinDC, TRANSPARENT);
 			SetTextAlign (theWinDC, TA_LEFT | TA_BASELINE | TA_NOUPDATECP);
 		}
-	#elif defined (macintosh)
+	#elif useCarbon
 		PMSessionEndPage (theMacPrintSession);
 		PMSessionBeginPage (theMacPrintSession, theMacPageFormat, NULL);
 		PMSessionGetGraphicsContext (theMacPrintSession, kPMGraphicsContextQuickdraw, (void **) & theMacPort);
@@ -203,7 +204,7 @@ void Printer_nextPage (void) {
 int Printer_pageSetup (void) {
 	#if cocoa
 	#elif defined (_WIN32)
-	#elif defined (macintosh)
+	#elif useCarbon
 		Boolean accepted;
 		initPrinter ();
 		PMSessionPageSetupDialog (theMacPrintSession, theMacPageFormat, & accepted);
@@ -404,7 +405,7 @@ int Printer_print (void (*draw) (void *boss, Graphics g), void *boss) {
 			}
 			EnableWindow ((HWND) XtWindow (theCurrentPraatApplication -> topShell -> d_xmShell), TRUE);
 			DeleteDC (theWinDC), theWinDC = NULL;
-		#elif defined (macintosh)
+		#elif useCarbon
 			Boolean result;
 			initPrinter ();
 			if (Melder_backgrounding) {
@@ -456,7 +457,7 @@ int Printer_print (void (*draw) (void *boss, Graphics g), void *boss) {
 		return 1;
 	} catch (MelderError) {
 		#if cocoa
-		#elif defined (macintosh)
+		#elif useCarbon
 			if (theMacPort) {
 				PMSessionEndPage (theMacPrintSession);
 				PMSessionEndDocument (theMacPrintSession);

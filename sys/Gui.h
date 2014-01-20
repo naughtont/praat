@@ -30,16 +30,17 @@
 	#define gtk 0
 	#define motif 1
 	#define cocoa 0
-#elif defined (macintosh)
-	#if useCarbon
-		#define gtk 0
-		#define motif 1
-		#define cocoa 0
-	#else
-		#define gtk 0
-		#define motif 0
-		#define cocoa 1
-	#endif
+#elif defined (carbon)
+    #define gtk 0
+    #define motif 1
+#elif defined (cocoa)
+    #define gtk 0
+    #define motif 0
+    #define cocoa 1
+#elif defined (cocoaTouch)
+    #define gtk 0
+    #define motif 0
+    #define cocoa 0
 #endif
 
 #include "Collection.h"
@@ -48,18 +49,18 @@
 	#include <gtk/gtk.h>
 	#include <gdk/gdk.h>
 	#include <cairo/cairo.h>
-#elif defined (macintosh)
-	#include "macport_on.h"
-    #if useCarbon
-        #include <Carbon/Carbon.h>
-    #endif
-    #if defined cocoaTouch
-#include <Foundation/Foundation.h>
-#include <UIKit/UIKit.h>
-    #else
-        #include <Cocoa/Cocoa.h>
-    #endif
-
+#elif defined (carbon)
+    #include "macport_on.h"
+    #include <Carbon/Carbon.h>
+    #include "macport_off.h"
+#elif defined (cocoaTouch)
+    #include "macport_on.h"
+    #include <Foundation/Foundation.h>
+    #include <UIKit/UIKit.h>
+    #include "macport_off.h"
+#elif defined (cocoa)
+    #include "macport_on.h"
+    #include <Cocoa/Cocoa.h>
     #include "macport_off.h"
 #elif defined (_WIN32)
 	#include "winport_on.h"
@@ -113,6 +114,14 @@
 	@end
 	typedef NSObject <GuiCocoaAny> *GuiObject;
 
+#elif cocoaTouch
+
+    Thing_declare (GuiThing);
+    @protocol GuiCocoaAny
+    - (GuiThing) userData;
+    - (void) setUserData: (GuiThing) userData;
+    @end
+    typedef NSObject <GuiCocoaAny> *GuiObject;
 
 #if defined cocoaTouch
 @interface GuiCocoaApplication : UIApplication @end
@@ -124,9 +133,11 @@
 @property (nonatomic, retain) NSMutableArray *contents;
 @property (nonatomic, retain) UITableView *tableView;
 @end
-@interface GuiCocoaMenu : UIButton <GuiCocoaAny> @end
 @interface GuiCocoaMenuButton : UIButton <GuiCocoaAny> @end
-@interface GuiCocoaMenuItem : UIMenuItem <GuiCocoaAny> @end
+@interface GuiCocoaMenuItem : UIButton <GuiCocoaAny> @end
+@interface GuiCocoaMenu : UIButton <GuiCocoaAny>
+-(void)addItem:(GuiCocoaMenuItem*)item;
+@end
 @interface GuiCocoaOptionMenu : UIButton <GuiCocoaAny> @end
 @interface GuiCocoaProgressBar : UIProgressView <GuiCocoaAny> @end
 @interface GuiCocoaRadioButton : UIButton <GuiCocoaAny> @end
@@ -633,7 +644,11 @@ Thing_define (GuiMenu, GuiThing) { public:
 	GuiButton d_cascadeButton;
 	#if gtk
 		GtkMenuItem *d_gtkMenuTitle;
-	#elif cocoa
+#elif cocoaTouch
+    GuiCocoaMenu *d_cocoaMenu;
+    GuiCocoaMenuItem *d_cocoaMenuItem;
+    GuiCocoaMenuButton *d_cocoaMenuButton;
+#elif cocoa
 		GuiCocoaMenu *d_cocoaMenu;
 		GuiCocoaMenuItem *d_cocoaMenuItem;
 		GuiCocoaMenuButton *d_cocoaMenuButton;
@@ -898,6 +913,9 @@ Thing_define (GuiText, GuiControl) { public:
 	#if cocoa
 		GuiCocoaScrolledWindow *d_cocoaScrollView;
 		GuiCocoaTextView *d_cocoaTextView;
+    #elif cocoaTouch
+        GuiCocoaScrolledWindow *d_cocoaScrollView;
+        GuiCocoaTextView *d_cocoaTextView;
 	#elif defined (macintosh)
 		TXNObject d_macMlteObject;
 		TXNFrameID d_macMlteFrameId;

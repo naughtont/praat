@@ -180,7 +180,7 @@ Thing_implement (GuiList, GuiControl, 0);
 			my d_selectionChangedCallback (my d_selectionChangedBoss, & event);
 		}
 	}
-#elif mac
+#elif useCarbon
 	void _GuiMacList_destroy (GuiObject widget) {
 		iam_list;
 		_GuiMac_clipOnParent (widget);
@@ -450,7 +450,7 @@ GuiList GuiList_create (GuiForm parent, int left, int right, int top, int bottom
 			my d_widget -> parent -> motiff.scrolledWindow.verticalBar = NULL;
 		}*/
 		my v_positionInForm (my d_widget, left, right, top, bottom, parent);
-	#elif mac
+	#elif userCarbon
 		my d_xmScrolled = XmCreateScrolledWindow (parent -> d_widget, "scrolled", NULL, 0);
 		my v_positionInForm (my d_xmScrolled, left, right, top, bottom, parent);
 		my d_xmList = my d_widget = _Gui_initializeWidget (xmListWidgetClass, my d_xmScrolled, L"list");
@@ -485,13 +485,17 @@ void structGuiList :: f_deleteAllItems () {
 	#if gtk
 		GtkListStore *list_store = GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (d_widget)));
 		gtk_list_store_clear (list_store);
-	#elif cocoa
+    #elif cocoaTouch
+        GuiCocoaList *list = (GuiCocoaList *) d_widget;
+        [list.contents removeAllObjects];
+        [list.tableView reloadData];
+    #elif cocoa
         GuiCocoaList *list = (GuiCocoaList *) d_widget;
         [list.contents removeAllObjects];
         [list.tableView reloadData];
 	#elif win
 		ListBox_ResetContent (d_widget -> window);
-	#elif mac
+	#elif useCarbon
 		_GuiMac_clipOnParent (d_widget);
 		LDelRow (0, 0, d_macListHandle);
 		GuiMac_clipOff ();
@@ -506,13 +510,14 @@ void structGuiList :: f_deleteItem (long position) {
 		if (gtk_tree_model_iter_nth_child (tree_model, & iter, NULL, (gint) (position - 1))) {
 			gtk_list_store_remove (GTK_LIST_STORE (tree_model), & iter);
 		}
-	#elif cocoa
+    #elif cocoaTouch
+    #elif cocoa
 		GuiCocoaList *list = (GuiCocoaList *) d_widget;
 		[list. contents   removeObjectAtIndex: position - 1];
 		[list. tableView   reloadData];
 	#elif win
 		ListBox_DeleteString (d_widget -> window, position - 1);
-	#elif mac
+	#elif useCarbon
 		_GuiMac_clipOnParent (d_widget);
 		LDelRow (1, position - 1, d_macListHandle);
 		GuiMac_clipOff ();
@@ -647,15 +652,17 @@ long structGuiList :: f_getBottomPosition () {
 	#if gtk
 		// TODO
 		return 1;
-	#elif cocoa
-		return 1;   // TODO
+    #elif cocoaTouch
+        return 1;   // TODO
+    #elif cocoa
+        return 1;   // TODO
 	#elif win
 		long bottom = ListBox_GetTopIndex (d_widget -> window) + d_widget -> height / ListBox_GetItemHeight (d_widget -> window, 0);
 		if (bottom < 1) bottom = 1;
 		long n = ListBox_GetCount (d_widget -> window);
 		if (bottom > n) bottom = n;
 		return bottom;
-	#elif mac
+	#elif useCarbon
 		Melder_assert (d_widget -> parent -> widgetClass == xmScrolledWindowWidgetClass);
 		GuiObject clipWindow = d_widget -> parent -> motiff.scrolledWindow.clipWindow;
 		GuiObject workWindow = d_widget -> parent -> motiff.scrolledWindow.workWindow;
@@ -675,12 +682,15 @@ long structGuiList :: f_getNumberOfItems () {
 	#if gtk
 		GtkTreeModel *model = gtk_tree_view_get_model (GTK_TREE_VIEW (d_widget));
 		numberOfItems = gtk_tree_model_iter_n_children (model, NULL); 
-	#elif cocoa
-		GuiCocoaList *list = (GuiCocoaList *) d_widget;
-		numberOfItems = [[list contents] count];
+    #elif cocoaTouch
+        GuiCocoaList *list = (GuiCocoaList *) d_widget;
+        numberOfItems = [[list contents] count];
+    #elif cocoa
+        GuiCocoaList *list = (GuiCocoaList *) d_widget;
+        numberOfItems = [[list contents] count];
 	#elif win
 		numberOfItems = ListBox_GetCount (d_widget -> window);
-	#elif mac
+	#elif useCarbon
 		numberOfItems = (** d_macListHandle). dataBounds. bottom;
 	#endif
 	return numberOfItems;
@@ -690,15 +700,17 @@ long structGuiList :: f_getTopPosition () {
 	#if gtk
 		// TODO
 		return 1;
-	#elif cocoa
+	#elif cocoaTouch
 		return 1;   // TODO
+    #elif cocoa
+        return 1;   // TODO
 	#elif win
 		long top = ListBox_GetTopIndex (d_widget -> window);
 		if (top < 1) top = 1;
 		long n = ListBox_GetCount (d_widget -> window);
 		if (top > n) top = 0;
 		return top;
-	#elif mac
+	#elif useCarbon
 		Melder_assert (d_widget -> parent -> widgetClass == xmScrolledWindowWidgetClass);
 		GuiObject clipWindow = d_widget -> parent -> motiff.scrolledWindow.clipWindow;
 		GuiObject workWindow = d_widget -> parent -> motiff.scrolledWindow.workWindow;
@@ -723,7 +735,7 @@ void structGuiList :: f_insertItem (const wchar_t *itemText, long position) {
 		// TODO: Tekst opsplitsen
 		// does GTK know the '0' trick?
 		// it does know about NULL, to append in another function
-	#elif cocoa
+	#elif cocoaTouch
 		GuiCocoaList *list = (GuiCocoaList *) d_widget;
 		NSString *nsString = [[NSString alloc] initWithUTF8String: Melder_peekWcsToUtf8 (itemText)];
 		if (position)
@@ -732,12 +744,21 @@ void structGuiList :: f_insertItem (const wchar_t *itemText, long position) {
 			[[list contents]   addObject: nsString];   // insert at end
 		//Melder_assert ([nsString retainCount] == 2);
 		[[list tableView] reloadData];
+    #elif cocoa
+        GuiCocoaList *list = (GuiCocoaList *) d_widget;
+        NSString *nsString = [[NSString alloc] initWithUTF8String: Melder_peekWcsToUtf8 (itemText)];
+        if (position)
+            [[list contents]   insertObject: nsString   atIndex: position - 1];   // cocoa lists start with item 0
+        else
+            [[list contents]   addObject: nsString];   // insert at end
+        //Melder_assert ([nsString retainCount] == 2);
+        [[list tableView] reloadData];
 	#elif win
 		if (position)
 			ListBox_InsertString (d_widget -> window, position - 1, itemText);   // win lists start with item 0
 		else
 			ListBox_AddString (d_widget -> window, itemText);   // insert at end
-	#elif mac
+	#elif useCarbon
 		long n = (** d_macListHandle). dataBounds. bottom;
 		if (position == 0)
 			position = n + 1;   // insert at end
@@ -769,16 +790,21 @@ void structGuiList :: f_replaceItem (const wchar_t *itemText, long position) {
 		gtk_tree_path_free (path);*/
 		// gtk_list_store_set (list_store, & iter, 0, Melder_peekWcsToUtf8 (itemText), -1);
 		// TODO: Tekst opsplitsen
-	#elif cocoa
-		GuiCocoaList *list = (GuiCocoaList *) d_widget;
-		NSString *nsString = [[NSString alloc] initWithUTF8String: Melder_peekWcsToUtf8 (itemText)];
-		[[list contents]   replaceObjectAtIndex: position - 1   withObject: nsString];
-		[[list tableView] reloadData];
+    #elif cocoaTouch
+        GuiCocoaList *list = (GuiCocoaList *) d_widget;
+        NSString *nsString = [[NSString alloc] initWithUTF8String: Melder_peekWcsToUtf8 (itemText)];
+        [[list contents]   replaceObjectAtIndex: position - 1   withObject: nsString];
+        [[list tableView] reloadData];
+    #elif cocoa
+        GuiCocoaList *list = (GuiCocoaList *) d_widget;
+        NSString *nsString = [[NSString alloc] initWithUTF8String: Melder_peekWcsToUtf8 (itemText)];
+        [[list contents]   replaceObjectAtIndex: position - 1   withObject: nsString];
+        [[list tableView] reloadData];
 	#elif win
 		long nativePosition = position - 1;   // convert from 1-based to zero-based
 		ListBox_DeleteString (d_widget -> window, nativePosition);
 		ListBox_InsertString (d_widget -> window, nativePosition, itemText);
-	#elif mac
+	#elif useCarbon
 		_GuiMac_clipOnParent (d_widget);
 		Cell cell;
 		cell.h = 0;
@@ -804,6 +830,8 @@ void structGuiList :: f_selectItem (long position) {
 //		GtkTreeIter iter;
 //		gtk_tree_model_get_iter (GTK_TREE_MODEL (list_store), & iter, path);
 //		gtk_tree_selection_select_iter (selection, & iter);
+    #elif cocoaTouch
+        NSIndexSet *indexSet = [[NSIndexSet alloc] initWithIndex: position - 1];
 	#elif cocoa
 		NSIndexSet *indexSet = [[NSIndexSet alloc] initWithIndex: position - 1];
 //		GuiCocoaList *list = (GuiCocoaList *) d_widget;
@@ -815,7 +843,7 @@ void structGuiList :: f_selectItem (long position) {
 		} else {
 			ListBox_SetSel (d_widget -> window, True, position - 1);
 		}
-	#elif mac
+	#elif useCarbon
 		Cell cell; cell.h = 0;
 		_GuiMac_clipOnParent (d_widget);
 		if (! d_allowMultipleSelection) {
@@ -850,9 +878,11 @@ void structGuiList :: f_setTopPosition (long topPosition) {
 		gtk_tree_path_free (path);
 	#elif cocoa
 	 // COCOA TODO: implement
+    #elif cocoaTouch
+    // COCOA TODO: implement
 	#elif win
 		ListBox_SetTopIndex (d_widget -> window, topPosition - 1);
-	#elif mac
+	#elif useCarbon
 		//_GuiMac_clipOnParent (d_widget);
 		//LScroll (0, topPosition - (** d_macListHandle). visible. top - 1, d_macListHandle);   // TODO: implement
 		//GuiMac_clipOff ();

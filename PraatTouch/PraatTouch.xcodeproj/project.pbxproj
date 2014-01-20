@@ -7,13 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E233DBD418861754000FFF9B /* gsl_ieee-utils__fp.c in Sources */ = {isa = PBXBuildFile; fileRef = E2DCC38118859B1900C73A74 /* gsl_ieee-utils__fp.c */; };
 		E2D0AFA51885B86D00B0925F /* pa_mac_util.c in Sources */ = {isa = PBXBuildFile; fileRef = E2DCC79618859B2D00C73A74 /* pa_mac_util.c */; };
 		E2D0AFA61885B8AB00B0925F /* pa_mac_hostapis.c in Sources */ = {isa = PBXBuildFile; fileRef = E2DCC79518859B2D00C73A74 /* pa_mac_hostapis.c */; };
 		E2DCBD2418859AC000C73A74 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2DCBD2318859AC000C73A74 /* Foundation.framework */; };
 		E2DCBD2618859AC000C73A74 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2DCBD2518859AC000C73A74 /* CoreGraphics.framework */; };
 		E2DCBD2818859AC000C73A74 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2DCBD2718859AC000C73A74 /* UIKit.framework */; };
 		E2DCBD2E18859AC000C73A74 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E2DCBD2C18859AC000C73A74 /* InfoPlist.strings */; };
-		E2DCBD3018859AC000C73A74 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E2DCBD2F18859AC000C73A74 /* main.m */; };
+		E2DCBD3018859AC000C73A74 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2DCBD2F18859AC000C73A74 /* main.cpp */; };
 		E2DCBD3418859AC000C73A74 /* PAAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E2DCBD3318859AC000C73A74 /* PAAppDelegate.m */; };
 		E2DCBD3618859AC000C73A74 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E2DCBD3518859AC000C73A74 /* Images.xcassets */; };
 		E2DCBD3D18859AC000C73A74 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2DCBD3C18859AC000C73A74 /* XCTest.framework */; };
@@ -1318,7 +1319,7 @@
 		E2DCBD2718859AC000C73A74 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		E2DCBD2B18859AC000C73A74 /* PraatTouch-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PraatTouch-Info.plist"; sourceTree = "<group>"; };
 		E2DCBD2D18859AC000C73A74 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		E2DCBD2F18859AC000C73A74 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		E2DCBD2F18859AC000C73A74 /* main.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = main.cpp; sourceTree = "<group>"; };
 		E2DCBD3118859AC000C73A74 /* PraatTouch-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PraatTouch-Prefix.pch"; sourceTree = "<group>"; };
 		E2DCBD3218859AC000C73A74 /* PAAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PAAppDelegate.h; sourceTree = "<group>"; };
 		E2DCBD3318859AC000C73A74 /* PAAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PAAppDelegate.m; sourceTree = "<group>"; };
@@ -3734,7 +3735,7 @@
 			children = (
 				E2DCBD2B18859AC000C73A74 /* PraatTouch-Info.plist */,
 				E2DCBD2C18859AC000C73A74 /* InfoPlist.strings */,
-				E2DCBD2F18859AC000C73A74 /* main.m */,
+				E2DCBD2F18859AC000C73A74 /* main.cpp */,
 				E2DCBD3118859AC000C73A74 /* PraatTouch-Prefix.pch */,
 			);
 			name = "Supporting Files";
@@ -7125,6 +7126,7 @@
 				E2DCCE4918859B3200C73A74 /* gsl_cblas__sdsdot.c in Sources */,
 				E2DCD4C718859B3600C73A74 /* GuiCheckButton.cpp in Sources */,
 				E2DCCB6818859B3100C73A74 /* NUMsort2.cpp in Sources */,
+				E233DBD418861754000FFF9B /* gsl_ieee-utils__fp.c in Sources */,
 				E2DCD06118859B3300C73A74 /* gsl_monte__miser.c in Sources */,
 				E2DCD26018859B3400C73A74 /* gsl_statistics__median.c in Sources */,
 				E2DCCC9618859B3200C73A74 /* voices.cpp in Sources */,
@@ -7291,7 +7293,7 @@
 				E2DCD19A18859B3300C73A74 /* gsl_roots__newton.c in Sources */,
 				E2DCCCEA18859B3200C73A74 /* glpapi10.c in Sources */,
 				E2DCD01018859B3300C73A74 /* gsl_linalg__givens.c in Sources */,
-				E2DCBD3018859AC000C73A74 /* main.m in Sources */,
+				E2DCBD3018859AC000C73A74 /* main.cpp in Sources */,
 				E2DCD1F118859B3300C73A74 /* gsl_specfunc__beta_inc.c in Sources */,
 				E2DCCEDC18859B3200C73A74 /* gsl_cdf__exppow.c in Sources */,
 				E2DCCEA518859B3200C73A74 /* gsl_cblas__zher2k.c in Sources */,
@@ -7792,10 +7794,9 @@
 					/Users/tom/projects/audio/praat/sys,
 				);
 				OTHER_CFLAGS = (
-					"-DuseCarbon=0",
-					"-Dmacintosh",
 					"-DcocoaTouch",
 					"$(OTHER_CFLAGS)",
+					"-Dmacintosh",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -7833,10 +7834,9 @@
 					/Users/tom/projects/audio/praat/sys,
 				);
 				OTHER_CFLAGS = (
-					"-DuseCarbon=0",
-					"-Dmacintosh",
 					"-DcocoaTouch",
 					"$(OTHER_CFLAGS)",
+					"-Dmacintosh",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;

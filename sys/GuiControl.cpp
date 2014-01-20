@@ -45,7 +45,8 @@ int structGuiControl :: f_getY () {
 int structGuiControl :: f_getWidth () {
 	#if gtk
 		return GTK_WIDGET (d_widget) -> allocation.width;
-	#elif cocoa
+#elif cocoa
+#elif cocoaTouch
 		return [(UIView *) d_widget frame]. size. width;
 	#elif motif
 		return d_widget -> width;
@@ -55,8 +56,10 @@ int structGuiControl :: f_getWidth () {
 int structGuiControl :: f_getHeight () {
 	#if gtk
 		return GTK_WIDGET (d_widget) -> allocation.height;
-	#elif cocoa
-		return [(UIView *) d_widget frame]. size. height;
+#elif cocoaTouch
+    return [(UIView *) d_widget frame]. size. height;
+#elif cocoa
+    return [(UIView *) d_widget frame]. size. height;
 	#elif motif
 		return d_widget -> height;
 	#endif

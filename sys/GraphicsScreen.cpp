@@ -52,7 +52,9 @@
 	static bool _GraphicsMacintosh_tryToInitializeQuartz (void) {
 		#if cocoa
 			return true;
-		#else
+        #elif cocoaTouch
+            return true;
+        #elif useCarbon
 			return _GraphicsMac_tryToInitializeAtsuiFonts ();
 		#endif
 	}
@@ -180,24 +182,24 @@ void structGraphicsScreen :: v_clearWs () {
                 rect.origin.y = this -> d_y2DC;
                 rect.size.height = this -> d_y1DC - this -> d_y2DC;
             }
-//			[cocoaDrawingArea lockFocus];
-//            CGContextRef context = (CGContextRef) [[NSGraphicsContext currentContext] graphicsPort];
-//            CGContextSaveGState (context);
-//            CGContextSetAlpha (context, 1.0);
-//            CGContextSetBlendMode (context, kCGBlendModeNormal);
-//            CGContextSetRGBFillColor (context, 1.0, 1.0, 1.0, 1.0);
-//			//rect.origin.x -= 1000;
-//			//rect.origin.y -= 1000;
-//			//rect.size.width += 2000;
-//			//rect.size.height += 2000;
-//			trace ("clearing %f %f %f %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
-//                //CGContextTranslateCTM (context, 0, cocoaDrawingArea.bounds.size.height);
-//                //CGContextScaleCTM (context, 1.0, -1.0);
-//            CGContextFillRect (context, rect);
-//            //CGContextSynchronize (context);
-//            CGContextRestoreGState (context);
-//			[cocoaDrawingArea unlockFocus];
-//			[cocoaDrawingArea setNeedsDisplay: YES];
+			[cocoaDrawingArea lockFocus];
+            CGContextRef context = (CGContextRef) [[NSGraphicsContext currentContext] graphicsPort];
+            CGContextSaveGState (context);
+            CGContextSetAlpha (context, 1.0);
+            CGContextSetBlendMode (context, kCGBlendModeNormal);
+            CGContextSetRGBFillColor (context, 1.0, 1.0, 1.0, 1.0);
+			//rect.origin.x -= 1000;
+			//rect.origin.y -= 1000;
+			//rect.size.width += 2000;
+			//rect.size.height += 2000;
+			trace ("clearing %f %f %f %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+                //CGContextTranslateCTM (context, 0, cocoaDrawingArea.bounds.size.height);
+                //CGContextScaleCTM (context, 1.0, -1.0);
+            CGContextFillRect (context, rect);
+            //CGContextSynchronize (context);
+            CGContextRestoreGState (context);
+			[cocoaDrawingArea unlockFocus];
+			[cocoaDrawingArea setNeedsDisplay: YES];
         }
 	#elif win
 		RECT rect;
@@ -206,7 +208,7 @@ void structGraphicsScreen :: v_clearWs () {
 		rect. bottom = d_y2DC - d_y1DC;
 		FillRect (d_gdiGraphicsContext, & rect, GetStockBrush (WHITE_BRUSH));
 		/*if (d_winWindow) SendMessage (d_winWindow, WM_ERASEBKGND, (WPARAM) d_gdiGraphicsContext, 0);*/
-	#elif mac
+	#elif carbon
 		QDBeginCGContext (d_macPort, & d_macGraphicsContext);
 		CGContextSetAlpha (d_macGraphicsContext, 1.0);
 		CGContextSetBlendMode (d_macGraphicsContext, kCGBlendModeNormal);
@@ -258,7 +260,8 @@ void structGraphicsScreen :: v_updateWs () {
 		gdk_window_clear (d_window);
 		gdk_window_invalidate_rect (d_window, & rect, true);
 		//gdk_window_process_updates (d_window, true);
-	#elif cocoa
+    #elif cocoaTouch
+    #elif cocoa
         CGRect rect;
     
         if (this -> d_x1DC < this -> d_x2DC) {
@@ -283,7 +286,7 @@ void structGraphicsScreen :: v_updateWs () {
 	#elif win
 		//clear (this); // lll
 		if (d_winWindow) InvalidateRect (d_winWindow, NULL, TRUE);
-	#elif mac
+	#elif useCarbon
 		Rect r;
 		if (d_drawingArea) GuiMac_clipOn (d_drawingArea -> d_widget);   // to prevent invalidating invisible parts of the canvas
 		SetRect (& r, this -> d_x1DC, this -> d_y1DC, this -> d_x2DC, this -> d_y2DC);

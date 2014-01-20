@@ -34,22 +34,20 @@ bool structGraphicsScreen :: v_mouseStillDown () {
 		int gdkEventType = gevent -> type;
 		gdk_event_free (gevent);
 		return gdkEventType != GDK_BUTTON_RELEASE;
-	#elif cocoa
+    #elif cocoaTouch
+        return NO;
+    #elif cocoa
     
-        #if cocoaTouch
-            return NO;
-        #else
-            Graphics_flushWs (this);
-            NSEvent *nsEvent = [[d_macView window]
-                nextEventMatchingMask: NSLeftMouseUpMask | NSLeftMouseDraggedMask | NSKeyDownMask
-                untilDate: [NSDate distantFuture]
-                inMode: NSEventTrackingRunLoopMode
-                dequeue: YES
-                ];
-            NSUInteger nsEventType = [nsEvent type];
-            if (nsEventType == NSKeyDown) NSBeep ();
-            return nsEventType != NSLeftMouseUp;
-        #endif
+        Graphics_flushWs (this);
+        NSEvent *nsEvent = [[d_macView window]
+            nextEventMatchingMask: NSLeftMouseUpMask | NSLeftMouseDraggedMask | NSKeyDownMask
+            untilDate: [NSDate distantFuture]
+            inMode: NSEventTrackingRunLoopMode
+            dequeue: YES
+            ];
+        NSUInteger nsEventType = [nsEvent type];
+        if (nsEventType == NSKeyDown) NSBeep ();
+        return nsEventType != NSLeftMouseUp;
 	#elif win
 		return motif_win_mouseStillDown ();
 	#elif mac

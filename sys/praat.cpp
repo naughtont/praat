@@ -1281,9 +1281,12 @@ void praat_init (const char *title, unsigned int argc, char **argv) {
 			trace ("locale %s", setlocale (LC_ALL, NULL));
 			g_set_application_name (title);
 			trace ("locale %s", setlocale (LC_ALL, NULL));
-		#elif cocoa
-			//[NSApplication sharedApplication];
-			[GuiCocoaApplication sharedApplication];
+        #elif cocoa
+                //[NSApplication sharedApplication];
+                [GuiCocoaApplication sharedApplication];
+        #elif cocoaTouch
+                //[NSApplication sharedApplication];
+                [GuiCocoaApplication sharedApplication];
 		#elif defined (_WIN32)
 			argv [0] = & praatP. title [0];   /* argc == 4 */
 			Gui_setOpenDocumentCallback (cb_openDocument);

@@ -60,7 +60,7 @@ Thing_implement (GuiLabel, GuiControl, 0);
 		_GuiNativeControl_destroy (widget);
 		forget (me);   // NOTE: my widget is not destroyed here
 	}
-#elif mac
+#elif useCarbon
 	void _GuiMacLabel_destroy (GuiObject widget) {
 		iam_label;
 		_GuiNativeControl_destroy (widget);
@@ -114,7 +114,7 @@ GuiLabel GuiLabel_create (GuiForm parent, int left, int right, int top, int bott
 		SetWindowLongPtr (my d_widget -> window, GWLP_USERDATA, (LONG_PTR) my d_widget);
 		SetWindowFont (my d_widget -> window, GetStockFont (ANSI_VAR_FONT), FALSE);
 		my v_positionInForm (my d_widget, left, right, top, bottom, parent);
-	#elif mac
+	#elif userCarbon
 		my d_widget = _Gui_initializeWidget (xmLabelWidgetClass, parent -> d_widget, labelText);
 		_GuiObject_setUserData (my d_widget, me);
 		ControlFontStyleRec macFontStyleRecord = { 0 };   // BUG: _GuiNativeControl_setFont will reset alignment (should do inheritance)

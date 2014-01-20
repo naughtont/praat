@@ -32,8 +32,10 @@ Thing_implement (GuiMenuItem, GuiThing, 0);
 #define iam(x)  x me = (x) void_me
 #if gtk
 	#define iam_menuitem  GuiMenuItem me = (GuiMenuItem) _GuiObject_getUserData (widget)
+#elif cocoaTouch
+#define iam_menuitem  GuiMenuItem me = (GuiMenuItem) [(GuiCocoaMenuItem *) widget userData];
 #elif cocoa
-	#define iam_menuitem  GuiMenuItem me = (GuiMenuItem) [(GuiCocoaMenuItem *) widget userData];
+#define iam_menuitem  GuiMenuItem me = (GuiMenuItem) [(GuiCocoaMenuItem *) widget userData];
 #elif motif
 	#define iam_menuitem  GuiMenuItem me = (GuiMenuItem) widget -> userData
 #endif
@@ -117,6 +119,22 @@ static void NativeMenuItem_setText (GuiObject me) {
 			}
 		}
 	}
+#elif cocoaTouch
+@implementation GuiCocoaMenuItem {
+    GuiMenuItem d_userData;
+}
+- (void) dealloc {   // override
+    GuiMenuItem me = d_userData;
+    forget (me);
+}
+- (GuiThing) userData {
+    return d_userData;
+}
+- (void) setUserData: (GuiThing) userData {
+    Melder_assert (userData == NULL || Thing_member (userData, classGuiMenuItem));
+    d_userData = static_cast <GuiMenuItem> (userData);
+}
+@end
 #elif cocoa
 	@implementation GuiCocoaMenuItem {
 		GuiMenuItem d_userData;
@@ -197,7 +215,16 @@ GuiMenuItem GuiMenu_addItem (GuiMenu menu, const wchar_t *title, long flags,
 		Melder_assert (menu -> d_widget);
 		gtk_menu_shell_append (GTK_MENU_SHELL (menu -> d_widget), GTK_WIDGET (my d_widget));
 		_GuiObject_setUserData (my d_widget, me);
-	#elif cocoaT
+#elif cocoaTouch
+        NSString *string = (__bridge NSString *) Melder_peekWcsToCfstring (title);
+        GuiCocoaMenuItem *menuItem = [[GuiCocoaMenuItem alloc] init];
+        menuItem.titleLabel.text = string;
+        my d_widget = menuItem;
+        [menu -> d_cocoaMenu  addItem:menuItem];
+        trace ("set user data");
+        [menuItem setUserData: me];
+
+#elif cocoa
 		NSString *string = (NSString *) Melder_peekWcsToCfstring (title);
 		GuiCocoaMenuItem *menuItem = [[GuiCocoaMenuItem alloc]
 			initWithTitle:string

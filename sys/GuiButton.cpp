@@ -116,7 +116,7 @@ Thing_implement (GuiButton, GuiControl, 0);
 		}
 		return false;
 	}
-#elif mac
+#elif useCarbon
 	void _GuiMacButton_destroy (GuiObject widget) {
 		iam_button;
 		if (widget == widget -> shell -> defaultButton)

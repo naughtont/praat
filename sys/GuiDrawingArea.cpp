@@ -613,6 +613,7 @@ GuiDrawingArea GuiDrawingArea_create (GuiScrolledWindow parent, int width, int h
 		my d_widget = (GuiObject) drawingArea;
 		my v_positionInScrolledWindow (my d_widget, width, height, parent);
 		[drawingArea setUserData: me];
+    #elif cocoaTouch
     #elif win
 		my d_widget = _Gui_initializeWidget (xmDrawingAreaWidgetClass, parent -> d_widget, L"drawingArea");
 		_GuiObject_setUserData (my d_widget, me);

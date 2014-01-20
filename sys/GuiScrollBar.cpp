@@ -183,7 +183,7 @@ Thing_implement (GuiScrollBar, GuiControl, 0);
 		iam_scrollbar;
 		forget (me);   // NOTE: my widget is not destroyed here
 	}
-#elif mac
+#elif useCarbon
 	void _GuiMacScrollBar_destroy (GuiObject widget) {
 		_GuiNativeControl_destroy (widget);
 		iam_scrollbar;
@@ -314,6 +314,9 @@ void structGuiScrollBar :: f_set (double minimum, double maximum, double value, 
 int structGuiScrollBar :: f_getValue () {
     #if gtk
         return gtk_range_get_value (GTK_RANGE (d_widget));
+    #elif cocoaTouch
+        GuiCocoaScrollBar *scroller = (GuiCocoaScrollBar *) d_widget;
+        return 0;
     #elif cocoa
         GuiCocoaScrollBar *scroller = (GuiCocoaScrollBar *) d_widget;
         return [scroller m_value];
@@ -327,6 +330,9 @@ int structGuiScrollBar :: f_getValue () {
 int structGuiScrollBar :: f_getSliderSize () {
 #if gtk
 //    return gtk_range_get_value (GTK_RANGE (d_widget));
+#elif cocoaTouch
+    GuiCocoaScrollBar *scroller = (GuiCocoaScrollBar *) d_widget;
+    return 0;
 #elif cocoa
     GuiCocoaScrollBar *scroller = (GuiCocoaScrollBar *) d_widget;
     return [scroller m_sliderSize];

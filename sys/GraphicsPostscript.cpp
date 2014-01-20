@@ -250,26 +250,26 @@ Graphics Graphics_create_epsfile (MelderFile file, int resolution, enum kGraphic
 #ifndef UNIX
 Graphics Graphics_create_postscriptprinter (void) {
 	GraphicsPostscript me = Thing_new (GraphicsPostscript);
-	my postScript = TRUE, my languageLevel = 2;
-	my job = FALSE, my eps = FALSE, my printer = TRUE;
-	my d_printf = Printer_postScript_printf;
-	Graphics_init (me);
-	my resolution = thePrinter. resolution;   /* Virtual resolution. */
-	my photocopyable = thePrinter. spots == kGraphicsPostscript_spots_PHOTOCOPYABLE;
-	if (my photocopyable) { my spotsDensity = 85; my spotsAngle = 35; }
-	else { my spotsDensity = 106; my spotsAngle = 46; }
-	my paperWidth = (double) thePrinter. paperWidth / my resolution;
-	my paperHeight = (double) thePrinter. paperHeight / my resolution;
-	my landscape = thePrinter. orientation == kGraphicsPostscript_orientation_LANDSCAPE;
-	my magnification = thePrinter. magnification;
-	my includeFonts = TRUE;
-	my d_x1DC = my d_x1DCmin = my resolution / 2;
-	my d_x2DC = my d_x2DCmax = (my paperWidth - 0.5) * my resolution;
-	my d_y1DC = my d_y1DCmin = my resolution / 2;
-	my d_y2DC = my d_y2DCmax = (my paperHeight - 0.5) * my resolution;
-	Graphics_setWsWindow ((Graphics) me, 0, my paperWidth - 1.0, 13.0 - my paperHeight, 12.0);
-	downloadPrologAndSetUp (me);
-	initPage (me);
+//	my postScript = TRUE, my languageLevel = 2;
+//	my job = FALSE, my eps = FALSE, my printer = TRUE;
+//	my d_printf = Printer_postScript_printf;
+//	Graphics_init (me);
+//	my resolution = thePrinter. resolution;   /* Virtual resolution. */
+//	my photocopyable = thePrinter. spots == kGraphicsPostscript_spots_PHOTOCOPYABLE;
+//	if (my photocopyable) { my spotsDensity = 85; my spotsAngle = 35; }
+//	else { my spotsDensity = 106; my spotsAngle = 46; }
+//	my paperWidth = (double) thePrinter. paperWidth / my resolution;
+//	my paperHeight = (double) thePrinter. paperHeight / my resolution;
+//	my landscape = thePrinter. orientation == kGraphicsPostscript_orientation_LANDSCAPE;
+//	my magnification = thePrinter. magnification;
+//	my includeFonts = TRUE;
+//	my d_x1DC = my d_x1DCmin = my resolution / 2;
+//	my d_x2DC = my d_x2DCmax = (my paperWidth - 0.5) * my resolution;
+//	my d_y1DC = my d_y1DCmin = my resolution / 2;
+//	my d_y2DC = my d_y2DCmax = (my paperHeight - 0.5) * my resolution;
+//	Graphics_setWsWindow ((Graphics) me, 0, my paperWidth - 1.0, 13.0 - my paperHeight, 12.0);
+//	downloadPrologAndSetUp (me);
+//	initPage (me);
 	return (Graphics) me;
 }
 #endif

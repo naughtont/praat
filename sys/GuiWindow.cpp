@@ -255,9 +255,12 @@ bool structGuiWindow :: f_setDirty (bool dirty) {
 	#if gtk
 		(void) dirty;
 		return false;
-	#elif cocoa
-//		[d_cocoaWindow setDocumentEdited: dirty];
-		return true;
+    #elif cocoa
+        //		[d_cocoaWindow setDocumentEdited: dirty];
+        return true;
+    #elif cocoaTouch
+        //		[d_cocoaWindow setDocumentEdited: dirty];
+        return true;
 	#elif win
 		(void) dirty;
 		return false;

@@ -68,7 +68,7 @@ Thing_implement (GuiScale, GuiControl, 0);
 		trace ("forgetting a scale or a progress bar");
 		forget (me);   // NOTE: my widget is not destroyed here
 	}
-#elif mac
+#elif useCarbon
 	void _GuiMacScale_destroy (GuiObject widget) {
 		_GuiMac_clipOnParent (widget);
 		EraseRect (& widget -> rect);

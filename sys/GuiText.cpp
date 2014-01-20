@@ -1208,7 +1208,7 @@ wchar_t * structGuiText :: f_getSelection () {
 			Melder_killReturns_inlineW (result);   /* AFTER zooming! */
 			return result;
 		}
-	#elif mac
+	#elif useCarbon
 		long start, end;
 		NativeText_getSelectionRange (d_widget, & start, & end);
 		if (end > start) {   // at least one character selected?
@@ -1342,11 +1342,15 @@ void structGuiText :: f_paste () {
 }
 
 void structGuiText :: f_redo () {
-	#if cocoa
+    #if cocoaTouch
+        if (d_cocoaTextView) {
+            [[d_cocoaTextView undoManager] redo];
+        }
+	#elif cocoa
 		if (d_cocoaTextView) {
 			[[d_cocoaTextView undoManager] redo];
 		}
-	#elif mac
+	#elif useCarbon
 		if (isMLTE (this)) {
 			TXNRedo (d_macMlteObject);
 		}
@@ -1372,7 +1376,7 @@ void structGuiText :: f_remove () {
 		if (! d_editable || ! NativeText_getSelectionRange (d_widget, NULL, NULL)) return;
 		SendMessage (d_widget -> window, WM_CLEAR, 0, 0);   /* This will send the EN_CHANGE message, hence no need to call the valueChangedCallbacks. */
 		UpdateWindow (d_widget -> window);
-	#elif mac
+	#elif useCarbon
 		if (! d_editable || ! NativeText_getSelectionRange (d_widget, NULL, NULL)) return;
 		if (isTextControl (d_widget)) {
 			_GuiMac_clipOnParent (d_widget);
@@ -1495,12 +1499,15 @@ void structGuiText :: f_scrollToSelection () {
 		//GtkTextMark *mark = gtk_text_buffer_create_mark (textBuffer, NULL, & start, true);
 		gtk_text_view_scroll_to_iter (GTK_TEXT_VIEW (d_widget), & start, 0.1, false, 0.0, 0.0); 
 		//gtk_text_view_scroll_to_mark (GTK_TEXT_VIEW (d_widget), mark, 0.1, false, 0.0, 0.0);
-	#elif cocoa
+	#elif cocoaTouch
 		if (d_cocoaTextView)
 			[d_cocoaTextView scrollRangeToVisible: [d_cocoaTextView selectedRange]];
+    #elif cocoa
+        if (d_cocoaTextView)
+            [d_cocoaTextView scrollRangeToVisible: [d_cocoaTextView selectedRange]];
 	#elif win
 		Edit_ScrollCaret (d_widget -> window);
-	#elif mac
+	#elif useCarbon
 		if (isTextControl (d_widget)) {
 			;
 		} else if (isMLTE (this)) {
@@ -1587,7 +1594,26 @@ void structGuiText :: f_setSelection (long first, long last) {
 			gtk_text_buffer_get_iter_at_offset (buffer, & to_it, last);
 			gtk_text_buffer_select_range (buffer, & from_it, & to_it);
 		}
-	#elif cocoa
+	#elif cocoaTouch
+		/*
+		 * On Cocoa, characters are counted in UTF-16 units, whereas 'first' and 'last' are in UTF-32 units. Convert.
+		 */
+		wchar_t *text = f_getString ();
+		if (first < 0) first = 0;
+		if (last < 0) last = 0;
+		long length = wcslen (text);
+		if (first >= length) first = length;
+		if (last >= length) last = length;
+		long numberOfLeadingHighUnicodeValues = 0, numberOfSelectedHighUnicodeValues = 0;
+		for (long i = 0; i < first; i ++) if (text [i] > 0xFFFF) numberOfLeadingHighUnicodeValues ++;
+		for (long i = first; i < last; i ++) if (text [i] > 0xFFFF) numberOfSelectedHighUnicodeValues ++;
+		first += numberOfLeadingHighUnicodeValues;
+		last += numberOfLeadingHighUnicodeValues + numberOfSelectedHighUnicodeValues;
+		Melder_free (text);
+		if (d_cocoaTextView) {
+			[d_cocoaTextView setSelectedRange: NSMakeRange (first, last - first)];
+		}
+    #elif cocoa
 		/*
 		 * On Cocoa, characters are counted in UTF-16 units, whereas 'first' and 'last' are in UTF-32 units. Convert.
 		 */
@@ -1623,7 +1649,7 @@ void structGuiText :: f_setSelection (long first, long last) {
 		Melder_free (text);
 		Edit_SetSel (d_widget -> window, first, last);
 		UpdateWindow (d_widget -> window);
-	#elif mac
+	#elif useCarbon
 		wchar_t *text = f_getString ();
 		if (first < 0) first = 0;
 		if (last < 0) last = 0;
@@ -1753,12 +1779,16 @@ void structGuiText :: f_setUndoItem (GuiMenuItem item) {
 void structGuiText :: f_undo () {
 	#if gtk
 		history_do (this, 1);
+    #elif cocoaTouch
+    if (d_cocoaTextView) {
+        [[d_cocoaTextView undoManager] undo];
+    }
 	#elif cocoa
 		if (d_cocoaTextView) {
 			[[d_cocoaTextView undoManager] undo];
 		}
 	#elif win
-	#elif mac
+	#elif useCarbon
 		if (isMLTE (this)) {
 			TXNUndo (d_macMlteObject);
 		}

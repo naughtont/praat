@@ -523,7 +523,7 @@ void MelderAudio_play16 (const int16_t *buffer, long sampleRate, long numberOfSa
 					if (my asynchronicity == kMelder_asynchronicityLevel_INTERRUPTABLE && ! interrupted) {
 						#if cocoa
 							
-						#elif defined (macintosh)
+						#elif useCarbon
 							EventRecord event;
 							if (EventAvail (keyDownMask, & event)) {
 								/*
@@ -593,7 +593,7 @@ void MelderAudio_play16 (const int16_t *buffer, long sampleRate, long numberOfSa
 					if (my asynchronicity == kMelder_asynchronicityLevel_INTERRUPTABLE && ! interrupted) {
 						#if cocoa
 							// COCOA TODO: implement
-						#elif defined (macintosh)
+						#elif useCarbon
 							EventRecord event;
 							if (EventAvail (keyDownMask, & event)) {
 								/*

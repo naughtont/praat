@@ -66,6 +66,7 @@ static int _GuiRadioButton_getPosition (GuiRadioButton me) {
 			}
 		}
 	}
+#elif cocoaTouch
 #elif cocoa
 	@implementation GuiCocoaRadioButton {
 		GuiRadioButton d_userData;
@@ -128,7 +129,7 @@ static int _GuiRadioButton_getPosition (GuiRadioButton me) {
 			my d_valueChangedCallback (my d_valueChangedBoss, & event);
 		}
 	}
-#elif mac
+#elif useCarbon
 	void _GuiMacRadioButton_destroy (GuiObject widget) {
 		iam_radiobutton;
 		_GuiNativeControl_destroy (widget);
