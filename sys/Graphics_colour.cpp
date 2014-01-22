@@ -104,9 +104,13 @@ void _Graphics_setColour (Graphics graphics, Graphics_Colour colour) {
 			SelectBrush (my d_gdiGraphicsContext, GetStockBrush (NULL_BRUSH));
 			DeleteObject (my d_winBrush);
 			my d_winBrush = CreateSolidBrush (my d_winForegroundColour);
-		#elif macT
-        CGFloat components[] = {colour.red, colour.green, colour.blue, 1.0};
-        my d_macColour = CGColorCreate(CGColorSpaceCreateDeviceRGB(), components);
+        #elif cocoaTouch
+            CGFloat components[] = {colour.red, colour.green, colour.blue, 1.0};
+            my d_macColour = CGColorCreate(CGColorSpaceCreateDeviceRGB(), components);
+		#elif mac
+            my d_macColour. red = colour. red * 65535;
+            my d_macColour. green = colour. green * 65535;
+            my d_macColour. blue = colour. blue * 65535;
 		#endif
 	} else if (graphics -> postScript) {
 		GraphicsPostscript me = static_cast <GraphicsPostscript> (graphics);
@@ -136,9 +140,14 @@ void _Graphics_setGrey (Graphics graphics, double fgrey) {
 			SelectBrush (my d_gdiGraphicsContext, GetStockBrush (NULL_BRUSH));
 			DeleteObject (my d_winBrush);
 			my d_winBrush = CreateSolidBrush (my d_winForegroundColour);
+        #elif cocoaTouch
+            if (fgrey < 0.0) fgrey = 0.0; else if (fgrey > 1.0) fgrey = 1.0;
+            CGFloat components[] = {fgrey, fgrey, fgrey};
+            my d_macColour = CGColorCreate(CGColorSpaceCreateDeviceRGB(), components);
+
 		#elif mac
 			if (fgrey < 0.0) fgrey = 0.0; else if (fgrey > 1.0) fgrey = 1.0;
-//			my d_macColour. red = my d_macColour. green = my d_macColour. blue = fgrey * 65535;
+			my d_macColour. red = my d_macColour. green = my d_macColour. blue = fgrey * 65535;
 		#endif
 	} else if (graphics ->  postScript) {
 		GraphicsPostscript me = static_cast <GraphicsPostscript> (graphics);
@@ -167,36 +176,36 @@ static void highlight (Graphics graphics, long x1DC, long x2DC, long y1DC, long 
 			gdk_gc_set_rgb_fg_color (my d_gdkGraphicsContext, & black);
 			gdk_gc_set_function (my d_gdkGraphicsContext, GDK_COPY);
 			gdk_flush ();
-		#elif cocoaT
+		#elif cocoa
 			int width = x2DC - x1DC, height = y1DC - y2DC;
 			if (width <= 0 || height <= 0) return;
 			GuiCocoaDrawingArea *drawingArea = (GuiCocoaDrawingArea *) my d_drawingArea -> d_widget;
 			if (drawingArea) {
-//				[drawingArea lockFocus];
-//				CGContextRef context = (CGContextRef) [[NSGraphicsContext currentContext] graphicsPort];
-//				CGContextSaveGState (context);
-//				NSCAssert (context, @"nil context");
-//				//CGContextTranslateCTM (context, 0, drawingArea. bounds. size. height);
-//				//CGContextScaleCTM (context, 1.0, -1.0);
-//				NSRect rect = NSMakeRect (x1DC,  y2DC, width, height);
-//				CGContextSetBlendMode (context, kCGBlendModeDifference);
-//				CGContextSetShouldAntialias (context, false);
-//				NSColor *colour = [[NSColor selectedTextBackgroundColor] colorUsingColorSpaceName: NSCalibratedRGBColorSpace];
-//				double red = 0.5 + 0.5 * colour.redComponent, green = 0.5 + 0.5 * colour.greenComponent, blue = 0.5 + 0.5 * colour.blueComponent;
-//				if (direction == 1) {   // forward
-//					CGContextSetRGBFillColor (context, 1.0 - red, 1.0 - green, 1.0 - blue, 1.0);
-//					CGContextFillRect (context, rect);
-//				} else {   // backward
-//					CGContextSetRGBFillColor (context, red, green, blue, 1.0);
-//					CGContextFillRect (context, rect);
-//					CGContextSetRGBFillColor (context, 1.0, 1.0, 1.0, 1.0);
-//					CGContextFillRect (context, rect);
-//				}
-//				CGContextRestoreGState (context);
-//				//CGContextSynchronize (context);
-//				[drawingArea unlockFocus];
+				[drawingArea lockFocus];
+				CGContextRef context = (CGContextRef) [[NSGraphicsContext currentContext] graphicsPort];
+				CGContextSaveGState (context);
+				NSCAssert (context, @"nil context");
+				//CGContextTranslateCTM (context, 0, drawingArea. bounds. size. height);
+				//CGContextScaleCTM (context, 1.0, -1.0);
+				NSRect rect = NSMakeRect (x1DC,  y2DC, width, height);
+				CGContextSetBlendMode (context, kCGBlendModeDifference);
+				CGContextSetShouldAntialias (context, false);
+				NSColor *colour = [[NSColor selectedTextBackgroundColor] colorUsingColorSpaceName: NSCalibratedRGBColorSpace];
+				double red = 0.5 + 0.5 * colour.redComponent, green = 0.5 + 0.5 * colour.greenComponent, blue = 0.5 + 0.5 * colour.blueComponent;
+				if (direction == 1) {   // forward
+					CGContextSetRGBFillColor (context, 1.0 - red, 1.0 - green, 1.0 - blue, 1.0);
+					CGContextFillRect (context, rect);
+				} else {   // backward
+					CGContextSetRGBFillColor (context, red, green, blue, 1.0);
+					CGContextFillRect (context, rect);
+					CGContextSetRGBFillColor (context, 1.0, 1.0, 1.0, 1.0);
+					CGContextFillRect (context, rect);
+				}
+				CGContextRestoreGState (context);
+				//CGContextSynchronize (context);
+				[drawingArea unlockFocus];
 			}
-        #elif macT
+        #elif useCarbon
 			Rect rect;
 			if (my d_drawingArea) GuiMac_clipOn (my d_drawingArea -> d_widget);
 			SetRect (& rect, x1DC, y2DC, x2DC, y1DC);
@@ -262,8 +271,6 @@ static void highlight2 (Graphics graphics, long x1DC, long x2DC, long y1DC, long
 				CGContextSaveGState (my d_macGraphicsContext);
 
 				NSCAssert (my d_macGraphicsContext, @"nil context");
-				//CGContextTranslateCTM (my d_macGraphicsContext, 0, drawingArea. bounds. size. height);
-				//CGContextScaleCTM (my d_macGraphicsContext, 1.0, -1.0);
 
 				NSRect upperRect = NSMakeRect (x1DC, y2DC, x2DC - x1DC, y2DC_inner - y2DC);
 				NSRect leftRect  = NSMakeRect (x1DC, y2DC_inner, x1DC_inner - x1DC, y1DC_inner - y2DC_inner);

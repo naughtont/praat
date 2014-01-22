@@ -20,7 +20,15 @@
 #include "Photo.h"
 #include "NUM2.h"
 #include "Formula.h"
-#if defined (macintosh)
+#if cocoa
+    #include "macport_on.h"
+    #include <AppKit/AppKit.h>
+    #include "macport_off.h"
+#elif cocoaTouch
+    #include "macport_on.h"
+    #include <UIKit/UIKit.h>
+    #include "macport_off.h"
+#elif useCarbon
 	#include "macport_on.h"
 	#include <UIKit/UIKit.h>
 	#include "macport_off.h"

@@ -166,7 +166,7 @@ int UiPause_end (int numberOfContinueButtons, int defaultContinueButton, int can
 					do {
 						gtk_main_iteration ();
 					} while (! thePauseForm_clicked);
-				#elif cocoaT
+				#elif cocoa
 					do {
 						NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 						//[theDemoEditor -> d_windowForm -> d_cocoaWindow   flushWindow];

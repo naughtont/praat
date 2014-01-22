@@ -123,7 +123,7 @@ GuiCheckButton GuiCheckButton_create (GuiForm parent, int left, int right, int t
 		}
 		g_signal_connect (G_OBJECT (my d_widget), "destroy", G_CALLBACK (_GuiGtkCheckButton_destroyCallback), me);
 		g_signal_connect (GTK_TOGGLE_BUTTON (my d_widget), "toggled", G_CALLBACK (_GuiGtkCheckButton_valueChangedCallback), me);
-	#elif cocoaT
+	#elif cocoa
 		GuiCocoaCheckButton *checkButton = [[GuiCocoaCheckButton alloc] init];
 		my d_widget = (GuiObject) checkButton;
 		my v_positionInForm (my d_widget, left, right, top, bottom, parent);
@@ -152,7 +152,7 @@ GuiCheckButton GuiCheckButton_create (GuiForm parent, int left, int right, int t
 		if (flags & GuiCheckButton_INSENSITIVE) {
 			my f_setSensitive (false);
 		}
-	#elif macT
+	#elif useCarbon
 		my d_widget = _Gui_initializeWidget (xmToggleButtonWidgetClass, parent -> d_widget, buttonText);
 		_GuiObject_setUserData (my d_widget, me);
 		my d_widget -> isRadioButton = false;
@@ -183,12 +183,12 @@ bool structGuiCheckButton :: f_getValue () {
 	bool value = false;
 	#if gtk
 		value = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (d_widget));   // gtk_check_button inherits from gtk_toggle_button
-	#elif cocoaT
+	#elif cocoa
         GuiCocoaCheckButton *checkButton = (GuiCocoaCheckButton*)d_widget;
         value = [checkButton state] == NSOnState;
 	#elif win
 		value = (Button_GetState (d_widget -> window) & 0x0003) == BST_CHECKED;
-	#elif macT
+	#elif useCarbon
 		value = GetControlValue (d_widget -> nat.control.handle);
 	#endif
 	return value;
@@ -200,12 +200,12 @@ void structGuiCheckButton :: f_setValue (bool value) {
 	 */
 	#if gtk
 		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (d_widget), value);
-	#elif cocoaT
+	#elif cocoa
 		GuiCocoaCheckButton *checkButton = (GuiCocoaCheckButton *) d_widget;
 		[checkButton setState: value ? NSOnState: NSOffState];
 	#elif win
 		Button_SetCheck (d_widget -> window, value ? BST_CHECKED : BST_UNCHECKED);
-	#elif macT
+	#elif useCarbon
 		SetControlValue (d_widget -> nat.control.handle, value);
 	#endif
 }

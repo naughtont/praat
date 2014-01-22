@@ -119,7 +119,12 @@ static void psRevertLine (GraphicsPostscript me) {
 			CGContextSetAllowsAntialiasing (my d_macGraphicsContext, false);
 			CGContextSetRGBStrokeColor (my d_macGraphicsContext, 1.0, 1.0, 1.0, 1.0);
 		} else {
-			CGContextSetStrokeColorWithColor (my d_macGraphicsContext, my d_macColour);
+#if cocoaTouch
+            CGContextSetStrokeColorWithColor(my d_macGraphicsContext, my d_macColour);
+#else
+            CGContextSetRGBStrokeColor (my d_macGraphicsContext, my d_macColour.red / 65536.0, my d_macColour.green / 65536.0, my d_macColour.blue / 65536.0, 1.0);
+#endif
+            
 		}
 		double lineWidth_pixels = LINE_WIDTH_IN_PIXELS (me);
 		CGContextSetLineWidth (my d_macGraphicsContext, lineWidth_pixels);
@@ -146,7 +151,11 @@ static void psRevertLine (GraphicsPostscript me) {
 	static void quartzPrepareFill (GraphicsScreen me) {
 		CGContextSetAlpha (my d_macGraphicsContext, 1.0);
 		CGContextSetBlendMode (my d_macGraphicsContext, kCGBlendModeNormal);
-		CGContextSetFillColorWithColor (my d_macGraphicsContext, my d_macColour);
+#if cocoaTouch
+        CGContextSetFillColorWithColor (my d_macGraphicsContext, my d_macColour);
+#else
+        CGContextSetRGBFillColor (my d_macGraphicsContext, my d_macColour.red / 65536.0, my d_macColour.green / 65536.0, my d_macColour.blue / 65536.0, 1.0);
+#endif
 	}
 #endif
 

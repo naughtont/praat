@@ -33,5 +33,63 @@
             endingLineNumber = "20">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.ExceptionBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            scope = "0"
+            stopOnStyle = "0">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "sys/GuiDrawingArea.cpp"
+            timestampString = "412013924.72961"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "602"
+            endingLineNumber = "602"
+            landmarkName = "GuiDrawingArea_create (GuiForm parent, int left, int right, int top, int bottom, void (*exposeCallback) (void *boss, GuiDrawingAreaExposeEvent event), void (*clickCallback) (void *boss, GuiDrawingAreaClickEvent event), void (*keyCallback) (void *boss, GuiDrawingAreaKeyEvent event), void (*resizeCallback) (void *boss, GuiDrawingAreaResizeEvent event), void *boss, unsigned long flags)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "sys/GuiDrawingArea.cpp"
+            timestampString = "412014336.355555"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "679"
+            endingLineNumber = "679"
+            landmarkName = "GuiDrawingArea_create (GuiScrolledWindow parent, int width, int height, void (*exposeCallback) (void *boss, GuiDrawingAreaExposeEvent event), void (*clickCallback) (void *boss, GuiDrawingAreaClickEvent event), void (*keyCallback) (void *boss, GuiDrawingAreaKeyEvent event), void (*resizeCallback) (void *boss, GuiDrawingAreaResizeEvent event), void *boss, unsigned long flags)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "sys/Graphics_colour.cpp"
+            timestampString = "412014155.839005"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "264"
+            endingLineNumber = "264"
+            landmarkName = "highlight2 (Graphics graphics, long x1DC, long x2DC, long y1DC, long y2DC, long x1DC_inner, long x2DC_inner, long y1DC_inner, long y2DC_inner, int direction)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

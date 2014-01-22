@@ -23,7 +23,7 @@ Thing_implement (GuiScrolledWindow, GuiControl, 0);
 
 #undef iam
 #define iam(x)  x me = (x) void_me
-#if win || macT
+#if win || mac
 	#define iam_scrolledwindow \
 		Melder_assert (widget -> widgetClass == xmScrolledWindowWidgetClass); \
 		GuiScrolledWindow me = (GuiScrolledWindow) widget -> userData
@@ -38,7 +38,7 @@ Thing_implement (GuiScrolledWindow, GuiControl, 0);
 		iam (GuiScrolledWindow);
 		forget (me);
 	}
-#elif cocoaT
+#elif cocoa
 	@implementation GuiCocoaScrolledWindow {
 		GuiScrolledWindow d_userData;
 	}
@@ -88,7 +88,7 @@ GuiScrolledWindow GuiScrolledWindow_create (GuiForm parent, int left, int right,
 		_GuiObject_setUserData (my d_widget, me);
 		my v_positionInForm (my d_widget, left, right, top, bottom, parent);
 		g_signal_connect (G_OBJECT (my d_widget), "destroy", G_CALLBACK (_GuiGtkScrolledWindow_destroyCallback), me);
-	#elif cocoaT
+	#elif cocoa
         GuiCocoaScrolledWindow *scrollView = [[GuiCocoaScrolledWindow alloc] init];
         my d_widget = (GuiObject) scrollView;
         my v_positionInForm (my d_widget, left, right, top, bottom, parent);

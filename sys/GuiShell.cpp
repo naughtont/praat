@@ -23,7 +23,7 @@
 Thing_implement (GuiShell, GuiForm, 0);
 
 void structGuiShell :: v_destroy () {
-	#if cocoaT
+	#if cocoa
 		if (d_cocoaWindow) {
 			[d_cocoaWindow setUserData: NULL];   // undangle reference to this
 			Melder_fatal ("ordering out?");
@@ -63,7 +63,7 @@ int structGuiShell :: f_getShellHeight () {
 void structGuiShell :: f_setTitle (const wchar_t *title) {
 	#if gtk
 		gtk_window_set_title (d_gtkWindow, Melder_peekWcsToUtf8 (title));
-	#elif cocoaT
+	#elif cocoa
 		[d_cocoaWindow setTitle: (NSString *) Melder_peekWcsToCfstring (title)];
 	#elif win
 		SetWindowText (d_xmShell -> window, title);
@@ -76,7 +76,7 @@ void structGuiShell :: f_drain () {
 	#if gtk
 		//gdk_window_flush (gtk_widget_get_window (me));
 		gdk_flush ();
-	#elif cocoaT
+	#elif cocoa
         //[d_cocoaWindow displayIfNeeded];
         [d_cocoaWindow flushWindow];
 		[d_cocoaWindow display];

@@ -140,74 +140,134 @@ Thing_implement (GuiDrawingArea, GuiControl, 0);
 		}
 		return FALSE;
 	}
+#elif cocoaTouch
+@interface GuiCocoaDrawingArea ()
+@property (nonatomic, assign) BOOL inited;
+@end
+@implementation GuiCocoaDrawingArea {
+    GuiDrawingArea d_userData;
+}
+- (id) initWithFrame: (CGRect) frame {
+    self = [super initWithFrame: frame];
+    if (self) {
+    }
+    return self;
+}
+- (void) dealloc {   // override
+    GuiDrawingArea me = d_userData;
+    forget (me);
+    trace ("deleting a drawing area");
+}
+- (GuiThing) userData {
+    return d_userData;
+}
+- (void) setUserData: (GuiThing) userData {
+    d_userData = static_cast <GuiDrawingArea> (userData);
+}
+- (void) resizeCallback: (CGRect) rect {
+    GuiDrawingArea me = (GuiDrawingArea) d_userData;
+    if (me && my d_resizeCallback) {
+        struct structGuiDrawingAreaResizeEvent event = { me, 0 };
+        event. width = rect. size. width;
+        event. height = rect. size. height;
+        try {
+            my d_resizeCallback (my d_resizeBoss, & event);
+        } catch (MelderError) {
+            Melder_flushError ("Window resizing not completely handled.");
+        }
+    }
+}
+- (void) drawRect: (CGRect) dirtyRect {
+    trace ("dirtyRect: %f, %f, %f, %f", dirtyRect.origin.x, dirtyRect.origin.y, dirtyRect.size.width, dirtyRect.size.height);
+    GuiDrawingArea me = (GuiDrawingArea) d_userData;
+    if (! _inited) {
+        // Last chance to do this. Is there a better place?
+        [self   resizeCallback: self. frame];
+        _inited = YES;
+    }
+    if (my d_exposeCallback) {
+        struct structGuiDrawingAreaExposeEvent event = { me };
+        try {
+            my d_exposeCallback (my d_exposeBoss, & event);
+        } catch (MelderError) {
+            Melder_flushError ("Redrawing not completed");
+        }
+    }
+}
+- (void) setFrame: (CGRect) rect {
+    [self   resizeCallback: rect];
+    [super   setFrame: rect];
+}
+
+@end
 #elif cocoa
 	@interface GuiCocoaDrawingArea ()
 	@property (nonatomic, assign) BOOL inited;
-//	@property (nonatomic, retain) NSTrackingArea *trackingArea;
+	@property (nonatomic, retain) NSTrackingArea *trackingArea;
 	@end
 	@implementation GuiCocoaDrawingArea {
 		GuiDrawingArea d_userData;
 	}
-//	- (id) initWithFrame: (NSRect) frame {
-//		self = [super initWithFrame: frame];
-//		if (self) {
-//			_trackingArea = [[[NSTrackingArea alloc]
-//				initWithRect: [self visibleRect]
-//				options: NSTrackingMouseEnteredAndExited | NSTrackingMouseMoved | NSTrackingInVisibleRect | NSTrackingActiveAlways
-//				owner: self
-//				userInfo: nil]
-//				autorelease];
-//			[self   addTrackingArea: _trackingArea];
-//		}
-//		return self;
-//	}
-//	- (void) dealloc {   // override
-//		GuiDrawingArea me = d_userData;
-//		forget (me);
-//		[self removeTrackingArea: _trackingArea];
-//		trace ("deleting a drawing area");
-//		[super dealloc];
-//	}
-//	- (GuiThing) userData {
-//		return d_userData;
-//	}
-//	- (void) setUserData: (GuiThing) userData {
-//		d_userData = static_cast <GuiDrawingArea> (userData);
-//	}
-//	- (void) resizeCallback: (NSRect) rect {
-//		GuiDrawingArea me = (GuiDrawingArea) d_userData;
-//		if (me && my d_resizeCallback) {
-//			struct structGuiDrawingAreaResizeEvent event = { me, 0 };
-//			event. width = rect. size. width;
-//			event. height = rect. size. height;
-//			try {
-//				my d_resizeCallback (my d_resizeBoss, & event);
-//			} catch (MelderError) {
-//				Melder_flushError ("Window resizing not completely handled.");
-//			}
-//		}
-//	}
-//	- (void) drawRect: (NSRect) dirtyRect {
-//		trace ("dirtyRect: %f, %f, %f, %f", dirtyRect.origin.x, dirtyRect.origin.y, dirtyRect.size.width, dirtyRect.size.height);
-//		GuiDrawingArea me = (GuiDrawingArea) d_userData;
-//		if (! _inited) {
-//			// Last chance to do this. Is there a better place?
-//			[self   resizeCallback: self. frame];
-//			_inited = YES;
-//		}
-//		if (my d_exposeCallback) {
-//			struct structGuiDrawingAreaExposeEvent event = { me };
-//			try {
-//				my d_exposeCallback (my d_exposeBoss, & event);
-//			} catch (MelderError) {
-//				Melder_flushError ("Redrawing not completed");
-//			}
-//		}
-//	}
-//	- (void) setFrame: (NSRect) rect {
-//		[self   resizeCallback: rect];
-//		[super   setFrame: rect];
-//	}
+	- (id) initWithFrame: (NSRect) frame {
+		self = [super initWithFrame: frame];
+		if (self) {
+			_trackingArea = [[[NSTrackingArea alloc]
+				initWithRect: [self visibleRect]
+				options: NSTrackingMouseEnteredAndExited | NSTrackingMouseMoved | NSTrackingInVisibleRect | NSTrackingActiveAlways
+				owner: self
+				userInfo: nil]
+				autorelease];
+			[self   addTrackingArea: _trackingArea];
+		}
+		return self;
+	}
+	- (void) dealloc {   // override
+		GuiDrawingArea me = d_userData;
+		forget (me);
+		[self removeTrackingArea: _trackingArea];
+		trace ("deleting a drawing area");
+		[super dealloc];
+	}
+	- (GuiThing) userData {
+		return d_userData;
+	}
+	- (void) setUserData: (GuiThing) userData {
+		d_userData = static_cast <GuiDrawingArea> (userData);
+	}
+	- (void) resizeCallback: (NSRect) rect {
+		GuiDrawingArea me = (GuiDrawingArea) d_userData;
+		if (me && my d_resizeCallback) {
+			struct structGuiDrawingAreaResizeEvent event = { me, 0 };
+			event. width = rect. size. width;
+			event. height = rect. size. height;
+			try {
+				my d_resizeCallback (my d_resizeBoss, & event);
+			} catch (MelderError) {
+				Melder_flushError ("Window resizing not completely handled.");
+			}
+		}
+	}
+	- (void) drawRect: (NSRect) dirtyRect {
+		trace ("dirtyRect: %f, %f, %f, %f", dirtyRect.origin.x, dirtyRect.origin.y, dirtyRect.size.width, dirtyRect.size.height);
+		GuiDrawingArea me = (GuiDrawingArea) d_userData;
+		if (! _inited) {
+			// Last chance to do this. Is there a better place?
+			[self   resizeCallback: self. frame];
+			_inited = YES;
+		}
+		if (my d_exposeCallback) {
+			struct structGuiDrawingAreaExposeEvent event = { me };
+			try {
+				my d_exposeCallback (my d_exposeBoss, & event);
+			} catch (MelderError) {
+				Melder_flushError ("Redrawing not completed");
+			}
+		}
+	}
+	- (void) setFrame: (NSRect) rect {
+		[self   resizeCallback: rect];
+		[super   setFrame: rect];
+	}
 	- (BOOL) acceptsFirstResponder {
 		/*
 		 * This overridden method tells the event chain whether the drawing area can accept key events.
@@ -223,90 +283,90 @@ Thing_implement (GuiDrawingArea, GuiControl, 0);
 		GuiDrawingArea me = (GuiDrawingArea) d_userData;
 		return my d_keyCallback != NULL;
 	}
-//	- (void) mouseEntered: (NSEvent *) nsEvent {
-//		(void) nsEvent;
-//		[[NSCursor crosshairCursor] push];
-//	}
-//	- (void) mouseExited: (NSEvent *) nsEvent{
-//		(void) nsEvent;
-//		[[NSCursor currentCursor] pop];
-//	}
-//	- (void) mouseDown: (NSEvent *) nsEvent {
-//	 //   [self becomeFirstResponder];
-//		GuiDrawingArea me = (GuiDrawingArea) d_userData;
-//		if (my d_clickCallback) {
-//			struct structGuiDrawingAreaClickEvent event = { me, 0 };
-//			NSPoint local_point = [self   convertPoint: [nsEvent locationInWindow]   fromView: nil];
-//			event. x = local_point. x;
-//			//event. y = [self frame]. size. height - local_point. y;
-//			event. y = local_point. y;
-//			NSUInteger modifiers = [nsEvent modifierFlags];
-//			event. shiftKeyPressed = modifiers & NSShiftKeyMask;
-//			event. optionKeyPressed = modifiers & NSAlternateKeyMask;
-//			event. commandKeyPressed = modifiers & NSCommandKeyMask;
-//			try {
-//				my d_clickCallback (my d_clickBoss, & event);
-//			} catch (MelderError) {
-//				Melder_flushError ("Mouse click not completely handled.");
-//			}
-//		}
-//	}
-//	- (BOOL) isFlipped {
-//		return YES;
-//	}
-//	- (void) keyDown: (NSEvent *) nsEvent {
-//		GuiDrawingArea me = (GuiDrawingArea) d_userData;
-//		if (my d_keyCallback) {
-//			struct structGuiDrawingAreaKeyEvent event = { me, 0 };
-//			event. key = [[nsEvent charactersIgnoringModifiers]   characterAtIndex: 0];
-//			if (event. key == NSLeftArrowFunctionKey)  event. key = 0x2190;
-//			if (event. key == NSRightArrowFunctionKey) event. key = 0x2192;
-//			if (event. key == NSUpArrowFunctionKey)    event. key = 0x2191;
-//			if (event. key == NSDownArrowFunctionKey)  event. key = 0x2193;
-//			trace ("key %d", (int) event. key);
-//			NSUInteger modifiers = [nsEvent modifierFlags];
-//			event. shiftKeyPressed = modifiers & NSShiftKeyMask;
-//			event. optionKeyPressed = modifiers & NSAlternateKeyMask;
-//			event. commandKeyPressed = modifiers & NSCommandKeyMask;
-//			try {
-//				my d_keyCallback (my d_keyBoss, & event);
-//			} catch (MelderError) {
-//				Melder_flushError ("Key press not completely handled.");
-//			}
-//		}
-//	}
-//
-//- (void)magnifyWithEvent:(NSEvent *)event {
-//    GuiDrawingArea me = (GuiDrawingArea) d_userData;
-//	if (my d_horizontalScrollBar) {
-//        
-//        GuiCocoaScrollBar *horizontalScrollBar = (GuiCocoaScrollBar*)my d_horizontalScrollBar -> d_widget;
-//        [horizontalScrollBar magnify:[event magnification]];
-//	}
-//	if (my d_verticalScrollBar) {
-//        GuiCocoaScrollBar *verticalScrollBar = (GuiCocoaScrollBar*)my d_verticalScrollBar -> d_widget;
-//        [verticalScrollBar magnify:[event deltaY]];
-//	}
-//}
-//
-//- (void)scrollWheel:(NSEvent *)event {
-//    BOOL scrolled = NO;
-//    GuiDrawingArea me = (GuiDrawingArea) d_userData;
-//	if (my d_horizontalScrollBar) {
-//        
-//        GuiCocoaScrollBar *horizontalScrollBar = (GuiCocoaScrollBar*)my d_horizontalScrollBar -> d_widget;
-//        [horizontalScrollBar scrollWheelScrolled:[event deltaX]];
-//        scrolled = YES;
-//	}
-//	if (my d_verticalScrollBar) {
-//        GuiCocoaScrollBar *verticalScrollBar = (GuiCocoaScrollBar*)my d_verticalScrollBar -> d_widget;
-//        [verticalScrollBar scrollWheelScrolled:[event deltaY]];
-//        scrolled = YES;
-//	}
-//    
-//    if (!scrolled)
-//        [super scrollWheel:event];
-//}
+	- (void) mouseEntered: (NSEvent *) nsEvent {
+		(void) nsEvent;
+		[[NSCursor crosshairCursor] push];
+	}
+	- (void) mouseExited: (NSEvent *) nsEvent{
+		(void) nsEvent;
+		[[NSCursor currentCursor] pop];
+	}
+	- (void) mouseDown: (NSEvent *) nsEvent {
+	 //   [self becomeFirstResponder];
+		GuiDrawingArea me = (GuiDrawingArea) d_userData;
+		if (my d_clickCallback) {
+			struct structGuiDrawingAreaClickEvent event = { me, 0 };
+			NSPoint local_point = [self   convertPoint: [nsEvent locationInWindow]   fromView: nil];
+			event. x = local_point. x;
+			//event. y = [self frame]. size. height - local_point. y;
+			event. y = local_point. y;
+			NSUInteger modifiers = [nsEvent modifierFlags];
+			event. shiftKeyPressed = modifiers & NSShiftKeyMask;
+			event. optionKeyPressed = modifiers & NSAlternateKeyMask;
+			event. commandKeyPressed = modifiers & NSCommandKeyMask;
+			try {
+				my d_clickCallback (my d_clickBoss, & event);
+			} catch (MelderError) {
+				Melder_flushError ("Mouse click not completely handled.");
+			}
+		}
+	}
+	- (BOOL) isFlipped {
+		return YES;
+	}
+	- (void) keyDown: (NSEvent *) nsEvent {
+		GuiDrawingArea me = (GuiDrawingArea) d_userData;
+		if (my d_keyCallback) {
+			struct structGuiDrawingAreaKeyEvent event = { me, 0 };
+			event. key = [[nsEvent charactersIgnoringModifiers]   characterAtIndex: 0];
+			if (event. key == NSLeftArrowFunctionKey)  event. key = 0x2190;
+			if (event. key == NSRightArrowFunctionKey) event. key = 0x2192;
+			if (event. key == NSUpArrowFunctionKey)    event. key = 0x2191;
+			if (event. key == NSDownArrowFunctionKey)  event. key = 0x2193;
+			trace ("key %d", (int) event. key);
+			NSUInteger modifiers = [nsEvent modifierFlags];
+			event. shiftKeyPressed = modifiers & NSShiftKeyMask;
+			event. optionKeyPressed = modifiers & NSAlternateKeyMask;
+			event. commandKeyPressed = modifiers & NSCommandKeyMask;
+			try {
+				my d_keyCallback (my d_keyBoss, & event);
+			} catch (MelderError) {
+				Melder_flushError ("Key press not completely handled.");
+			}
+		}
+	}
+
+- (void)magnifyWithEvent:(NSEvent *)event {
+    GuiDrawingArea me = (GuiDrawingArea) d_userData;
+	if (my d_horizontalScrollBar) {
+        
+        GuiCocoaScrollBar *horizontalScrollBar = (GuiCocoaScrollBar*)my d_horizontalScrollBar -> d_widget;
+        [horizontalScrollBar magnify:[event magnification]];
+	}
+	if (my d_verticalScrollBar) {
+        GuiCocoaScrollBar *verticalScrollBar = (GuiCocoaScrollBar*)my d_verticalScrollBar -> d_widget;
+        [verticalScrollBar magnify:[event deltaY]];
+	}
+}
+
+- (void)scrollWheel:(NSEvent *)event {
+    BOOL scrolled = NO;
+    GuiDrawingArea me = (GuiDrawingArea) d_userData;
+	if (my d_horizontalScrollBar) {
+        
+        GuiCocoaScrollBar *horizontalScrollBar = (GuiCocoaScrollBar*)my d_horizontalScrollBar -> d_widget;
+        [horizontalScrollBar scrollWheelScrolled:[event deltaX]];
+        scrolled = YES;
+	}
+	if (my d_verticalScrollBar) {
+        GuiCocoaScrollBar *verticalScrollBar = (GuiCocoaScrollBar*)my d_verticalScrollBar -> d_widget;
+        [verticalScrollBar scrollWheelScrolled:[event deltaY]];
+        scrolled = YES;
+	}
+    
+    if (!scrolled)
+        [super scrollWheel:event];
+}
 
 	@end
 #elif win
@@ -378,7 +438,7 @@ Thing_implement (GuiDrawingArea, GuiControl, 0);
 			}
 		}
 	}
-#elif macT
+#elif mac
 	void _GuiMacDrawingArea_destroy (GuiObject widget) {
 		iam_drawingarea;
 		forget (me);   // NOTE: my widget is not destroyed here
@@ -533,7 +593,12 @@ GuiDrawingArea GuiDrawingArea_create (GuiForm parent, int left, int right, int t
 		_GuiObject_setUserData (my d_widget, me);
 		my v_positionInForm (my d_widget, left, right, top, bottom, parent);
 		gtk_widget_set_double_buffered (GTK_WIDGET (my d_widget), FALSE);
-	#elif cocoaT
+    #elif cocoaTouch
+        GuiCocoaDrawingArea *drawingArea = [[GuiCocoaDrawingArea alloc] init];
+        my d_widget = (GuiObject) drawingArea;
+        my v_positionInForm (my d_widget, left, right, top, bottom, parent);
+        [drawingArea   setUserData: me];
+    #elif cocoa
 		GuiCocoaDrawingArea *drawingArea = [[GuiCocoaDrawingArea alloc] init];
 		my d_widget = (GuiObject) drawingArea;
 		my v_positionInForm (my d_widget, left, right, top, bottom, parent);
@@ -549,7 +614,7 @@ GuiDrawingArea GuiDrawingArea_create (GuiForm parent, int left, int right, int t
 			my d_widget -> x, my d_widget -> y, my d_widget -> width, my d_widget -> height, my d_widget -> parent -> window, NULL, theGui.instance, NULL);
 		SetWindowLongPtr (my d_widget -> window, GWLP_USERDATA, (LONG_PTR) my d_widget);
 		my v_positionInForm (my d_widget, left, right, top, bottom, parent);
-	#elif macT
+	#elif mac
 		my d_widget = _Gui_initializeWidget (xmDrawingAreaWidgetClass, parent -> d_widget, L"drawingArea");
 		_GuiObject_setUserData (my d_widget, me);
 		my v_positionInForm (my d_widget, left, right, top, bottom, parent);
@@ -614,6 +679,10 @@ GuiDrawingArea GuiDrawingArea_create (GuiScrolledWindow parent, int width, int h
 		my v_positionInScrolledWindow (my d_widget, width, height, parent);
 		[drawingArea setUserData: me];
     #elif cocoaTouch
+        GuiCocoaDrawingArea *drawingArea = [[GuiCocoaDrawingArea alloc] init];
+        my d_widget = (GuiObject) drawingArea;
+        my v_positionInScrolledWindow (my d_widget, width, height, parent);
+        [drawingArea setUserData: me];
     #elif win
 		my d_widget = _Gui_initializeWidget (xmDrawingAreaWidgetClass, parent -> d_widget, L"drawingArea");
 		_GuiObject_setUserData (my d_widget, me);

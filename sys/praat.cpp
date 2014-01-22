@@ -930,7 +930,7 @@ void praat_dontUsePictureWindow (void) { praatP.dontUsePictureWindow = TRUE; }
 		if (l > 0 && text [l - 1] == '\"') text [l - 1] = '\0';
 		sendpraatW (NULL, Melder_peekUtf8ToWcs (praatP.title), 0, text);
 	}
-#elif cocoaT
+#elif cocoa
 	static int (*theUserMessageCallbackA) (char *message);
 	static int (*theUserMessageCallbackW) (wchar_t *message);
 	static void mac_setUserMessageCallbackA (int (*userMessageCallback) (char *message)) {
@@ -1591,7 +1591,7 @@ void praat_run (void) {
 			trace ("start the GTK event loop");
 			trace ("locale is %s", setlocale (LC_ALL, NULL));
 			gtk_main ();
-		#elif cocoaT
+		#elif cocoa
 			[NSApp run];
 		#elif motif
 			#if defined (_WIN32)

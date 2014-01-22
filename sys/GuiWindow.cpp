@@ -184,7 +184,7 @@ GuiWindow GuiWindow_create (int x, int y, int width, int height,
 		gtk_widget_set_size_request (GTK_WIDGET (my d_widget), width, height);
 		gtk_container_add (GTK_CONTAINER (my d_gtkWindow), GTK_WIDGET (my d_widget));
 		g_signal_connect (G_OBJECT (my d_widget), "size-allocate", G_CALLBACK (_GuiWindow_resizeCallback), me);
-	#elif cocoaT
+	#elif cocoa
 		NSRect rect = { { x, y }, { width, height } };
 		my d_cocoaWindow = [[GuiCocoaWindow alloc]
 			initWithContentRect: rect

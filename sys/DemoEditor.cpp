@@ -214,7 +214,7 @@ void Demo_waitForInput (Interpreter interpreter) {
 				do {
 					gtk_main_iteration ();
 				} while (! theDemoEditor -> clicked && ! theDemoEditor -> keyPressed && ! theDemoEditor -> userWantsToClose);
-			#elif cocoaT
+			#elif cocoa
 				do {
 					NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 					[theDemoEditor -> d_windowForm -> d_cocoaWindow   flushWindow];

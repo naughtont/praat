@@ -39,7 +39,7 @@ void structGuiThing :: v_hide () {
 		} else {
 			gtk_widget_hide (GTK_WIDGET (d_widget));
 		}
-	#elif cocoaT
+	#elif cocoa
 		if ([(NSObject *) d_widget isKindOfClass: [NSWindow class]]) {
 			[(NSWindow *) d_widget orderOut: nil];
 		} else if ([(NSObject *) d_widget isKindOfClass: [NSView class]]) {
@@ -69,7 +69,7 @@ void structGuiThing :: f_setSensitive (bool sensitive) {
 void structGuiThing :: v_setSensitive (bool sensitive) {
 	#if gtk
 		gtk_widget_set_sensitive (GTK_WIDGET (d_widget), sensitive);
-	#elif cocoaT
+	#elif cocoa
 		if ([(NSObject *) d_widget isKindOfClass: [NSControl class]]) {
 			[(NSControl *) d_widget setEnabled: sensitive];
 		} else if ([(NSObject *) d_widget isKindOfClass: [NSMenuItem class]]) {
@@ -106,7 +106,7 @@ void structGuiThing :: v_show () {
 			trace ("showing a widget that is not a window or dialog");
 			gtk_widget_show (GTK_WIDGET (d_widget));
 		}
-	#elif cocoaT
+	#elif cocoa
 		if ([(NSObject *) d_widget isKindOfClass: [NSWindow class]]) {
 			trace ("trying to show a window");
 			[(NSWindow *) d_widget makeKeyAndOrderFront: nil];

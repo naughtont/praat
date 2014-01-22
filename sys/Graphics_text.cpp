@@ -356,32 +356,32 @@ static void charSize (I, _Graphics_widechar *lc) {
 
             CFRange textRange = CFRangeMake (0, [s length]);
             
-//            CFMutableAttributedStringRef string = CFAttributedStringCreateMutable (kCFAllocatorDefault, [s length]);
-//            CFAttributedStringReplaceString (string, CFRangeMake (0, 0), (CFStringRef) s);
-//            CFAttributedStringSetAttribute (string, textRange, kCTFontAttributeName, ctFont);
+            CFMutableAttributedStringRef string = CFAttributedStringCreateMutable (kCFAllocatorDefault, [s length]);
+            CFAttributedStringReplaceString (string, CFRangeMake (0, 0), (CFStringRef) s);
+            CFAttributedStringSetAttribute (string, textRange, kCTFontAttributeName, ctFont);
         
             /*
              * Measure.
              */
         
-//            // Create a path to render text in
-//            CGMutablePathRef path = CGPathCreateMutable ();
-//            NSRect measureRect = NSMakeRect (0, 0, CGFLOAT_MAX, CGFLOAT_MAX);
-//            CGPathAddRect (path, NULL, (CGRect) measureRect);
-//            
-//			CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString ((CFAttributedStringRef) string);
-//			CFRange fitRange;
-//			CGSize targetSize = CGSizeMake (lc -> width, CGFLOAT_MAX);
-//			CGSize frameSize = CTFramesetterSuggestFrameSizeWithConstraints (framesetter, textRange, NULL, targetSize, & fitRange);
-//            CFRelease (framesetter);
-//            CFRelease (string);
-//            [s release];
-//			CFRelease (path);
-//            //CGContextRestoreGState (context);
-//
-//			bool isDiacritic = info -> ps.times == 0;
-//            lc -> width = isDiacritic ? 0.0 : frameSize.width * lc -> size / 100.0;
-//			if (font == kGraphics_font_IPATIMES || font == kGraphics_font_IPAPALATINO) lc -> baseline -= 6;   // BUG: not good enough
+            // Create a path to render text in
+            CGMutablePathRef path = CGPathCreateMutable ();
+            NSRect measureRect = NSMakeRect (0, 0, CGFLOAT_MAX, CGFLOAT_MAX);
+            CGPathAddRect (path, NULL, (CGRect) measureRect);
+            
+			CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString ((CFAttributedStringRef) string);
+			CFRange fitRange;
+			CGSize targetSize = CGSizeMake (lc -> width, CGFLOAT_MAX);
+			CGSize frameSize = CTFramesetterSuggestFrameSizeWithConstraints (framesetter, textRange, NULL, targetSize, & fitRange);
+            CFRelease (framesetter);
+            CFRelease (string);
+            [s release];
+			CFRelease (path);
+            //CGContextRestoreGState (context);
+
+			bool isDiacritic = info -> ps.times == 0;
+            lc -> width = isDiacritic ? 0.0 : frameSize.width * lc -> size / 100.0;
+			if (font == kGraphics_font_IPATIMES || font == kGraphics_font_IPAPALATINO) lc -> baseline -= 6;   // BUG: not good enough
             lc -> baseline *= my fontSize * 0.01;
             lc -> code = lc -> kar;
 			lc -> font.integer = font;
@@ -392,17 +392,20 @@ static void charSize (I, _Graphics_widechar *lc) {
 			lc -> baseline *= 0.01 * normalSize;
 			long saveFont = lc -> font.integer;   // save!
 			lc -> font.string = NULL;   // this erases font.integer!
-//			ATSFontRef atsuiFont =
-//				info -> alphabet == Longchar_SYMBOL ? theSymbolAtsuiFont :
-//				info -> alphabet == Longchar_PHONETIC ? ( my font == kGraphics_font_TIMES && lc -> style == 0 ? theIpaTimesAtsuiFont : theIpaPalatinoAtsuiFont ) :
-//				lc -> kar == '/' ? thePalatinoAtsuiFont :   /* Override Courier. */
-//				info -> alphabet == Longchar_DINGBATS ? theZapfDingbatsAtsuiFont:
-//				saveFont == kGraphics_font_COURIER ? theCourierAtsuiFont :
-//				my font == kGraphics_font_TIMES ? theTimesAtsuiFont :
-//				my font == kGraphics_font_HELVETICA ? theHelveticaAtsuiFont :
-//				my font == kGraphics_font_COURIER ? theCourierAtsuiFont : theTimesAtsuiFont;
-//			Melder_assert (atsuiFont != 0);
-//			lc -> font.integer = (long) atsuiFont;
+#if cocoaTouch
+#else
+			ATSFontRef atsuiFont =
+				info -> alphabet == Longchar_SYMBOL ? theSymbolAtsuiFont :
+				info -> alphabet == Longchar_PHONETIC ? ( my font == kGraphics_font_TIMES && lc -> style == 0 ? theIpaTimesAtsuiFont : theIpaPalatinoAtsuiFont ) :
+				lc -> kar == '/' ? thePalatinoAtsuiFont :   /* Override Courier. */
+				info -> alphabet == Longchar_DINGBATS ? theZapfDingbatsAtsuiFont:
+				saveFont == kGraphics_font_COURIER ? theCourierAtsuiFont :
+				my font == kGraphics_font_TIMES ? theTimesAtsuiFont :
+				my font == kGraphics_font_HELVETICA ? theHelveticaAtsuiFont :
+				my font == kGraphics_font_COURIER ? theCourierAtsuiFont : theTimesAtsuiFont;
+			Melder_assert (atsuiFont != 0);
+			lc -> font.integer = (long) atsuiFont;
+#endif
 			//CTFontRef ctFont = CTFontCreateWithName (CFSTR("Times"), 48, NULL);
 			lc -> code = lc -> kar;
 			if (lc -> code == 0) {
@@ -425,54 +428,61 @@ static void charSize (I, _Graphics_widechar *lc) {
 					lc [1]. kar = UNICODE_COMBINING_TILDE_OVERLAY;
 				}
 			}
+        
+#if cocoaTouch
+#else
+
 			/*
 			 * Define the text layout.
 			 */
-// 			static ATSUTextLayout textLayout;
-// 			if (textLayout == NULL) {
-// 				OSStatus err = ATSUCreateTextLayout (& textLayout);
-// 				if (err != 0) Melder_fatal ("Graphics_text/ATSUCreateTextLayout: unknown MacOS error %d.", (int) err);
-// 			}
-// 			uint16_t code16 [2];
-// 			if (lc -> kar <= 0xFFFF) {
-// 				code16 [0] = lc -> kar;
-// 				OSStatus err = ATSUSetTextPointerLocation (textLayout, & code16 [0], kATSUFromTextBeginning, kATSUToTextEnd, 1);   // BUG: not 64-bit
-// 				if (err != 0) Melder_fatal ("Graphics_text/ATSUSetTextPointerLocation low Unicode: unknown MacOS error %d.", (int) err);
-// 			} else {
-// 				MelderUtf32 kar = lc -> kar - 0x10000;
-// 				code16 [0] = 0xD800 + (kar >> 10);
-// 				code16 [1] = 0xDC00 + (kar & 0x3FF);
-// 				OSStatus err = ATSUSetTextPointerLocation (textLayout, & code16 [0], kATSUFromTextBeginning, kATSUToTextEnd, 2);   // BUG: not 64-bit
-// 				if (err != 0) Melder_fatal ("Graphics_text/ATSUSetTextPointerLocation high Unicode: unknown MacOS error %d.", (int) err);
-// 			}
-// 			static ATSUFontFallbacks fontFallbacks = NULL;
-// 			if (fontFallbacks == NULL) {
-// 				ATSUCreateFontFallbacks (& fontFallbacks);
-// 				ATSUSetObjFontFallbacks (fontFallbacks, 0, NULL, kATSUDefaultFontFallbacks);
-// 			}
-// 			ATSUAttributeTag attributeTags [] = { kATSUCGContextTag, kATSULineFontFallbacksTag };
-// 			ByteCount valueSizes [] = { sizeof (CGContextRef), sizeof (ATSUFontFallbacks) };
-// 			ATSUAttributeValuePtr values [] = { & my d_macGraphicsContext, & fontFallbacks };
-// 			ATSUSetLayoutControls (textLayout, 2, attributeTags, valueSizes, values);
-// 			ATSUSetTransientFontMatching (textLayout, true);
-// 			/*
-// 			 * Set styles: font, size, colour, bold, italic.
-// 			 */
-// 			static ATSUStyle atsuStyle;
-// 			if (atsuStyle == NULL) {
-// 				ATSUCreateStyle (& atsuStyle);
-// 			}
-// 			Fixed fontSize = lc -> size << 16;
-// 			Boolean boldStyle = (lc -> style & Graphics_BOLD) != 0;
-// 			Boolean italicStyle = (lc -> style & Graphics_ITALIC) != 0;
-// 			ATSUAttributeTag styleAttributeTags [] = { kATSUFontTag, kATSUSizeTag, kATSUColorTag, kATSUQDBoldfaceTag, kATSUQDItalicTag };
-// 			ByteCount styleValueSizes [] = { sizeof (ATSUFontID), sizeof (Fixed), sizeof (RGBColor), sizeof (Boolean), sizeof (Boolean) };
-// 			ATSUAttributeValuePtr styleValues [] = { & atsuiFont, & fontSize, lc -> link ? & theBlueColour : & my d_macColour, & boldStyle, & italicStyle };
-// 			ATSUSetAttributes (atsuStyle, 5, styleAttributeTags, styleValueSizes, styleValues);
-// 			ATSUSetRunStyle (textLayout, atsuStyle, 0, 1);
-// 			ATSUTextMeasurement textBefore, textAfter, ascent, descent;
-// 			ATSUGetUnjustifiedBounds (textLayout, kATSUFromTextBeginning, kATSUToTextEnd, & textBefore, & textAfter, & ascent, & descent);
-// 			lc -> width = textAfter / 65536.0;
+			static ATSUTextLayout textLayout;
+			if (textLayout == NULL) {
+				OSStatus err = ATSUCreateTextLayout (& textLayout);
+				if (err != 0) Melder_fatal ("Graphics_text/ATSUCreateTextLayout: unknown MacOS error %d.", (int) err);
+			}
+			uint16_t code16 [2];
+			if (lc -> kar <= 0xFFFF) {
+				code16 [0] = lc -> kar;
+				OSStatus err = ATSUSetTextPointerLocation (textLayout, & code16 [0], kATSUFromTextBeginning, kATSUToTextEnd, 1);   // BUG: not 64-bit
+				if (err != 0) Melder_fatal ("Graphics_text/ATSUSetTextPointerLocation low Unicode: unknown MacOS error %d.", (int) err);
+			} else {
+				MelderUtf32 kar = lc -> kar - 0x10000;
+				code16 [0] = 0xD800 + (kar >> 10);
+				code16 [1] = 0xDC00 + (kar & 0x3FF);
+				OSStatus err = ATSUSetTextPointerLocation (textLayout, & code16 [0], kATSUFromTextBeginning, kATSUToTextEnd, 2);   // BUG: not 64-bit
+				if (err != 0) Melder_fatal ("Graphics_text/ATSUSetTextPointerLocation high Unicode: unknown MacOS error %d.", (int) err);
+			}
+
+			static ATSUFontFallbacks fontFallbacks = NULL;
+			if (fontFallbacks == NULL) {
+				ATSUCreateFontFallbacks (& fontFallbacks);
+				ATSUSetObjFontFallbacks (fontFallbacks, 0, NULL, kATSUDefaultFontFallbacks);
+			}
+			ATSUAttributeTag attributeTags [] = { kATSUCGContextTag, kATSULineFontFallbacksTag };
+			ByteCount valueSizes [] = { sizeof (CGContextRef), sizeof (ATSUFontFallbacks) };
+			ATSUAttributeValuePtr values [] = { & my d_macGraphicsContext, & fontFallbacks };
+			ATSUSetLayoutControls (textLayout, 2, attributeTags, valueSizes, values);
+			ATSUSetTransientFontMatching (textLayout, true);
+			/*
+			 * Set styles: font, size, colour, bold, italic.
+			 */
+			static ATSUStyle atsuStyle;
+			if (atsuStyle == NULL) {
+				ATSUCreateStyle (& atsuStyle);
+			}
+			Fixed fontSize = lc -> size << 16;
+			Boolean boldStyle = (lc -> style & Graphics_BOLD) != 0;
+			Boolean italicStyle = (lc -> style & Graphics_ITALIC) != 0;
+        
+			ATSUAttributeTag styleAttributeTags [] = { kATSUFontTag, kATSUSizeTag, kATSUColorTag, kATSUQDBoldfaceTag, kATSUQDItalicTag };
+			ByteCount styleValueSizes [] = { sizeof (ATSUFontID), sizeof (Fixed), sizeof (RGBColor), sizeof (Boolean), sizeof (Boolean) };
+			ATSUAttributeValuePtr styleValues [] = { & atsuiFont, & fontSize, lc -> link ? & theBlueColour : & my d_macColour, & boldStyle, & italicStyle };
+			ATSUSetAttributes (atsuStyle, 5, styleAttributeTags, styleValueSizes, styleValues);
+			ATSUSetRunStyle (textLayout, atsuStyle, 0, 1);
+			ATSUTextMeasurement textBefore, textAfter, ascent, descent;
+			ATSUGetUnjustifiedBounds (textLayout, kATSUFromTextBeginning, kATSUToTextEnd, & textBefore, & textAfter, & ascent, & descent);
+			lc -> width = textAfter / 65536.0;
+#endif
 		#endif
 	} else if (my postScript) {
 		iam (GraphicsPostscript);
@@ -687,6 +697,9 @@ static void charDraw (I, int xDC, int yDC, _Graphics_widechar *lc,
 			}
 			int font = lc -> font.integer;
 			int needBitmappedIPA = 0;
+        #elif cocoaTouch
+            int needBitmappedIPA = 0;
+
 		#elif cocoa
 			/*
 			 * Determine the font family.
@@ -701,17 +714,17 @@ static void charDraw (I, int xDC, int yDC, _Graphics_widechar *lc,
 			/*
 			 * Determine the font-style combination.
 			 */
-//			CTFontSymbolicTraits ctStyle = ( style & Graphics_BOLD ? kCTFontBoldTrait : 0 ) | ( lc -> style & Graphics_ITALIC ? kCTFontItalicTrait : 0 );
+			CTFontSymbolicTraits ctStyle = ( style & Graphics_BOLD ? kCTFontBoldTrait : 0 ) | ( lc -> style & Graphics_ITALIC ? kCTFontItalicTrait : 0 );
 			#if 1
-//				CFStringRef key = kCTFontSymbolicTrait;
-//				CFNumberRef value = CFNumberCreate (NULL, kCFNumberIntType, & ctStyle);
-//				CFIndex numberOfValues = 1;
-//				CFDictionaryRef styleDict = CFDictionaryCreate (NULL, (const void **) & key, (const void **) & value, numberOfValues,
-//					& kCFTypeDictionaryKeyCallBacks, & kCFTypeDictionaryValueCallBacks);
-//				CFRelease (value);
-//				CFStringRef keys [2];
-//				keys [0] = kCTFontTraitsAttribute;
-//				keys [1] = kCTFontNameAttribute;
+				CFStringRef key = kCTFontSymbolicTrait;
+				CFNumberRef value = CFNumberCreate (NULL, kCFNumberIntType, & ctStyle);
+				CFIndex numberOfValues = 1;
+				CFDictionaryRef styleDict = CFDictionaryCreate (NULL, (const void **) & key, (const void **) & value, numberOfValues,
+					& kCFTypeDictionaryKeyCallBacks, & kCFTypeDictionaryValueCallBacks);
+				CFRelease (value);
+				CFStringRef keys [2];
+				keys [0] = kCTFontTraitsAttribute;
+				keys [1] = kCTFontNameAttribute;
 				CFStringRef cfFont;
 				switch (font) {
 					case kGraphics_font_TIMES:       { cfFont = (CFStringRef) Melder_peekWcsToCfstring (L"Times New Roman"); } break;
@@ -723,12 +736,12 @@ static void charDraw (I, int xDC, int yDC, _Graphics_widechar *lc,
 					case kGraphics_font_IPAPALATINO: { cfFont = (CFStringRef) Melder_peekWcsToCfstring (L"Charis SIL"     ); } break;
 					case kGraphics_font_DINGBATS:    { cfFont = (CFStringRef) Melder_peekWcsToCfstring (L"Zapf Dingbats"  ); } break;
 				}
-//				void *values [2] = { (void *) styleDict, (void *) cfFont };
-//				CFDictionaryRef attributes = CFDictionaryCreate (NULL, (const void **) & keys, (const void **) & values, 2,
-//					& kCFTypeDictionaryKeyCallBacks, & kCFTypeDictionaryValueCallBacks);
-//				CFRelease (styleDict);
-//				CTFontDescriptorRef ctFontDescriptor = CTFontDescriptorCreateWithAttributes (attributes);
-//				CFRelease (attributes);
+				void *values [2] = { (void *) styleDict, (void *) cfFont };
+				CFDictionaryRef attributes = CFDictionaryCreate (NULL, (const void **) & keys, (const void **) & values, 2,
+					& kCFTypeDictionaryKeyCallBacks, & kCFTypeDictionaryValueCallBacks);
+				CFRelease (styleDict);
+				CTFontDescriptorRef ctFontDescriptor = CTFontDescriptorCreateWithAttributes (attributes);
+				CFRelease (attributes);
 			#else
 				NSMutableDictionary *styleDict = [[NSMutableDictionary alloc] initWithCapacity: 1];
 				[styleDict   setObject: [NSNumber numberWithUnsignedInt: ctStyle]   forKey: (id) kCTFontSymbolicTrait];
@@ -748,8 +761,8 @@ static void charDraw (I, int xDC, int yDC, _Graphics_widechar *lc,
 				[styleDict release];
 				[attributes release];
 			#endif
-//			CTFontRef ctFont = CTFontCreateWithFontDescriptor (ctFontDescriptor, lc -> size, NULL);
-//			CFRelease (ctFontDescriptor);
+			CTFontRef ctFont = CTFontCreateWithFontDescriptor (ctFontDescriptor, lc -> size, NULL);
+			CFRelease (ctFontDescriptor);
 
 			int needBitmappedIPA = 0;
 			bool hasHighUnicodeValues = false;
@@ -768,19 +781,19 @@ static void charDraw (I, int xDC, int yDC, _Graphics_widechar *lc,
 				int length = [s length];
 			#endif
 
-//			CGFloat descent = CTFontGetDescent (ctFont);
+			CGFloat descent = CTFontGetDescent (ctFont);
 
             CFMutableAttributedStringRef string = CFAttributedStringCreateMutable (kCFAllocatorDefault, length);
             CFAttributedStringReplaceString (string, CFRangeMake (0, 0), (CFStringRef) s);
             CFRange textRange = CFRangeMake (0, length);
-  //          CFAttributedStringSetAttribute (string, textRange, kCTFontAttributeName, ctFont);
+            CFAttributedStringSetAttribute (string, textRange, kCTFontAttributeName, ctFont);
 
 			static CFNumberRef cfKerning;
 			if (! cfKerning) {
 				double kerning = 0.0;
 				cfKerning = CFNumberCreate (kCFAllocatorDefault, kCFNumberDoubleType, & kerning);
 			}
- //           CFAttributedStringSetAttribute (string, textRange, kCTKernAttributeName, cfKerning);
+            CFAttributedStringSetAttribute (string, textRange, kCTKernAttributeName, cfKerning);
 
 			static CTParagraphStyleRef paragraphStyle;
 			if (! paragraphStyle) {
@@ -789,12 +802,12 @@ static void charDraw (I, int xDC, int yDC, _Graphics_widechar *lc,
 				paragraphStyle = CTParagraphStyleCreate (paragraphSettings, 1);
 				Melder_assert (paragraphStyle != NULL);
 			}
-//            CFAttributedStringSetAttribute (string, textRange, kCTParagraphStyleAttributeName, paragraphStyle);
-//
-//            RGBColor *macColor = lc -> link ? & theBlueColour : my duringXor ? & theWhiteColour : & my d_macColour;
-//            CGColorRef color = CGColorCreateGenericRGB (macColor->red / 65536.0, macColor->green / 65536.0, macColor->blue / 65536.0, 1.0);
-//			Melder_assert (color != NULL);
-//            CFAttributedStringSetAttribute (string, textRange, kCTForegroundColorAttributeName, color);
+            CFAttributedStringSetAttribute (string, textRange, kCTParagraphStyleAttributeName, paragraphStyle);
+
+            RGBColor *macColor = lc -> link ? & theBlueColour : my duringXor ? & theWhiteColour : & my d_macColour;
+            CGColorRef color = CGColorCreateGenericRGB (macColor->red / 65536.0, macColor->green / 65536.0, macColor->blue / 65536.0, 1.0);
+			Melder_assert (color != NULL);
+            CFAttributedStringSetAttribute (string, textRange, kCTForegroundColorAttributeName, color);
 
             /*
              * Draw.
@@ -802,52 +815,52 @@ static void charDraw (I, int xDC, int yDC, _Graphics_widechar *lc,
     
             // Create a path to render text in
             CGMutablePathRef path = CGPathCreateMutable ();
-//            NSRect measureRect = NSMakeRect (0, 0, CGFLOAT_MAX, CGFLOAT_MAX);
-//            CGPathAddRect (path, NULL, (CGRect) measureRect);
+            NSRect measureRect = NSMakeRect (0, 0, CGFLOAT_MAX, CGFLOAT_MAX);
+            CGPathAddRect (path, NULL, (CGRect) measureRect);
 
             CGContextSetTextMatrix (my d_macGraphicsContext, CGAffineTransformIdentity);   // this could set the "current context" for CoreText
 
             // create the framesetter and render text
-//            CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString ((CFAttributedStringRef) string);
-//			Melder_assert (framesetter != NULL);
-//            CTFrameRef frame = CTFramesetterCreateFrame (framesetter, CFRangeMake (0, length), path, NULL);
-//			Melder_assert (frame != NULL);
+            CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString ((CFAttributedStringRef) string);
+			Melder_assert (framesetter != NULL);
+            CTFrameRef frame = CTFramesetterCreateFrame (framesetter, CFRangeMake (0, length), path, NULL);
+			Melder_assert (frame != NULL);
         
             CFRange fitRange;
             CGSize targetSize = CGSizeMake (CGFLOAT_MAX, CGFLOAT_MAX);
-//            CGSize frameSize = CTFramesetterSuggestFrameSizeWithConstraints (framesetter, textRange, NULL, targetSize, & fitRange);
-//            CFRelease (path);
-//            CFRelease (color);
-//            CFRelease (frame);
-//            path = CGPathCreateMutable ();
-//            NSRect drawRect = NSMakeRect (0, 0, frameSize.width, frameSize.height);
-//			trace ("frame %f %f", frameSize.width, frameSize.height);
-//            CGPathAddRect (path, NULL, (CGRect) drawRect);
-//            frame = CTFramesetterCreateFrame (framesetter, CFRangeMake (0, length), path, NULL);
-//			Melder_assert (frame != NULL);
+            CGSize frameSize = CTFramesetterSuggestFrameSizeWithConstraints (framesetter, textRange, NULL, targetSize, & fitRange);
+            CFRelease (path);
+            CFRelease (color);
+            CFRelease (frame);
+            path = CGPathCreateMutable ();
+            NSRect drawRect = NSMakeRect (0, 0, frameSize.width, frameSize.height);
+			trace ("frame %f %f", frameSize.width, frameSize.height);
+            CGPathAddRect (path, NULL, (CGRect) drawRect);
+            frame = CTFramesetterCreateFrame (framesetter, CFRangeMake (0, length), path, NULL);
+			Melder_assert (frame != NULL);
 
-//			if (my d_macView) {
-//				[my d_macView   lockFocus];
-//				my d_macGraphicsContext = (CGContextRef) [[NSGraphicsContext currentContext] graphicsPort];
-//			}
-//            CGContextSaveGState (my d_macGraphicsContext);
-//            if (my yIsZeroAtTheTop) CGContextScaleCTM (my d_macGraphicsContext, 1.0, -1.0);
-//                CGContextTranslateCTM (my d_macGraphicsContext, xDC, - yDC - descent);
-//            CGContextRotateCTM (my d_macGraphicsContext, my textRotation * NUMpi / 180.0);
-//
-//			//CGContextRef context = (CGContextRef) [[NSGraphicsContext currentContext] graphicsPort];
-//			//Melder_assert (my d_macGraphicsContext != NULL);
-//			//Melder_assert (context == my d_macGraphicsContext);
-//            if (my duringXor) {
-//                CGContextSetBlendMode (my d_macGraphicsContext, kCGBlendModeDifference);
-//                CGContextSetAllowsAntialiasing (my d_macGraphicsContext, false);
-//                CTFrameDraw (frame, my d_macGraphicsContext);
-//                CGContextSetBlendMode (my d_macGraphicsContext, kCGBlendModeNormal);
-//                CGContextSetAllowsAntialiasing (my d_macGraphicsContext, true);
-//            } else {
-//                CTFrameDraw (frame, my d_macGraphicsContext);
-//            }
-//    
+			if (my d_macView) {
+				[my d_macView   lockFocus];
+				my d_macGraphicsContext = (CGContextRef) [[NSGraphicsContext currentContext] graphicsPort];
+			}
+            CGContextSaveGState (my d_macGraphicsContext);
+            if (my yIsZeroAtTheTop) CGContextScaleCTM (my d_macGraphicsContext, 1.0, -1.0);
+                CGContextTranslateCTM (my d_macGraphicsContext, xDC, - yDC - descent);
+            CGContextRotateCTM (my d_macGraphicsContext, my textRotation * NUMpi / 180.0);
+
+			//CGContextRef context = (CGContextRef) [[NSGraphicsContext currentContext] graphicsPort];
+			//Melder_assert (my d_macGraphicsContext != NULL);
+			//Melder_assert (context == my d_macGraphicsContext);
+            if (my duringXor) {
+                CGContextSetBlendMode (my d_macGraphicsContext, kCGBlendModeDifference);
+                CGContextSetAllowsAntialiasing (my d_macGraphicsContext, false);
+                CTFrameDraw (frame, my d_macGraphicsContext);
+                CGContextSetBlendMode (my d_macGraphicsContext, kCGBlendModeNormal);
+                CGContextSetAllowsAntialiasing (my d_macGraphicsContext, true);
+            } else {
+                CTFrameDraw (frame, my d_macGraphicsContext);
+            }
+    
         // Debug rectangles
 #if 0
         CGContextAddPath(my d_macGraphicsContext,  path);
@@ -857,22 +870,22 @@ static void charDraw (I, int xDC, int yDC, _Graphics_widechar *lc,
             //CGContextRestoreGState (my d_macGraphicsContext);
 
             // Clean up
-//            CFRelease (frame);
-//            CFRelease (path);
-//            CFRelease (framesetter);
-//            CFRelease (string);
-//			#if 1
-//				CFRelease (s);
-//			#else
-//            	[s release];
-//			#endif
-//			CFRelease (ctFont);
-//			if (my d_macView) {
-//				#if useCarbon
-//					CGContextSynchronize (my d_macGraphicsContext);
-//				#endif
-//				[my d_macView   unlockFocus];
-//			}
+            CFRelease (frame);
+            CFRelease (path);
+            CFRelease (framesetter);
+            CFRelease (string);
+			#if 1
+				CFRelease (s);
+			#else
+            	[s release];
+			#endif
+			CFRelease (ctFont);
+			if (my d_macView) {
+				#if useCarbon
+					CGContextSynchronize (my d_macGraphicsContext);
+				#endif
+				[my d_macView   unlockFocus];
+			}
         
 		#elif win
 			int font = lc -> font.integer;
@@ -1095,7 +1108,6 @@ static void charDraw (I, int xDC, int yDC, _Graphics_widechar *lc,
 			/*
 			 * Rotated text. This time, the easiest case is the bitmap IPA font;
 			 */
-            int needBitmappedIPA = 0;
 			if (needBitmappedIPA) {
 				int ichar, dx1 = 0;
 				double cosa, sina;

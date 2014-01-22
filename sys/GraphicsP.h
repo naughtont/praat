@@ -68,13 +68,16 @@ Thing_define (GraphicsScreen, Graphics) {
                 CGColorRef d_macColour;
             #elif useCarbon
                 GrafPtr d_macPort;
-                RGBColor d_macColour;
             #else
                 NSView *d_macView;
-                CGColorRef d_macColour;
+            // switch to CGColorRef in the future
+             //   CGColorRef d_macColour;
+                RGBColor d_macColour;
+
             #endif
 			int d_macFont, d_macStyle;
 			int d_depth;
+
 			CGContextRef d_macGraphicsContext;
 		#endif
 	// overridden methods:

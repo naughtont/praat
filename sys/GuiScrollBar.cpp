@@ -219,7 +219,7 @@ GuiScrollBar GuiScrollBar_create (GuiForm parent, int left, int right, int top, 
 		_GuiObject_setUserData (my d_widget, me);
 		my v_positionInForm (my d_widget, left, right, top, bottom, parent);
 		g_signal_connect (G_OBJECT (my d_widget), "value-changed", G_CALLBACK (_GuiGtkScrollBar_valueChangedCallback), me);
-	#elif cocoaT
+	#elif cocoa
 		NSRect dummyFrame = flags & GuiScrollBar_HORIZONTAL ? NSMakeRect (20, 20, 100, [NSScroller scrollerWidth]) : NSMakeRect (20, 20, [NSScroller scrollerWidth], 100);
 		GuiCocoaScrollBar *scroller = [[GuiCocoaScrollBar alloc] initWithFrame: dummyFrame];
 		my d_widget = scroller;

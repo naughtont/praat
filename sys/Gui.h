@@ -114,6 +114,31 @@
 	@end
 	typedef NSObject <GuiCocoaAny> *GuiObject;
 
+    @interface GuiCocoaApplication : NSApplication @end
+    @interface GuiCocoaButton : NSButton <GuiCocoaAny> @end
+    @interface GuiCocoaCheckButton : NSButton <GuiCocoaAny> @end
+    @interface GuiCocoaDrawingArea : NSView <GuiCocoaAny> @end
+    @interface GuiCocoaLabel : NSTextField <GuiCocoaAny> @end
+    @interface GuiCocoaList : NSView <GuiCocoaAny, NSTableViewDataSource, NSTableViewDelegate>
+    @property (nonatomic, retain) NSMutableArray *contents;
+    @property (nonatomic, retain) NSTableView *tableView;
+    @end
+    @interface GuiCocoaMenu : NSMenu <GuiCocoaAny> @end
+    @interface GuiCocoaMenuButton : NSPopUpButton <GuiCocoaAny> @end
+    @interface GuiCocoaMenuItem : NSMenuItem <GuiCocoaAny> @end
+    @interface GuiCocoaOptionMenu : NSPopUpButton <GuiCocoaAny> @end
+    @interface GuiCocoaProgressBar : NSProgressIndicator <GuiCocoaAny> @end
+    @interface GuiCocoaRadioButton : NSButton <GuiCocoaAny> @end
+    @interface GuiCocoaScale : NSProgressIndicator <GuiCocoaAny> @end
+    @interface GuiCocoaScrollBar : NSScroller <GuiCocoaAny>
+    - (void)magnify:(CGFloat)delta;
+    - (void)scrollWheelScrolled:(CGFloat)delta;
+    @end
+    @interface GuiCocoaScrolledWindow : NSScrollView <GuiCocoaAny> @end
+    @interface GuiCocoaTextField : NSTextField <GuiCocoaAny> @end
+    @interface GuiCocoaTextView : NSTextView <GuiCocoaAny, NSTextViewDelegate> @end
+    @interface GuiCocoaWindow : NSWindow <GuiCocoaAny> @end
+
 #elif cocoaTouch
 
     Thing_declare (GuiThing);
@@ -123,61 +148,32 @@
     @end
     typedef NSObject <GuiCocoaAny> *GuiObject;
 
-#if defined cocoaTouch
-@interface GuiCocoaApplication : UIApplication @end
-@interface GuiCocoaButton : UIButton <GuiCocoaAny> @end
-@interface GuiCocoaCheckButton : UIButton <GuiCocoaAny> @end
-@interface GuiCocoaDrawingArea : UIView <GuiCocoaAny> @end
-@interface GuiCocoaLabel : UITextField <GuiCocoaAny> @end
-@interface GuiCocoaList : UIView <GuiCocoaAny, UITableViewDataSource, UITableViewDelegate>
-@property (nonatomic, retain) NSMutableArray *contents;
-@property (nonatomic, retain) UITableView *tableView;
-@end
-@interface GuiCocoaMenuButton : UIButton <GuiCocoaAny> @end
-@interface GuiCocoaMenuItem : UIButton <GuiCocoaAny> @end
-@interface GuiCocoaMenu : UIButton <GuiCocoaAny>
--(void)addItem:(GuiCocoaMenuItem*)item;
-@end
-@interface GuiCocoaOptionMenu : UIButton <GuiCocoaAny> @end
-@interface GuiCocoaProgressBar : UIProgressView <GuiCocoaAny> @end
-@interface GuiCocoaRadioButton : UIButton <GuiCocoaAny> @end
-@interface GuiCocoaScale : UIProgressView <GuiCocoaAny> @end
-@interface GuiCocoaScrollBar : UIScrollView <GuiCocoaAny>
-- (void)magnify:(CGFloat)delta;
-- (void)scrollWheelScrolled:(CGFloat)delta;
-@end
-@interface GuiCocoaScrolledWindow : UIScrollView <GuiCocoaAny> @end
-@interface GuiCocoaTextField : UITextField <GuiCocoaAny> @end
-@interface GuiCocoaTextView : UITextView <GuiCocoaAny, UITextViewDelegate> @end
-@interface GuiCocoaWindow : UIWindow <GuiCocoaAny> @end
-
-#else
-@interface GuiCocoaApplication : NSApplication @end
-@interface GuiCocoaButton : NSButton <GuiCocoaAny> @end
-@interface GuiCocoaCheckButton : NSButton <GuiCocoaAny> @end
-@interface GuiCocoaDrawingArea : NSView <GuiCocoaAny> @end
-@interface GuiCocoaLabel : NSTextField <GuiCocoaAny> @end
-@interface GuiCocoaList : NSView <GuiCocoaAny, NSTableViewDataSource, NSTableViewDelegate>
-@property (nonatomic, retain) NSMutableArray *contents;
-@property (nonatomic, retain) NSTableView *tableView;
-@end
-@interface GuiCocoaMenu : NSMenu <GuiCocoaAny> @end
-@interface GuiCocoaMenuButton : NSPopUpButton <GuiCocoaAny> @end
-@interface GuiCocoaMenuItem : NSMenuItem <GuiCocoaAny> @end
-@interface GuiCocoaOptionMenu : NSPopUpButton <GuiCocoaAny> @end
-@interface GuiCocoaProgressBar : NSProgressIndicator <GuiCocoaAny> @end
-@interface GuiCocoaRadioButton : NSButton <GuiCocoaAny> @end
-@interface GuiCocoaScale : NSProgressIndicator <GuiCocoaAny> @end
-@interface GuiCocoaScrollBar : NSScroller <GuiCocoaAny>
-- (void)magnify:(CGFloat)delta;
-- (void)scrollWheelScrolled:(CGFloat)delta;
-@end
-@interface GuiCocoaScrolledWindow : NSScrollView <GuiCocoaAny> @end
-@interface GuiCocoaTextField : NSTextField <GuiCocoaAny> @end
-@interface GuiCocoaTextView : NSTextView <GuiCocoaAny, NSTextViewDelegate> @end
-@interface GuiCocoaWindow : NSWindow <GuiCocoaAny> @end
-
-#endif
+    @interface GuiCocoaApplication : UIApplication @end
+    @interface GuiCocoaButton : UIButton <GuiCocoaAny> @end
+    @interface GuiCocoaCheckButton : UIButton <GuiCocoaAny> @end
+    @interface GuiCocoaDrawingArea : UIView <GuiCocoaAny> @end
+    @interface GuiCocoaLabel : UITextField <GuiCocoaAny> @end
+    @interface GuiCocoaList : UIView <GuiCocoaAny, UITableViewDataSource, UITableViewDelegate>
+    @property (nonatomic, retain) NSMutableArray *contents;
+    @property (nonatomic, retain) UITableView *tableView;
+    @end
+    @interface GuiCocoaMenuButton : UIButton <GuiCocoaAny> @end
+    @interface GuiCocoaMenuItem : UIButton <GuiCocoaAny> @end
+    @interface GuiCocoaMenu : UIButton <GuiCocoaAny>
+    -(void)addItem:(GuiCocoaMenuItem*)item;
+    @end
+    @interface GuiCocoaOptionMenu : UIButton <GuiCocoaAny> @end
+    @interface GuiCocoaProgressBar : UIProgressView <GuiCocoaAny> @end
+    @interface GuiCocoaRadioButton : UIButton <GuiCocoaAny> @end
+    @interface GuiCocoaScale : UIProgressView <GuiCocoaAny> @end
+    @interface GuiCocoaScrollBar : UIScrollView <GuiCocoaAny>
+    - (void)magnify:(CGFloat)delta;
+    - (void)scrollWheelScrolled:(CGFloat)delta;
+    @end
+    @interface GuiCocoaScrolledWindow : UIScrollView <GuiCocoaAny> @end
+    @interface GuiCocoaTextField : UITextField <GuiCocoaAny> @end
+    @interface GuiCocoaTextView : UITextView <GuiCocoaAny, UITextViewDelegate> @end
+    @interface GuiCocoaWindow : UIWindow <GuiCocoaAny> @end
 
 #elif motif
 	typedef class structGuiObject *GuiObject;   // Opaque

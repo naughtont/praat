@@ -47,8 +47,16 @@
 	}
 #elif mac
 	#include "macport_on.h"
+#if cocoa
+static RGBColor theBlackColour = { 0, 0, 0 };
+#elif cocoaTouch
     CGFloat components[] = {0.0, 0.0, 0.0, 1.0};
 	static CGColorRef theBlackColour = CGColorCreate(CGColorSpaceCreateDeviceRGB(), components);
+#elif useCarbon
+static RGBColor theBlackColour = { 0, 0, 0 };
+#endif
+
+
 	static bool _GraphicsMacintosh_tryToInitializeQuartz (void) {
 		#if cocoa
 			return true;
@@ -340,8 +348,10 @@ static int GraphicsScreen_init (GraphicsScreen me, void *voidDisplay, void *void
 		(void) voidDisplay;
         #if useCarbon
             my d_macPort = (GrafPtr) voidWindow;
-        #else
+        #elif cocoaTouch
             my d_macView = (__bridge UIView*) voidWindow;
+        #elif cocoa
+            my d_macView = (NSView*) voidWindow;
         #endif
 		my d_macColour = theBlackColour;
 		my resolution = resolution;

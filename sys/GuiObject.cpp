@@ -20,8 +20,13 @@
 #include "GuiP.h"
 #include "machine.h"
 
-#if cocoa
-	@interface GuiCocoaView : UIView
+#if cocoaTouch
+    @interface GuiCocoaView : UIView
+    - (GuiThing) userData;
+    - (void) setUserData: (GuiThing) userData;
+    @end
+#elif cocoa
+	@interface GuiCocoaView : NSView
 		- (GuiThing) userData;
 		- (void) setUserData: (GuiThing) userData;
 	@end
@@ -52,7 +57,7 @@ void _GuiObject_setUserData (GuiObject widget, void *userData) {
 void GuiObject_destroy (GuiObject widget) {
 	#if gtk
 		gtk_widget_destroy (GTK_WIDGET (widget));
-	#elif cocoaT
+	#elif cocoa
 		if ([widget isKindOfClass: [NSMenuItem class]]) {
 			NSMenuItem *cocoaMenuItem = (NSMenuItem *) widget;
 			[[cocoaMenuItem menu] removeItem: cocoaMenuItem];   // this also releases the item

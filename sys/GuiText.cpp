@@ -967,7 +967,7 @@ GuiText GuiText_create (GuiForm parent, int left, int right, int top, int bottom
 		my d_undo_item = NULL;
 		my d_redo_item = NULL;
 		g_signal_connect (G_OBJECT (my d_widget), "destroy", G_CALLBACK (_GuiGtkText_destroyCallback), me);
-	#elif cocoaT
+	#elif cocoa
 		if (flags & GuiText_SCROLLED) {
 			my d_cocoaScrollView = [[GuiCocoaScrolledWindow alloc] init];
 			[my d_cocoaScrollView setUserData: NULL];   // because those user data can only be GuiScrolledWindow
@@ -1102,7 +1102,7 @@ void structGuiText :: f_copy () {
 			GtkClipboard *cb = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
 			gtk_text_buffer_copy_clipboard (buffer, cb);
 		}
-	#elif cocoaT
+	#elif cocoa
 		if (d_cocoaTextView) {
 			[d_cocoaTextView copy: nil];
 		} else {
@@ -1130,7 +1130,7 @@ void structGuiText :: f_cut () {
 			GtkClipboard *cb = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
 			gtk_text_buffer_cut_clipboard (buffer, cb, gtk_text_view_get_editable (GTK_TEXT_VIEW (d_widget)));
 		}
-	#elif cocoaT
+	#elif cocoa
 		if (d_cocoaTextView) {
 			[d_cocoaTextView cut: nil];
 		} else {
@@ -1263,7 +1263,7 @@ wchar_t * structGuiText :: f_getStringAndSelectionPosition (long *first, long *l
 			return result;
 		}
 		return NULL;
-	#elif cocoaT
+	#elif cocoa
 		if (d_cocoaTextView) {
 			NSString *nsString = [d_cocoaTextView string];
 			wchar_t *result = Melder_utf8ToWcs ([nsString UTF8String]);
@@ -1318,7 +1318,7 @@ void structGuiText :: f_paste () {
 			GtkClipboard *cb = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
 			gtk_text_buffer_paste_clipboard (buffer, cb, NULL, gtk_text_view_get_editable (GTK_TEXT_VIEW (d_widget)));
 		}
-	#elif cocoaT
+	#elif cocoa
 		if (d_cocoaTextView) {
 			[d_cocoaTextView pasteAsPlainText: nil];
 		} else {
@@ -1406,7 +1406,7 @@ void structGuiText :: f_replace (long from_pos, long to_pos, const wchar_t *text
 			gtk_text_buffer_insert_interactive (buffer, & from_it, newText, g_utf8_strlen (newText, -1),
 				gtk_text_view_get_editable (GTK_TEXT_VIEW (d_widget)));
 		}
-	#elif cocoaT
+	#elif cocoa
 		if (d_cocoaTextView) {
 			long numberOfLeadingHighUnicodeValues = 0, numberOfSelectedHighUnicodeValues = 0;
 			{// scope
@@ -1531,7 +1531,7 @@ void structGuiText :: f_setFontSize (int size) {
 		trace ("after initializing Pango: locale is %s", setlocale (LC_ALL, NULL));
 		modStyle -> font_desc = fontDesc;
 		gtk_widget_modify_style (GTK_WIDGET (d_widget), modStyle);
-	#elif cocoaT
+	#elif cocoa
 		if (d_cocoaTextView) {
 			[d_cocoaTextView setFont: [NSFont systemFontOfSize: size]];
 		}
@@ -1686,7 +1686,7 @@ void structGuiText :: f_setString (const wchar_t *text) {
 			gtk_text_buffer_delete_interactive (textBuffer, & start, & end, gtk_text_view_get_editable (GTK_TEXT_VIEW (d_widget)));
 			gtk_text_buffer_insert_interactive (textBuffer, & start, textUtf8, strlen (textUtf8), gtk_text_view_get_editable (GTK_TEXT_VIEW (d_widget)));
 		}
-	#elif cocoaT
+	#elif cocoa
 		trace ("title");
 		if (d_cocoaTextView) {
 			NSRange nsRange = NSMakeRange (0, [[d_cocoaTextView textStorage] length]);

@@ -50,6 +50,38 @@ Thing_implement (GuiButton, GuiControl, 0);
 			}
 		}
 	}
+#elif cocoaTouch
+@implementation GuiCocoaButton {
+    GuiButton d_userData;
+}
+- (void) dealloc {   // override
+    GuiButton me = d_userData;
+    forget (me);
+    trace ("deleting a button");
+}
+- (GuiThing) userData {
+    return d_userData;
+}
+- (void) setUserData: (GuiThing) userData {
+    Melder_assert (userData == NULL || Thing_member (userData, classGuiButton));
+    d_userData = static_cast <GuiButton> (userData);
+}
+- (void) _guiCocoaButton_activateCallback: (id) widget {
+    Melder_assert (self == widget);   // sender (widget) and receiver (self) happen to be the same object
+    GuiButton me = d_userData;
+    if (my d_activateCallback != NULL) {
+        struct structGuiButtonEvent event = { me, 0 };
+        try {
+            my d_activateCallback (my d_activateBoss, & event);
+        } catch (MelderError) {
+            Melder_error_ ("Your click on button \"", "xx", "\" was not completely handled.");
+            Melder_flushError (NULL);
+        }
+    }
+}
+@end
+
+
 #elif cocoa
 	@implementation GuiCocoaButton {
 		GuiButton d_userData;
@@ -58,6 +90,7 @@ Thing_implement (GuiButton, GuiControl, 0);
 		GuiButton me = d_userData;
 		forget (me);
 		trace ("deleting a button");
+        [super dealloc];
 	}
 	- (GuiThing) userData {
 		return d_userData;
@@ -190,7 +223,16 @@ GuiButton GuiButton_create (GuiForm parent, int left, int right, int top, int bo
 //		if (flags & GuiButton_CANCEL) {
 //			parent -> shell -> cancelButton = parent -> cancelButton = my widget;
 //		}
-	#elif cocoaT
+    #elif cocoaTouch
+    
+        GuiCocoaButton *button = [[GuiCocoaButton alloc] init];
+        my d_widget = (GuiObject) button;
+        my v_positionInForm (my d_widget, left, right, top, bottom, parent);
+        [button setUserData: me];
+        button.titleLabel.text = (__bridge NSString *) Melder_peekWcsToCfstring (buttonText);
+        [button addTarget:(id) my d_widget action:@selector (_guiCocoaButton_activateCallback:) forControlEvents:UIControlEventTouchUpInside];
+
+	#elif cocoa
 		GuiCocoaButton *button = [[GuiCocoaButton alloc] init];
 		my d_widget = (GuiObject) button;
 		my v_positionInForm (my d_widget, left, right, top, bottom, parent);
@@ -238,7 +280,7 @@ GuiButton GuiButton_create (GuiForm parent, int left, int right, int top, int bo
 		if (flags & GuiButton_CANCEL) {
 			parent -> d_widget -> shell -> cancelButton = parent -> d_widget -> cancelButton = my d_widget;
 		}
-	#elif macT
+	#elif mac
 		my d_widget = _Gui_initializeWidget (xmPushButtonWidgetClass, parent -> d_widget, buttonText);
 		_GuiObject_setUserData (my d_widget, me);
 		CreatePushButtonControl (my d_widget -> macWindow, & my d_widget -> rect, NULL, & my d_widget -> nat.control.handle);
@@ -274,8 +316,11 @@ GuiButton GuiButton_createShown (GuiForm parent, int left, int right, int top, i
 void structGuiButton :: f_setString (const wchar_t *text) {
 	#if gtk
 		gtk_button_set_label (GTK_BUTTON (d_widget), Melder_peekWcsToUtf8 (text));
-	#elif cocoaT
-		[(UIButton *) d_widget setTitle: (NSString *) Melder_peekWcsToCfstring (text)];
+#elif cocoaTouch
+    UIButton *button = (UIButton *) d_widget;
+    button.titleLabel.text = (__bridge NSString *) Melder_peekWcsToCfstring (text);
+#elif cocoa
+    [(NSButton *) d_widget setTitle: (NSString *) Melder_peekWcsToCfstring (text)];
 	#elif motif
 		Melder_free (d_widget -> name);
 		d_widget -> name = Melder_wcsdup_f (text);

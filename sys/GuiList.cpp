@@ -531,7 +531,7 @@ void structGuiList :: f_deselectAllItems () {
 	#if gtk
 		GtkTreeSelection *selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (d_widget));
 		gtk_tree_selection_unselect_all (selection);
-	#elif cocoaT
+	#elif cocoa
 		GuiCocoaList *list = (GuiCocoaList *) d_widget;
 		[list.tableView deselectAll:nil];
 	#elif win
@@ -558,12 +558,12 @@ void structGuiList :: f_deselectItem (long position) {
 		if (gtk_tree_model_iter_nth_child (tree_model, & iter, NULL, (gint) (position - 1))) {
 			gtk_tree_selection_unselect_iter (selection, & iter);
 		}
-	#elif cocoaT
+	#elif cocoa
 		GuiCocoaList *list = (GuiCocoaList *) d_widget;
 		[list. tableView   deselectRow: position - 1];
 	#elif win
 		ListBox_SetSel (d_widget -> window, False, position - 1);
-	#elif macT
+	#elif mac
 		Cell cell;
 		cell. h = 0;
 		cell. v = position - 1; 
@@ -595,7 +595,7 @@ long * structGuiList :: f_getSelectedPositions (long *numberOfSelectedPositions)
 			g_list_free (list);
 		}
 		return selectedPositions;
-	#elif cocoaT
+	#elif cocoa
 		GuiCocoaList *list = (GuiCocoaList *) d_widget;
 		NSIndexSet *indexSet = [list. tableView   selectedRowIndexes];
 		*numberOfSelectedPositions = 0;

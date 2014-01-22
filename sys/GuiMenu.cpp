@@ -306,10 +306,6 @@ void structGuiMenu :: f_empty () {
     d_userData = static_cast <GuiMenu> (userData);
 }
 
--(void)addItem:(GuiCocoaMenuItem*)item {
-    
-}
-
 @end
 #endif
 

@@ -156,7 +156,7 @@ void Melder_8bitFileRepresentationToWcs_inline (const char *path, wchar_t *wpath
 }
 #endif
 
-#if useCarbon
+#if defined (macintosh) && useCarbon
 	void Melder_machToFile (void *void_fsref, MelderFile file) {
 		FSRef *fsref = (FSRef *) void_fsref;
 		char path [kMelder_MAXPATH+1];
