@@ -22,7 +22,7 @@
 #include "Formula.h"
 #if cocoa
     #include "macport_on.h"
-    #include <AppKit/AppKit.h>
+    #include <Cocoa/Cocoa.h>
     #include "macport_off.h"
 #elif cocoaTouch
     #include "macport_on.h"
@@ -30,7 +30,6 @@
     #include "macport_off.h"
 #elif useCarbon
 	#include "macport_on.h"
-	#include <UIKit/UIKit.h>
 	#include "macport_off.h"
 #endif
 

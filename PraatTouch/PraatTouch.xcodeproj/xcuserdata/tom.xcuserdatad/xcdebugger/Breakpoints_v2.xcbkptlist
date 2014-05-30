@@ -9,14 +9,30 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "fon/FunctionEditor.cpp"
-            timestampString = "407111058.842044"
+            filePath = "../sys/GuiDrawingArea.cpp"
+            timestampString = "411959613.511104"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "909"
-            endingLineNumber = "909"
-            landmarkName = "gui_cb_scroll (I, GuiScrollBarEvent event)"
+            startingLineNumber = "597"
+            endingLineNumber = "597"
+            landmarkName = "GuiDrawingArea_create (GuiForm parent, int left, int right, int top, int bottom, void (*exposeCallback) (void *boss, GuiDrawingAreaExposeEvent event), void (*clickCallback) (void *boss, GuiDrawingAreaClickEvent event), void (*keyCallback) (void *boss, GuiDrawingAreaKeyEvent event), void (*resizeCallback) (void *boss, GuiDrawingAreaResizeEvent event), void *boss, unsigned long flags)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PraatTouch/PTTableViewController.m"
+            timestampString = "412291642.267213"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "21"
+            endingLineNumber = "21"
+            landmarkName = "-initWithStyle:"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -25,37 +41,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "dwsys/SVD_def.h"
-            timestampString = "409807717.732309"
+            filePath = "../sys/GuiScrolledWindow.cpp"
+            timestampString = "412451462.033291"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "20"
-            endingLineNumber = "20">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.ExceptionBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            scope = "0"
-            stopOnStyle = "0">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "sys/Graphics_colour.cpp"
-            timestampString = "412014155.839005"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "264"
-            endingLineNumber = "264"
-            landmarkName = "highlight2 (Graphics graphics, long x1DC, long x2DC, long y1DC, long y2DC, long x1DC_inner, long x2DC_inner, long y1DC_inner, long y2DC_inner, int direction)"
+            startingLineNumber = "109"
+            endingLineNumber = "109"
+            landmarkName = "GuiScrolledWindow_create (GuiForm parent, int left, int right, int top, int bottom, int horizontalScrollbarPersistence, int verticalScrollbarPersistence, unsigned long flags)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -65,13 +57,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "sys/GraphicsP.h"
-            timestampString = "412462829.670932"
+            filePath = "../sys/GuiForm.cpp"
+            timestampString = "412455909.90095"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "72"
-            endingLineNumber = "72"
-            landmarkName = "Thing_define (GraphicsScreen, Graphics)"
+            startingLineNumber = "42"
+            endingLineNumber = "42"
+            landmarkName = "GuiForm_createInScrolledWindow (GuiScrolledWindow parent)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -81,13 +73,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "sys/GraphicsScreen.cpp"
-            timestampString = "412464237.301545"
+            filePath = "../sys/Ui.cpp"
+            timestampString = "412456046.398531"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "352"
-            endingLineNumber = "352"
-            landmarkName = "GraphicsScreen_init (GraphicsScreen me, void *voidDisplay, void *voidWindow, int resolution)"
+            startingLineNumber = "748"
+            endingLineNumber = "748"
+            landmarkName = "UiForm_finish (I)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -97,13 +89,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "sys/GraphicsScreen.cpp"
-            timestampString = "412464237.301545"
+            filePath = "../sys/Ui.cpp"
+            timestampString = "412456071.482609"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "354"
-            endingLineNumber = "354"
-            landmarkName = "GraphicsScreen_init (GraphicsScreen me, void *voidDisplay, void *voidWindow, int resolution)"
+            startingLineNumber = "561"
+            endingLineNumber = "561"
+            landmarkName = "UiForm_create (GuiWindow parent, const wchar_t *title, void (*okCallback) (UiForm sendingForm, int narg, Stackel args, const wchar_t *sendingString, Interpreter interpreter, const wchar_t *invokingButtonTitle, bool modified, void *closure), void *buttonClosure, const wchar_t *invokingButtonTitle, const wchar_t *helpTitle)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

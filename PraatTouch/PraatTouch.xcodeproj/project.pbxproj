@@ -8,6 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		E233DBD418861754000FFF9B /* gsl_ieee-utils__fp.c in Sources */ = {isa = PBXBuildFile; fileRef = E2DCC38118859B1900C73A74 /* gsl_ieee-utils__fp.c */; };
+		E2693ECA18A9313F009AFC8F /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2693EC918A9313F009AFC8F /* AudioToolbox.framework */; };
+		E2693ECC18A933EE009AFC8F /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2693ECB18A933EE009AFC8F /* AVFoundation.framework */; };
+		E2C754DA189599A50079F421 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C754D9189599A50079F421 /* ImageIO.framework */; };
+		E2CA6DDF18930469002ACD61 /* Praat.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2CA6DDE18930469002ACD61 /* Praat.storyboard */; };
+		E2CA6DE5189306A8002ACD61 /* PTViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E2CA6DE3189306A8002ACD61 /* PTViewController.m */; };
+		E2CA6DE6189306A8002ACD61 /* PTViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E2CA6DE4189306A8002ACD61 /* PTViewController.xib */; };
+		E2CA6DE918930D38002ACD61 /* PTTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E2CA6DE818930D38002ACD61 /* PTTableViewController.m */; };
+		E2CA6DEC189310FB002ACD61 /* PTTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E2CA6DEB189310FB002ACD61 /* PTTableCell.m */; };
 		E2D0AFA51885B86D00B0925F /* pa_mac_util.c in Sources */ = {isa = PBXBuildFile; fileRef = E2DCC79618859B2D00C73A74 /* pa_mac_util.c */; };
 		E2D0AFA61885B8AB00B0925F /* pa_mac_hostapis.c in Sources */ = {isa = PBXBuildFile; fileRef = E2DCC79518859B2D00C73A74 /* pa_mac_hostapis.c */; };
 		E2DCBD2418859AC000C73A74 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2DCBD2318859AC000C73A74 /* Foundation.framework */; };
@@ -15,7 +23,7 @@
 		E2DCBD2818859AC000C73A74 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2DCBD2718859AC000C73A74 /* UIKit.framework */; };
 		E2DCBD2E18859AC000C73A74 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E2DCBD2C18859AC000C73A74 /* InfoPlist.strings */; };
 		E2DCBD3018859AC000C73A74 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2DCBD2F18859AC000C73A74 /* main.cpp */; };
-		E2DCBD3418859AC000C73A74 /* PAAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E2DCBD3318859AC000C73A74 /* PAAppDelegate.m */; };
+		E2DCBD3418859AC000C73A74 /* PTAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E2DCBD3318859AC000C73A74 /* PTAppDelegate.m */; };
 		E2DCBD3618859AC000C73A74 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E2DCBD3518859AC000C73A74 /* Images.xcassets */; };
 		E2DCBD3D18859AC000C73A74 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2DCBD3C18859AC000C73A74 /* XCTest.framework */; };
 		E2DCBD3E18859AC000C73A74 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2DCBD2318859AC000C73A74 /* Foundation.framework */; };
@@ -1313,6 +1321,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E2693EC918A9313F009AFC8F /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		E2693ECB18A933EE009AFC8F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		E2C754D9189599A50079F421 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		E2CA6DDE18930469002ACD61 /* Praat.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Praat.storyboard; sourceTree = "<group>"; };
+		E2CA6DE2189306A8002ACD61 /* PTViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTViewController.h; sourceTree = "<group>"; };
+		E2CA6DE3189306A8002ACD61 /* PTViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTViewController.m; sourceTree = "<group>"; };
+		E2CA6DE4189306A8002ACD61 /* PTViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PTViewController.xib; sourceTree = "<group>"; };
+		E2CA6DE718930D38002ACD61 /* PTTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTTableViewController.h; sourceTree = "<group>"; };
+		E2CA6DE818930D38002ACD61 /* PTTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTTableViewController.m; sourceTree = "<group>"; };
+		E2CA6DEA189310FB002ACD61 /* PTTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTTableCell.h; sourceTree = "<group>"; };
+		E2CA6DEB189310FB002ACD61 /* PTTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTTableCell.m; sourceTree = "<group>"; };
 		E2DCBD2018859AC000C73A74 /* PraatTouch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PraatTouch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2DCBD2318859AC000C73A74 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		E2DCBD2518859AC000C73A74 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -1321,8 +1340,8 @@
 		E2DCBD2D18859AC000C73A74 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		E2DCBD2F18859AC000C73A74 /* main.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = main.cpp; sourceTree = "<group>"; };
 		E2DCBD3118859AC000C73A74 /* PraatTouch-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PraatTouch-Prefix.pch"; sourceTree = "<group>"; };
-		E2DCBD3218859AC000C73A74 /* PAAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PAAppDelegate.h; sourceTree = "<group>"; };
-		E2DCBD3318859AC000C73A74 /* PAAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PAAppDelegate.m; sourceTree = "<group>"; };
+		E2DCBD3218859AC000C73A74 /* PTAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PTAppDelegate.h; sourceTree = "<group>"; };
+		E2DCBD3318859AC000C73A74 /* PTAppDelegate.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = PTAppDelegate.m; sourceTree = "<group>"; };
 		E2DCBD3518859AC000C73A74 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		E2DCBD3B18859AC000C73A74 /* PraatTouchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PraatTouchTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2DCBD3C18859AC000C73A74 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -3654,6 +3673,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E2693ECC18A933EE009AFC8F /* AVFoundation.framework in Frameworks */,
+				E2693ECA18A9313F009AFC8F /* AudioToolbox.framework in Frameworks */,
+				E2C754DA189599A50079F421 /* ImageIO.framework in Frameworks */,
 				E2DCBD2618859AC000C73A74 /* CoreGraphics.framework in Frameworks */,
 				E2DCBD2818859AC000C73A74 /* UIKit.framework in Frameworks */,
 				E2DCBD2418859AC000C73A74 /* Foundation.framework in Frameworks */,
@@ -3711,6 +3733,9 @@
 		E2DCBD2218859AC000C73A74 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E2693ECB18A933EE009AFC8F /* AVFoundation.framework */,
+				E2693EC918A9313F009AFC8F /* AudioToolbox.framework */,
+				E2C754D9189599A50079F421 /* ImageIO.framework */,
 				E2DCBD2318859AC000C73A74 /* Foundation.framework */,
 				E2DCBD2518859AC000C73A74 /* CoreGraphics.framework */,
 				E2DCBD2718859AC000C73A74 /* UIKit.framework */,
@@ -3722,10 +3747,18 @@
 		E2DCBD2918859AC000C73A74 /* PraatTouch */ = {
 			isa = PBXGroup;
 			children = (
-				E2DCBD3218859AC000C73A74 /* PAAppDelegate.h */,
-				E2DCBD3318859AC000C73A74 /* PAAppDelegate.m */,
+				E2DCBD3218859AC000C73A74 /* PTAppDelegate.h */,
+				E2DCBD3318859AC000C73A74 /* PTAppDelegate.m */,
 				E2DCBD3518859AC000C73A74 /* Images.xcassets */,
 				E2DCBD2A18859AC000C73A74 /* Supporting Files */,
+				E2CA6DDE18930469002ACD61 /* Praat.storyboard */,
+				E2CA6DE2189306A8002ACD61 /* PTViewController.h */,
+				E2CA6DE3189306A8002ACD61 /* PTViewController.m */,
+				E2CA6DE4189306A8002ACD61 /* PTViewController.xib */,
+				E2CA6DE718930D38002ACD61 /* PTTableViewController.h */,
+				E2CA6DE818930D38002ACD61 /* PTTableViewController.m */,
+				E2CA6DEA189310FB002ACD61 /* PTTableCell.h */,
+				E2CA6DEB189310FB002ACD61 /* PTTableCell.m */,
 			);
 			path = PraatTouch;
 			sourceTree = "<group>";
@@ -6411,6 +6444,7 @@
 				E2DCCBAC18859B3100C73A74 /* .Sound_extensions.cpp.kate-swp in Resources */,
 				E2DCD47018859B3500C73A74 /* praat_win.rc in Resources */,
 				E2DCCB9918859B3100C73A74 /* test_Polygon_simplify.Matrix in Resources */,
+				E2CA6DDF18930469002ACD61 /* Praat.storyboard in Resources */,
 				E2DCCBAE18859B3100C73A74 /* .Table_extensions.cpp.kate-swp in Resources */,
 				E2DCCB8A18859B3100C73A74 /* test_EditCostTable.praat in Resources */,
 				E2DCCBA018859B3100C73A74 /* test_Sound_paint_where.praat in Resources */,
@@ -6418,6 +6452,7 @@
 				E2DCCD9B18859B3200C73A74 /* flatten_gsl.py in Resources */,
 				E2DCCB9718859B3100C73A74 /* test_Permutation.praat in Resources */,
 				E2DCCB9C18859B3100C73A74 /* test_randomBinomial.praat in Resources */,
+				E2CA6DE6189306A8002ACD61 /* PTViewController.xib in Resources */,
 				E2DCCB7818859B3100C73A74 /* ba-da-continuum.praat in Resources */,
 				E2DCCCBE18859B3200C73A74 /* READ_ME.TXT in Resources */,
 				E2DCCB9F18859B3100C73A74 /* test_Sound_draw_where.praat in Resources */,
@@ -6920,6 +6955,7 @@
 				E2DCD00118859B3300C73A74 /* gsl_integration__workspace.c in Sources */,
 				E2DCCC9418859B3200C73A74 /* translate.cpp in Sources */,
 				E2DCCFA518859B3300C73A74 /* gsl_histogram__pdf2d.c in Sources */,
+				E2CA6DEC189310FB002ACD61 /* PTTableCell.m in Sources */,
 				E2DCD27518859B3400C73A74 /* gsl_statistics__wabsdev.c in Sources */,
 				E2DCCD5818859B3200C73A74 /* glpmpl04.c in Sources */,
 				E2DCD09F18859B3300C73A74 /* gsl_multiroots__fsolver.c in Sources */,
@@ -7260,6 +7296,7 @@
 				E2DCCD1C18859B3200C73A74 /* glpgmp.c in Sources */,
 				E2DCD35518859B3400C73A74 /* Function.cpp in Sources */,
 				E2DCCEA718859B3200C73A74 /* gsl_cblas__zherk.c in Sources */,
+				E2CA6DE5189306A8002ACD61 /* PTViewController.m in Sources */,
 				E2DCCD8418859B3200C73A74 /* glpscf.c in Sources */,
 				E2DCCD7418859B3200C73A74 /* glpnpp02.c in Sources */,
 				E2DCCDBC18859B3200C73A74 /* gsl_cblas__chbmv.c in Sources */,
@@ -7344,7 +7381,7 @@
 				E2DCD41F18859B3500C73A74 /* manual_gram.cpp in Sources */,
 				E2DCCF9918859B3300C73A74 /* gsl_histogram__maxval2d.c in Sources */,
 				E2DCD3FD18859B3500C73A74 /* Spectrum_to_Excitation.cpp in Sources */,
-				E2DCBD3418859AC000C73A74 /* PAAppDelegate.m in Sources */,
+				E2DCBD3418859AC000C73A74 /* PTAppDelegate.m in Sources */,
 				E2DCCC0918859B3100C73A74 /* manual_Permutation.cpp in Sources */,
 				E2DCD0B118859B3300C73A74 /* gsl_ode-initval__cstd.c in Sources */,
 				E2DCD17718859B3300C73A74 /* gsl_rng__schrage.c in Sources */,
@@ -7638,6 +7675,7 @@
 				E2DCCDBE18859B3200C73A74 /* gsl_cblas__chemm.c in Sources */,
 				E2DCD04118859B3300C73A74 /* gsl_matrix__minmax.c in Sources */,
 				E2DCCB5518859B3100C73A74 /* NUM2.cpp in Sources */,
+				E2CA6DE918930D38002ACD61 /* PTTableViewController.m in Sources */,
 				E2DCCF4318859B3200C73A74 /* gsl_eigen__schur.c in Sources */,
 				E2DCCCD418859B3200C73A74 /* amd_valid.c in Sources */,
 				E2DCD24118859B3400C73A74 /* gsl_specfunc__psi.c in Sources */,

@@ -47,14 +47,14 @@
 	}
 #elif mac
 	#include "macport_on.h"
-#if cocoa
-static RGBColor theBlackColour = { 0, 0, 0 };
-#elif cocoaTouch
-    CGFloat components[] = {0.0, 0.0, 0.0, 1.0};
-	static CGColorRef theBlackColour = CGColorCreate(CGColorSpaceCreateDeviceRGB(), components);
-#elif useCarbon
-static RGBColor theBlackColour = { 0, 0, 0 };
-#endif
+    #if cocoa
+        static RGBColor theBlackColour = { 0, 0, 0 };
+    #elif cocoaTouch
+        CGFloat components[] = {0.0, 0.0, 0.0, 1.0};
+        static CGColorRef theBlackColour = CGColorCreate(CGColorSpaceCreateDeviceRGB(), components);
+    #elif useCarbon
+        static RGBColor theBlackColour = { 0, 0, 0 };
+    #endif
 
 
 	static bool _GraphicsMacintosh_tryToInitializeQuartz (void) {
@@ -127,7 +127,7 @@ void structGraphicsScreen :: v_flushWs () {
 		if (d_drawingArea) {
 			GuiShell shell = d_drawingArea -> d_shell;
 			Melder_assert (shell != NULL);
-//        	[shell -> d_cocoaWindow   flushWindow];
+        	[shell -> d_cocoaWindow   flushWindow];
 		}
 	#elif win
 		/*GdiFlush ();*/
@@ -216,7 +216,7 @@ void structGraphicsScreen :: v_clearWs () {
 		rect. bottom = d_y2DC - d_y1DC;
 		FillRect (d_gdiGraphicsContext, & rect, GetStockBrush (WHITE_BRUSH));
 		/*if (d_winWindow) SendMessage (d_winWindow, WM_ERASEBKGND, (WPARAM) d_gdiGraphicsContext, 0);*/
-	#elif carbon
+	#elif useCarbon || cocoa
 		QDBeginCGContext (d_macPort, & d_macGraphicsContext);
 		CGContextSetAlpha (d_macGraphicsContext, 1.0);
 		CGContextSetBlendMode (d_macGraphicsContext, kCGBlendModeNormal);
@@ -270,7 +270,8 @@ void structGraphicsScreen :: v_updateWs () {
 		//gdk_window_process_updates (d_window, true);
     #elif cocoaTouch
     #elif cocoa
-        CGRect rect;
+        NSView *view =  d_macView;
+        NSRect rect;
     
         if (this -> d_x1DC < this -> d_x2DC) {
             rect.origin.x = this -> d_x1DC;
@@ -289,7 +290,7 @@ void structGraphicsScreen :: v_updateWs () {
         }
     
         //[view setNeedsDisplayInRect: rect];
-        [d_macView setNeedsDisplay];
+        [view setNeedsDisplay: YES];
     
 	#elif win
 		//clear (this); // lll
@@ -345,7 +346,6 @@ static int GraphicsScreen_init (GraphicsScreen me, void *voidDisplay, void *void
 		SetTextAlign (my d_gdiGraphicsContext, TA_LEFT | TA_BASELINE | TA_NOUPDATECP);   // baseline is not the default!
 		_GraphicsScreen_text_init (me);
 	#elif mac
-		(void) voidDisplay;
         #if useCarbon
             my d_macPort = (GrafPtr) voidWindow;
         #elif cocoaTouch
@@ -454,11 +454,12 @@ Graphics Graphics_create_xmdrawingarea (GuiDrawingArea w) {
                 XtDisplay (my d_drawingArea -> d_widget),
                 GetWindowPort ((WindowRef) XtWindow (my d_drawingArea -> d_widget)),
                 Gui_getResolution (NULL));
+    #elif cocoaTouch
     #else
-//            GraphicsScreen_init (me,
-//                                 my d_drawingArea -> d_widget,
-//                                 my d_drawingArea -> d_widget,
-//                                 Gui_getResolution (NULL));
+            GraphicsScreen_init (me,
+                                 my d_drawingArea -> d_widget,
+                                 my d_drawingArea -> d_widget,
+                                 Gui_getResolution (NULL));
     #endif
     
 	#else
@@ -480,9 +481,9 @@ Graphics Graphics_create_xmdrawingarea (GuiDrawingArea w) {
 		XtVaGetValues (my d_drawingArea -> d_widget, XmNwidth, & width, XmNheight, & height, NULL);
 		Graphics_setWsViewport ((Graphics) me, 0, width, 0, height);
     #elif cocoa
-//        NSView *view = (NSView *)my d_drawingArea -> d_widget;
-//        NSRect bounds = [view bounds];
-//        Graphics_setWsViewport ((Graphics) me, 0, bounds.size.width, 0, bounds.size.height);
+        NSView *view = (NSView *)my d_drawingArea -> d_widget;
+        NSRect bounds = [view bounds];
+        Graphics_setWsViewport ((Graphics) me, 0, bounds.size.width, 0, bounds.size.height);
 	#endif
 	#if mac && useCarbon
 		XtAddCallback (my d_drawingArea -> d_widget, XmNmoveCallback, cb_move, (XtPointer) me);
@@ -577,10 +578,11 @@ Graphics Graphics_create_pdf (void *context, int resolution,
 				}
 				CGContextScaleCTM (my d_macGraphicsContext, 1.0, -1.0);
 			}
-        #else
-            if (my d_macView) {            
-//                [my d_macView lockFocus];
-//                my d_macGraphicsContext = (CGContextRef) [[NSGraphicsContext currentContext] graphicsPort];
+    #elif cocoaTouch
+    #else
+            if (my d_macView) {
+                [my d_macView lockFocus];
+                my d_macGraphicsContext = (CGContextRef) [[NSGraphicsContext currentContext] graphicsPort];
                 Melder_assert (my d_macGraphicsContext != NULL);
                 GuiCocoaDrawingArea *cocoaDrawingArea = (GuiCocoaDrawingArea *) my d_drawingArea -> d_widget;
                 //CGContextTranslateCTM (my d_macGraphicsContext, 0, cocoaDrawingArea.bounds.size.height);
@@ -594,10 +596,11 @@ Graphics Graphics_create_pdf (void *context, int resolution,
 				CGContextSynchronize (my d_macGraphicsContext);
 				QDEndCGContext (my d_macPort, & my d_macGraphicsContext);
 			}
+        #elif cocoaTouch
         #else
             if (my d_macView) {
                 //CGContextSynchronize (my d_macGraphicsContext);   // BUG: should not be needed
-//                [my d_macView unlockFocus];
+                [my d_macView unlockFocus];
             }
 		#endif
 	}

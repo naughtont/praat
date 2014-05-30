@@ -330,9 +330,84 @@ GuiMenu GuiMenu_createInWindow (GuiWindow window, const wchar_t *title, long fla
     if (! theMenuBar) {
         theMenuBar = [[UIViewController alloc] init];
     }
+    NSString *string = (__bridge  NSString *) Melder_peekWcsToCfstring (title);
+
     my d_cocoaMenu = [[GuiCocoaMenu alloc] init];
-    my d_cocoaMenu.titleLabel.text = (__bridge NSString *) Melder_peekWcsToCfstring (title);
+    my d_cocoaMenu.titleLabel.text = string;
     my d_widget = my d_cocoaMenu;
+    
+    if (window == NULL) {
+
+    } else if ([(UIView *) window -> d_widget   isKindOfClass: [UIView class]]) {
+        /*
+         * Install the menu at the top of a window.
+         * Menu title positioning information is maintained in that GuiWindow.
+         */
+        
+        
+        //    UIViewAutoresizingNone                 = 0,
+        //    UIViewAutoresizingFlexibleLeftMargin   = 1 << 0,
+        //    UIViewAutoresizingFlexibleWidth        = 1 << 1,
+        //    UIViewAutoresizingFlexibleRightMargin  = 1 << 2,
+        //    UIViewAutoresizingFlexibleTopMargin    = 1 << 3,
+        //    UIViewAutoresizingFlexibleHeight       = 1 << 4,
+        //    UIViewAutoresizingFlexibleBottomMargin = 1 << 5
+
+        CGRect parentRect = [(UIView *) window -> d_widget   frame];   // this is the window's top form
+        int parentWidth = parentRect.size.width, parentHeight = parentRect.size.height;
+        if (window -> d_menuBarWidth == 0)
+            window -> d_menuBarWidth = -1;
+            int width = 18 + 7 * wcslen (title), height = 35 /*25*/;
+            int x = window -> d_menuBarWidth, y = 1;
+        NSUInteger resizingMask = UIViewAutoresizingFlexibleBottomMargin; // NSViewMinYMargin;
+            if (Melder_wcsequ (title, L"Help")) {
+                x = parentWidth + 1 - width;
+                resizingMask |=UIViewAutoresizingFlexibleLeftMargin ; //  NSViewMinXMargin;
+            } else {
+                window -> d_menuBarWidth += width - 1 + 10;
+            }
+        CGRect rect = CGRectMake(x, y, width, height);
+        NSLog(@"creating menu button %@ %@", string, NSStringFromCGRect(rect));
+        my d_cocoaMenuButton = [[GuiCocoaMenuButton alloc]
+                                initWithFrame: rect ];
+        my d_cocoaMenuButton.titleLabel.textColor =  [UIColor blackColor];
+//        [my d_cocoaMenuButton   setAutoenablesItems: NO];
+//        [my d_cocoaMenuButton   setBezelStyle: NSShadowlessSquareBezelStyle];
+///        [my d_cocoaMenuButton   setImagePosition: NSImageAbove];   // this centers the text
+        //[nsPopupButton setBordered: NO];
+        [my d_cocoaMenuButton   setAutoresizingMask: resizingMask]; // stick to top
+//        if (flags & GuiMenu_INSENSITIVE)
+//            [my d_cocoaMenuButton setEnabled: NO];
+        
+ //       [[my d_cocoaMenuButton cell]   setArrowPosition: NSPopUpNoArrow /*NSPopUpArrowAtBottom*/];
+ //       [[my d_cocoaMenuButton cell]   setPreferredEdge: NSMaxYEdge];
+        /*
+         * Apparently, Cocoa swallows title setting only if there is already a menu with a dummy item.
+         */
+//        GuiCocoaMenuItem *item = [[GuiCocoaMenuItem alloc] init];
+//        [my d_cocoaMenu   addItem: item];   // the menu will retain the item...
+        /*
+         * Install the menu button in the form.
+         */
+        [my d_cocoaMenuButton setTitle:string forState:UIControlStateNormal];
+        [my d_cocoaMenuButton setTitleColor:[UIColor blackColor]  forState:UIControlStateNormal];
+        my d_cocoaMenuButton.backgroundColor = [UIColor grayColor];
+        [(UIView *) window -> d_widget   addSubview: my d_cocoaMenuButton];
+        
+        
+//        UILabel *label = [[UILabel alloc] initWithFrame:rect];
+//        label.text = @"L";
+//        label.backgroundColor = [UIColor greenColor];
+//        [(UIView *) window -> d_widget   addSubview: label];
+
+        
+        /*
+         * Attach the menu to the button.
+         */
+//        [my d_cocoaMenuButton   setMenu: my d_cocoaMenu];   // the button will retain the menu...
+        
+    }
+
 #elif cocoa
     if (! theMenuBar) {
         int numberOfMenus = [[[NSApp mainMenu] itemArray] count];

@@ -55,6 +55,7 @@
     #include "macport_off.h"
 #elif defined (cocoaTouch)
     #include "macport_on.h"
+    #include "PTViewController.h"
     #include <Foundation/Foundation.h>
     #include <UIKit/UIKit.h>
     #include "macport_off.h"
@@ -105,6 +106,43 @@
 	#define True 1
 	#define False 0
 	typedef void *GuiObject;
+#elif cocoaTouch
+
+    #import "PTAppDelegate.h"
+
+    Thing_declare (GuiThing);
+    @protocol GuiCocoaAny
+    - (GuiThing) userData;
+    - (void) setUserData: (GuiThing) userData;
+    @end
+    typedef NSObject <GuiCocoaAny> *GuiObject;
+
+    @interface GuiCocoaApplication : UIApplication @end
+    @interface GuiCocoaButton : UIButton <GuiCocoaAny> @end
+    @interface GuiCocoaCheckButton : UIButton <GuiCocoaAny> @end
+    @interface GuiCocoaDrawingArea : UIView <GuiCocoaAny> @end
+    @interface GuiCocoaLabel : UITextField <GuiCocoaAny> @end
+    @interface GuiCocoaList : UITableView <GuiCocoaAny, UITableViewDataSource, UITableViewDelegate>
+    @property (nonatomic, retain) NSMutableArray *contents;
+    @end
+    @interface GuiCocoaMenuButton : UIButton <GuiCocoaAny> @end
+    @interface GuiCocoaMenuItem : UIButton <GuiCocoaAny> @end
+    @interface GuiCocoaMenu : UIButton <GuiCocoaAny>
+    -(void)addItem:(GuiCocoaMenuItem*)item;
+    @end
+    @interface GuiCocoaOptionMenu : UIButton <GuiCocoaAny> @end
+    @interface GuiCocoaProgressBar : UIProgressView <GuiCocoaAny> @end
+    @interface GuiCocoaRadioButton : UIButton <GuiCocoaAny> @end
+    @interface GuiCocoaScale : UIProgressView <GuiCocoaAny> @end
+    @interface GuiCocoaScrollBar : UIScrollView <GuiCocoaAny>
+    - (void)magnify:(CGFloat)delta;
+    - (void)scrollWheelScrolled:(CGFloat)delta;
+    @end
+    @interface GuiCocoaScrolledWindow : UIScrollView <GuiCocoaAny> @end
+    @interface GuiCocoaTextField : UITextField <GuiCocoaAny> @end
+    @interface GuiCocoaTextView : UITextView <GuiCocoaAny, UITextViewDelegate> @end
+    @interface GuiCocoaWindow : PTViewController <GuiCocoaAny> @end
+
 #elif cocoa
 
 	Thing_declare (GuiThing);
@@ -138,42 +176,6 @@
     @interface GuiCocoaTextField : NSTextField <GuiCocoaAny> @end
     @interface GuiCocoaTextView : NSTextView <GuiCocoaAny, NSTextViewDelegate> @end
     @interface GuiCocoaWindow : NSWindow <GuiCocoaAny> @end
-
-#elif cocoaTouch
-
-    Thing_declare (GuiThing);
-    @protocol GuiCocoaAny
-    - (GuiThing) userData;
-    - (void) setUserData: (GuiThing) userData;
-    @end
-    typedef NSObject <GuiCocoaAny> *GuiObject;
-
-    @interface GuiCocoaApplication : UIApplication @end
-    @interface GuiCocoaButton : UIButton <GuiCocoaAny> @end
-    @interface GuiCocoaCheckButton : UIButton <GuiCocoaAny> @end
-    @interface GuiCocoaDrawingArea : UIView <GuiCocoaAny> @end
-    @interface GuiCocoaLabel : UITextField <GuiCocoaAny> @end
-    @interface GuiCocoaList : UIView <GuiCocoaAny, UITableViewDataSource, UITableViewDelegate>
-    @property (nonatomic, retain) NSMutableArray *contents;
-    @property (nonatomic, retain) UITableView *tableView;
-    @end
-    @interface GuiCocoaMenuButton : UIButton <GuiCocoaAny> @end
-    @interface GuiCocoaMenuItem : UIButton <GuiCocoaAny> @end
-    @interface GuiCocoaMenu : UIButton <GuiCocoaAny>
-    -(void)addItem:(GuiCocoaMenuItem*)item;
-    @end
-    @interface GuiCocoaOptionMenu : UIButton <GuiCocoaAny> @end
-    @interface GuiCocoaProgressBar : UIProgressView <GuiCocoaAny> @end
-    @interface GuiCocoaRadioButton : UIButton <GuiCocoaAny> @end
-    @interface GuiCocoaScale : UIProgressView <GuiCocoaAny> @end
-    @interface GuiCocoaScrollBar : UIScrollView <GuiCocoaAny>
-    - (void)magnify:(CGFloat)delta;
-    - (void)scrollWheelScrolled:(CGFloat)delta;
-    @end
-    @interface GuiCocoaScrolledWindow : UIScrollView <GuiCocoaAny> @end
-    @interface GuiCocoaTextField : UITextField <GuiCocoaAny> @end
-    @interface GuiCocoaTextView : UITextView <GuiCocoaAny, UITextViewDelegate> @end
-    @interface GuiCocoaWindow : UIWindow <GuiCocoaAny> @end
 
 #elif motif
 	typedef class structGuiObject *GuiObject;   // Opaque
@@ -405,7 +407,7 @@ Thing_define (GuiShell, GuiForm) { public:
 	int d_width, d_height;
 	#if gtk
 		GtkWindow *d_gtkWindow;
-	#elif cocoa
+	#elif cocoa || cocoaTouch
 		GuiCocoaWindow *d_cocoaWindow;
 	#elif motif
 		GuiObject d_xmShell;
@@ -800,7 +802,7 @@ Thing_define (GuiRadioButton, GuiControl) { public:
 	GuiRadioButton d_previous, d_next;   // there's a linked list of grouped radio buttons
 	void (*d_valueChangedCallback) (void *boss, GuiRadioButtonEvent event);
 	void *d_valueChangedBoss;
-	#if cocoa
+	#if cocoa || cocoaTouch
 		GuiCocoaRadioButton *d_cocoaRadioButton;
 	#endif
 	/*
@@ -959,7 +961,7 @@ GuiText GuiText_createShown (GuiForm parent, int left, int right, int top, int b
 Thing_define (GuiWindow, GuiShell) { public:
 	#if gtk
 		GtkMenuBar *d_gtkMenuBar;
-	#elif cocoa
+	#elif cocoa || cocoaTouch
 		int d_menuBarWidth;
 		void (*d_tabCallback) (void *boss, GuiMenuItemEvent event);
 		void *d_tabBoss;

@@ -67,6 +67,43 @@ static int _GuiRadioButton_getPosition (GuiRadioButton me) {
 		}
 	}
 #elif cocoaTouch
+@implementation GuiCocoaRadioButton {
+    GuiRadioButton d_userData;
+}
+- (void) dealloc {   // override
+    GuiRadioButton me = d_userData;
+    forget (me);
+    trace ("deleting a radio button");
+}
+- (GuiThing) userData {
+    return d_userData;
+}
+- (void) setUserData: (GuiThing) userData {
+    Melder_assert (userData == NULL || Thing_member (userData, classGuiRadioButton));
+    d_userData = static_cast <GuiRadioButton> (userData);
+}
+- (void) _guiCocoaRadioButton_activateCallback: (id) widget {
+    trace ("enter");
+    Melder_assert (self == widget);   // sender (widget) and receiver (self) happen to be the same object
+    GuiRadioButton me = d_userData;
+    /*
+     * Deselect the sister buttons.
+     */
+//    for (GuiRadioButton sibling = my d_previous; sibling != NULL; sibling = sibling -> d_previous) {
+//        [sibling -> d_cocoaRadioButton   setState: NSOffState];
+//    }
+//    for (GuiRadioButton sibling = my d_next; sibling != NULL; sibling = sibling -> d_next) {
+//        [sibling -> d_cocoaRadioButton   setState: NSOffState];
+//    }
+    if (my d_valueChangedCallback != NULL) {
+        Melder_assert (! my d_blockValueChangedCallbacks);
+        struct structGuiRadioButtonEvent event = { me };
+        event. position = _GuiRadioButton_getPosition (me);
+        my d_valueChangedCallback (my d_valueChangedBoss, & event);
+    }
+}
+@end
+
 #elif cocoa
 	@implementation GuiCocoaRadioButton {
 		GuiRadioButton d_userData;
@@ -196,29 +233,12 @@ GuiRadioButton GuiRadioButton_create (GuiForm parent, int left, int right, int t
 		my d_widget = my d_cocoaRadioButton;
 		my v_positionInForm (my d_widget, left, right, top, bottom, parent);
 		[my d_cocoaRadioButton   setUserData: me];
-		[my d_cocoaRadioButton setButtonType: NSRadioButton];
-		[my d_cocoaRadioButton setTitle: (NSString *) Melder_peekWcsToCfstring (buttonText)];
-		if (flags & GuiCheckButton_SET) {
-			[my d_cocoaRadioButton setState: NSOnState];
-		}
-		[my d_cocoaRadioButton setTarget: my d_cocoaRadioButton];
-		[my d_cocoaRadioButton setAction: @selector (_guiCocoaRadioButton_activateCallback:)];
-	#elif cocoa
-		my d_cocoaRadioButton = [[GuiCocoaRadioButton alloc] init];
-		my d_widget = my d_cocoaRadioButton;
-		my v_positionInForm (my d_widget, left, right, top, bottom, parent);
-		[my d_cocoaRadioButton   setUserData: me];
-		[my d_cocoaRadioButton setButtonType: NSRadioButton];
-		NSImage *image = [my d_cocoaRadioButton image], *alternateImage = [my d_cocoaRadioButton alternateImage];
-		[my d_cocoaRadioButton setButtonType: NSSwitchButton];
-		[my d_cocoaRadioButton setImage: image];
-		[my d_cocoaRadioButton setAlternateImage: alternateImage];
-		[my d_cocoaRadioButton setTitle: (NSString *) Melder_peekWcsToCfstring (buttonText)];
-		if (flags & GuiCheckButton_SET) {
-			[my d_cocoaRadioButton setState: NSOnState];
-		}
-		[my d_cocoaRadioButton setTarget: my d_cocoaRadioButton];
-		[my d_cocoaRadioButton setAction: @selector (_guiCocoaRadioButton_activateCallback:)];
+//		[my d_cocoaRadioButton setButtonType: NSRadioButton];
+		[my d_cocoaRadioButton.titleLabel setText:(__bridge NSString *) Melder_peekWcsToCfstring (buttonText)];
+//		if (flags & GuiCheckButton_SET) {
+//			[my d_cocoaRadioButton setState: NSOnState];
+//		}
+    [my d_cocoaRadioButton addTarget:my d_cocoaRadioButton action:@selector (_guiCocoaRadioButton_activateCallback:) forControlEvents:UIControlEventTouchUpInside];
 	#elif cocoa
 		NSRect matrixRect = NSMakeRect (20.0, 20.0, 125.0, 125.0);
 		my d_cocoaRadioButton = [[GuiCocoaRadioButton alloc] initWithFrame:matrixRect];

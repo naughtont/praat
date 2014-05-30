@@ -38,6 +38,23 @@ Thing_implement (GuiScrolledWindow, GuiControl, 0);
 		iam (GuiScrolledWindow);
 		forget (me);
 	}
+#elif cocoaTouch
+@implementation GuiCocoaScrolledWindow {
+    GuiScrolledWindow d_userData;
+}
+- (void) dealloc {   // override
+    GuiScrolledWindow me = d_userData;
+    forget (me);
+    trace ("deleting a scrolled window");
+}
+- (GuiThing) userData {
+    return d_userData;
+}
+- (void) setUserData: (GuiThing) userData {
+    Melder_assert (userData == NULL || Thing_member (userData, classGuiScrolledWindow));
+    d_userData = static_cast <GuiScrolledWindow> (userData);
+}
+@end
 #elif cocoa
 	@implementation GuiCocoaScrolledWindow {
 		GuiScrolledWindow d_userData;
@@ -88,7 +105,15 @@ GuiScrolledWindow GuiScrolledWindow_create (GuiForm parent, int left, int right,
 		_GuiObject_setUserData (my d_widget, me);
 		my v_positionInForm (my d_widget, left, right, top, bottom, parent);
 		g_signal_connect (G_OBJECT (my d_widget), "destroy", G_CALLBACK (_GuiGtkScrolledWindow_destroyCallback), me);
-	#elif cocoa
+    #elif cocoaTouch
+        GuiCocoaScrolledWindow *scrollView = [[GuiCocoaScrolledWindow alloc] init];
+        my d_widget = (GuiObject) scrollView;
+        my v_positionInForm (my d_widget, left, right, top, bottom, parent);
+        [scrollView setUserData: me];
+        scrollView.showsVerticalScrollIndicator = YES;
+        scrollView.showsHorizontalScrollIndicator = YES;
+        [scrollView setBackgroundColor: [UIColor lightGrayColor]];
+    #elif cocoa
         GuiCocoaScrolledWindow *scrollView = [[GuiCocoaScrolledWindow alloc] init];
         my d_widget = (GuiObject) scrollView;
         my v_positionInForm (my d_widget, left, right, top, bottom, parent);

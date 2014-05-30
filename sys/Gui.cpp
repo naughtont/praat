@@ -40,11 +40,12 @@ Thing_implement (GuiControl, GuiThing, 0);
 int Gui_getResolution (GuiObject widget) {
 	static int resolution = 0;
 	if (0) {
-		#if defined (macintosh)
+#if cocoaTouch
+		#elif defined (macintosh)
 			(void) widget;
-//			CGDirectDisplayID display = CGMainDisplayID ();
-//			CGSize size = CGDisplayScreenSize (display);
-//			resolution = floor (25.4 * (double) CGDisplayPixelsWide (display) / size.width + 0.5);
+			CGDirectDisplayID display = CGMainDisplayID ();
+			CGSize size = CGDisplayScreenSize (display);
+			resolution = floor (25.4 * (double) CGDisplayPixelsWide (display) / size.width + 0.5);
 			//resolution = 72;
 		#elif defined (_WIN32)
 			(void) widget;
@@ -82,24 +83,26 @@ void Gui_getWindowPositioningBounds (double *x, double *y, double *width, double
 			if (y) *y = rect. origin. y;
 			if (width) *width = rect. size. width;
 			if (height) *height = rect. size. height - 22;   // subtract title bar height (or is it the menu height?)
-		#else
-//    
-//            NSRect rect;
-//            NSArray *screenArray = [NSScreen screens];
-//            NSInteger screenCount = [screenArray count];
-//            NSInteger index  = 0;
-//            
-//            for (index = 0; index < screenCount; index++)
-//            {
-//                NSScreen *screen = [screenArray objectAtIndex: index];
-//                rect = [screen visibleFrame];
-//            }
+#elif cocoaTouch
+    CGRect rect;
+#else
     
+            NSRect rect;
+            NSArray *screenArray = [NSScreen screens];
+            NSInteger screenCount = [screenArray count];
+            NSInteger index  = 0;
+            
+            for (index = 0; index < screenCount; index++)
+            {
+                NSScreen *screen = [screenArray objectAtIndex: index];
+                rect = [screen visibleFrame];
+            }
+        
 		#endif
-//		if (x) *x = rect. origin. x;
-//		if (y) *y = rect. origin. y;
-//		if (width) *width = rect. size. width;
-//		if (height) *height = rect. size. height - 22;   // subtract title bar height (or is it the menu height?)
+		if (x) *x = rect. origin. x;
+		if (y) *y = rect. origin. y;
+		if (width) *width = rect. size. width;
+		if (height) *height = rect. size. height - 22;   // subtract title bar height (or is it the menu height?)
 	#elif defined (_WIN32)
 		#if 1
 		RECT rect;

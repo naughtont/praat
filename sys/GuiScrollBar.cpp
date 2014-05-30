@@ -70,6 +70,7 @@ Thing_implement (GuiScrollBar, GuiControl, 0);
     GuiScrollBar me = d_userData;
     forget (me);
     trace ("deleting a scroll bar");
+    [super dealloc];
 }
 - (GuiThing) userData {
     return d_userData;
@@ -87,13 +88,13 @@ Thing_implement (GuiScrollBar, GuiControl, 0);
 	_m_increment = increment;
 	_m_pageIncrement = pageIncrement;
 	double spaceLeft = (maximum - minimum) - sliderSize;
-//	if (spaceLeft <= 0.0) {
-//		[self setKnobProportion: 1.0];
-//		[self setDoubleValue: 0.5];
-//	} else {
-//		[self setKnobProportion: sliderSize / (maximum - minimum)];
-//		[self setDoubleValue: (value - minimum) / spaceLeft];
-//	}
+	if (spaceLeft <= 0.0) {
+		[self setKnobProportion: 1.0];
+		[self setDoubleValue: 0.5];
+	} else {
+		[self setKnobProportion: sliderSize / (maximum - minimum)];
+		[self setDoubleValue: (value - minimum) / spaceLeft];
+	}
 }
 
 - (void)update {
@@ -130,51 +131,51 @@ Thing_implement (GuiScrollBar, GuiControl, 0);
 
 - (void) valueChanged {
 	GuiScrollBar me = (GuiScrollBar) d_userData;
-//	switch ([self hitPart]) {
-//        case NSScrollerIncrementLine: {
-//            // Include code here for the case where the down arrow is pressed
-//			_m_value += _m_increment;
-//			if (_m_value > _m_maximum - _m_sliderSize)
-//				_m_value = _m_maximum - _m_sliderSize;
-//			[self setMinimum: _m_minimum maximum: _m_maximum value: _m_value sliderSize: _m_sliderSize increment: _m_increment pageIncrement: _m_pageIncrement];
-//		} break;
-//        case NSScrollerIncrementPage: {
-//            // Include code here for the case where CTRL + down arrow is pressed, or the space the scroll knob moves in is pressed
-//			_m_value += _m_pageIncrement;
-//			if (_m_value > _m_maximum - _m_sliderSize)
-//				_m_value = _m_maximum - _m_sliderSize;
-//			[self setMinimum: _m_minimum maximum: _m_maximum value: _m_value sliderSize: _m_sliderSize increment: _m_increment pageIncrement: _m_pageIncrement];
-//		} break;
-//        case NSScrollerDecrementLine: {
-//            // Include code here for the case where the up arrow is pressed
-//			_m_value -= _m_increment;
-//			if (_m_value < _m_minimum)
-//				_m_value = _m_minimum;
-//			[self setMinimum: _m_minimum maximum: _m_maximum value: _m_value sliderSize: _m_sliderSize increment: _m_increment pageIncrement: _m_pageIncrement];
-//		} break;
-//        case NSScrollerDecrementPage: {
-//            // Include code here for the case where CTRL + up arrow is pressed, or the space the scroll knob moves in is pressed
-//			_m_value -= _m_pageIncrement;
-//			if (_m_value < _m_minimum)
-//				_m_value = _m_minimum;
-//			[self setMinimum: _m_minimum maximum: _m_maximum value: _m_value sliderSize: _m_sliderSize increment: _m_increment pageIncrement: _m_pageIncrement];
-//		} break;
-//        case NSScrollerKnob: {
-//            // This case is when the knob itself is pressed
-//			double spaceLeft = (_m_maximum - _m_minimum) - _m_sliderSize;
-//    		_m_value = _m_minimum + [self doubleValue] * (spaceLeft <= 0.0 ? 0.0 : spaceLeft);
-//		} break;
-//        default: {
-//		} break;
-//    }
-//    if (my d_valueChangedCallback) {
-//        struct structGuiScrollBarEvent event = { me };
-//        try {
-//            my d_valueChangedCallback (my d_valueChangedBoss, & event);
-//        } catch (MelderError) {
-//            Melder_flushError ("Scroll not completely handled.");
-//        }
-//    }
+	switch ([self hitPart]) {
+        case NSScrollerIncrementLine: {
+            // Include code here for the case where the down arrow is pressed
+			_m_value += _m_increment;
+			if (_m_value > _m_maximum - _m_sliderSize)
+				_m_value = _m_maximum - _m_sliderSize;
+			[self setMinimum: _m_minimum maximum: _m_maximum value: _m_value sliderSize: _m_sliderSize increment: _m_increment pageIncrement: _m_pageIncrement];
+		} break;
+        case NSScrollerIncrementPage: {
+            // Include code here for the case where CTRL + down arrow is pressed, or the space the scroll knob moves in is pressed
+			_m_value += _m_pageIncrement;
+			if (_m_value > _m_maximum - _m_sliderSize)
+				_m_value = _m_maximum - _m_sliderSize;
+			[self setMinimum: _m_minimum maximum: _m_maximum value: _m_value sliderSize: _m_sliderSize increment: _m_increment pageIncrement: _m_pageIncrement];
+		} break;
+        case NSScrollerDecrementLine: {
+            // Include code here for the case where the up arrow is pressed
+			_m_value -= _m_increment;
+			if (_m_value < _m_minimum)
+				_m_value = _m_minimum;
+			[self setMinimum: _m_minimum maximum: _m_maximum value: _m_value sliderSize: _m_sliderSize increment: _m_increment pageIncrement: _m_pageIncrement];
+		} break;
+        case NSScrollerDecrementPage: {
+            // Include code here for the case where CTRL + up arrow is pressed, or the space the scroll knob moves in is pressed
+			_m_value -= _m_pageIncrement;
+			if (_m_value < _m_minimum)
+				_m_value = _m_minimum;
+			[self setMinimum: _m_minimum maximum: _m_maximum value: _m_value sliderSize: _m_sliderSize increment: _m_increment pageIncrement: _m_pageIncrement];
+		} break;
+        case NSScrollerKnob: {
+            // This case is when the knob itself is pressed
+			double spaceLeft = (_m_maximum - _m_minimum) - _m_sliderSize;
+    		_m_value = _m_minimum + [self doubleValue] * (spaceLeft <= 0.0 ? 0.0 : spaceLeft);
+		} break;
+        default: {
+		} break;
+    }
+    if (my d_valueChangedCallback) {
+        struct structGuiScrollBarEvent event = { me };
+        try {
+            my d_valueChangedCallback (my d_valueChangedBoss, & event);
+        } catch (MelderError) {
+            Melder_flushError ("Scroll not completely handled.");
+        }
+    }
 }
 @end
 #elif win
@@ -245,7 +246,7 @@ GuiScrollBar GuiScrollBar_create (GuiForm parent, int left, int right, int top, 
 		my v_positionInForm (my d_widget, left, right, top, bottom, parent);
 		XtAddCallback (my d_widget, XmNvalueChangedCallback, _GuiMotifScrollBar_valueChangedCallback, (XtPointer) me);
 		XtAddCallback (my d_widget, XmNdragCallback, _GuiMotifScrollBar_valueChangedCallback, (XtPointer) me);
-	#elif macT
+	#elif useCarbon
 		my d_widget = XtVaCreateWidget ("scrollBar",
 			xmScrollBarWidgetClass, parent -> d_widget,
 			XmNorientation, flags & GuiScrollBar_HORIZONTAL ? XmHORIZONTAL : XmVERTICAL,

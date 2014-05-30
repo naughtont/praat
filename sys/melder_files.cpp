@@ -474,7 +474,11 @@ void MelderDir_getSubdir (MelderDir parent, const wchar_t *subdirName, MelderDir
 }
 
 void Melder_getHomeDir (MelderDir homeDir) {
-	#if defined (UNIX)
+    #if cocoaTouch
+    NSString *documents = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+    const char *home = [documents cStringUsingEncoding:NSUTF8StringEncoding];
+    wcscpy (homeDir -> path, home ? Melder_peekUtf8ToWcs (home) : L"/");
+	#elif defined (UNIX)
 		char *home = getenv ("HOME");
 		wcscpy (homeDir -> path, home ? Melder_peekUtf8ToWcs (home) : L"/");
 	#elif defined (_WIN32)
@@ -489,7 +493,10 @@ void Melder_getHomeDir (MelderDir homeDir) {
 }
 
 void Melder_getPrefDir (MelderDir prefDir) {
-	#if defined (macintosh)
+    #if defined cocoaTouch
+        Melder_getHomeDir (prefDir);
+//    wcscat (prefDir -> path, L"/Library/Preferences");
+	#elif defined (macintosh)
 		Melder_getHomeDir (prefDir);
 		wcscat (prefDir -> path, L"/Library/Preferences");
 	#elif defined (UNIX)
@@ -597,6 +604,7 @@ FILE * Melder_fopen (MelderFile file, const char *type) {
 			Melder_error_ ("Hint: file name ends in a space or tab.");
 		else if (wcschr (path, '\n'))
 			Melder_error_ ("Hint: file name contains a newline symbol.");
+        Melder_error_ (strerror(errno));
 		throw MelderError ();
 		return NULL;
 	}

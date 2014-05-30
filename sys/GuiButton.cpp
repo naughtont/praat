@@ -229,7 +229,13 @@ GuiButton GuiButton_create (GuiForm parent, int left, int right, int top, int bo
         my d_widget = (GuiObject) button;
         my v_positionInForm (my d_widget, left, right, top, bottom, parent);
         [button setUserData: me];
-        button.titleLabel.text = (__bridge NSString *) Melder_peekWcsToCfstring (buttonText);
+        NSString *string = (__bridge NSString *) Melder_peekWcsToCfstring (buttonText);
+        button.titleLabel.text = string;
+    
+        NSLog(@"creating GuiCocoaButton %@", string );
+
+        [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [button setTitle:string forState:UIControlStateNormal];
         [button addTarget:(id) my d_widget action:@selector (_guiCocoaButton_activateCallback:) forControlEvents:UIControlEventTouchUpInside];
 
 	#elif cocoa

@@ -106,6 +106,26 @@ Thing_implement (GuiWindow, GuiShell, 0);
 		trace ("end");
 		return FALSE;
 	}
+#elif cocoaTouch
+@implementation GuiCocoaWindow {
+    GuiWindow d_userData;
+}
+- (void) dealloc {   // override
+    GuiWindow me = d_userData;
+    my d_cocoaWindow = NULL;   // this is already under destruction, so undangle
+    forget (me);
+    trace ("deleting a window");
+}
+- (GuiThing) userData {
+    return d_userData;
+}
+- (void) setUserData: (GuiThing) userData {
+    Melder_assert (userData == NULL || Thing_member (userData, classGuiWindow));
+    d_userData = static_cast <GuiWindow> (userData);
+}
+@end
+//static GuiCocoaWindowDelegate *theGuiCocoaWindowDelegate;
+
 #elif cocoa
 	@implementation GuiCocoaWindow {
 		GuiWindow d_userData;
@@ -115,6 +135,7 @@ Thing_implement (GuiWindow, GuiShell, 0);
 		my d_cocoaWindow = NULL;   // this is already under destruction, so undangle
 		forget (me);
 		trace ("deleting a window");
+        [super dealloc];
 	}
 	- (GuiThing) userData {
 		return d_userData;
@@ -184,7 +205,23 @@ GuiWindow GuiWindow_create (int x, int y, int width, int height,
 		gtk_widget_set_size_request (GTK_WIDGET (my d_widget), width, height);
 		gtk_container_add (GTK_CONTAINER (my d_gtkWindow), GTK_WIDGET (my d_widget));
 		g_signal_connect (G_OBJECT (my d_widget), "size-allocate", G_CALLBACK (_GuiWindow_resizeCallback), me);
-	#elif cocoa
+#elif cocoaTouch
+        // PTViewController
+        NSString *titleString = (__bridge NSString*)Melder_peekWcsToCfstring (title);
+    NSLog(@"Creating window %@", titleString);
+        GuiCocoaWindow *window =  [[GuiCocoaWindow alloc] initWithNibName:@"PTViewController" bundle:nil];
+        window.title = titleString;
+        my f_setTitle (title);
+
+        my d_cocoaWindow = window;
+        my d_widget = (GuiObject)[window view];
+        _GuiObject_setUserData (window, me);
+    
+        PTAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        [appDelegate.tableViewController registerViewController:window];
+    
+
+#elif cocoa
 		NSRect rect = { { x, y }, { width, height } };
 		my d_cocoaWindow = [[GuiCocoaWindow alloc]
 			initWithContentRect: rect

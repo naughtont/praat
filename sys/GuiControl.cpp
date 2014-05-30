@@ -23,10 +23,10 @@
 int structGuiControl :: f_getX () {
 	#if gtk
 		return GTK_WIDGET (d_widget) -> allocation.x;
-#elif cocoaTouch
-    return [(UIView *) d_widget frame]. origin. x;
-#elif cocoa
-    return [(NSView *) d_widget frame]. origin. x;
+    #elif cocoa
+        return [(NSView *) d_widget frame]. origin. x;
+    #elif cocoaTouch
+        return [(UIView *) d_widget frame]. origin. x;
 	#elif motif
 		return d_widget -> x;
 	#endif
@@ -35,10 +35,10 @@ int structGuiControl :: f_getX () {
 int structGuiControl :: f_getY () {
 	#if gtk
 		return GTK_WIDGET (d_widget) -> allocation.y;
-#elif cocoaTouch
-    return [(UIView *) d_widget frame]. origin. y;
-#elif cocoa
-    return [(NSView *) d_widget frame]. origin. y;
+    #elif cocoa
+        return [(NSView *) d_widget frame]. origin. y;
+    #elif cocoaTouch
+        return [(UIView *) d_widget frame]. origin. y;
 	#elif motif
 		return d_widget -> y;
 	#endif
@@ -114,7 +114,65 @@ void structGuiControl :: v_positionInForm (GuiObject widget, int left, int right
 		trace ("fixed: parent width %d height %d", parentWidth, parentHeight);
 		gtk_widget_set_size_request (GTK_WIDGET (widget), right - left, bottom - top);
 		gtk_fixed_put (GTK_FIXED (parent -> d_widget), GTK_WIDGET (widget), left, top);
-	#elif cocoa
+#elif cocoaTouch
+        UIView *superView = (UIView *) parent -> d_widget;
+        UIView *widgetView = (UIView *) widget;
+        CGRect parentRect = [superView frame];
+        int parentWidth = parentRect.size.width;
+        int parentHeight = parentRect.size.height;
+    
+    
+//    UIViewAutoresizingNone                 = 0,
+//    UIViewAutoresizingFlexibleLeftMargin   = 1 << 0,
+//    UIViewAutoresizingFlexibleWidth        = 1 << 1,
+//    UIViewAutoresizingFlexibleRightMargin  = 1 << 2,
+//    UIViewAutoresizingFlexibleTopMargin    = 1 << 3,
+//    UIViewAutoresizingFlexibleHeight       = 1 << 4,
+//    UIViewAutoresizingFlexibleBottomMargin = 1 << 5
+
+        NSUInteger horizMask = 0;
+        if (left >= 0) {
+            if (right <= 0) {
+                horizMask = UIViewAutoresizingFlexibleWidth; // NSViewWidthSizable;
+            }
+        } else {
+            horizMask = UIViewAutoresizingFlexibleLeftMargin; // NSViewMinXMargin;
+        }
+        
+        NSUInteger vertMask = 0;
+        if (top >= 0) {
+            vertMask = UIViewAutoresizingFlexibleTopMargin; // NSViewMinYMargin;
+            if (bottom <= 0) {
+                vertMask = UIViewAutoresizingFlexibleHeight; //  NSViewHeightSizable;
+            }
+        }
+        
+        if (left   <  0) left   += parentWidth;
+        if (right  <= 0) right  += parentWidth;
+        if (top    <  0) top    += parentHeight;
+        if (bottom <= 0) bottom += parentHeight;
+//        top = parentHeight - top;         // flip
+//        bottom = parentHeight - bottom;   // flip
+        int width = right - left;
+        int height = top - bottom;
+//        if ([widgetView isKindOfClass: [UIButton class]]) {
+// //           if (! [widgetView isKindOfClass: [NSPopUpButton class]]) {
+//                /*
+//                 * On Cocoa, NSButton views show up 12 pixels less wide and 5 pixels less high than their frame.
+//                 * Compensate for this (undocumented?) Cocoa phenomenon.
+//                 */
+//                left -= 6;
+//                width += 12;
+//                bottom -= 5;
+//                height += 5;
+// //           }
+//        }
+        CGRect rect = CGRectMake (left, bottom, width, height);
+        [widgetView setAutoresizingMask: horizMask | vertMask];
+        [superView addSubview: widgetView];   // parent will retain the subview...
+        [widgetView setFrame: rect];
+
+#elif cocoa
         NSView *superView = (NSView *) parent -> d_widget;
         NSView *widgetView = (NSView *) widget;
 		NSRect parentRect = [superView frame];

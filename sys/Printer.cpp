@@ -79,7 +79,7 @@ void Printer_prefs (void) {
 	static HDC theWinDC;
 #endif
 
-#if defined (_WIN32) || useCarbon
+#if defined (_WIN32) || defined (macintosh)
 	int Printer_postScript_printf (void *stream, const char *format, ... ) {
 		#if defined (_WIN32)
 			static union { char chars [3002]; short shorts [1501]; } theLine;
@@ -91,7 +91,7 @@ void Printer_prefs (void) {
 		va_start (args, format);
 		(void) stream;
 		#if cocoaTouch
-        #elfif cocoa
+        #elif cocoa
 		#elif defined (_WIN32)
 			vsprintf (theLine.chars + 2, format, args);
 			length = strlen (theLine.chars + 2);
@@ -151,7 +151,7 @@ Printer_postScript_printf (NULL, "8 8 scale initclip\n");
 #elif defined (_WIN32)
 	static void initPrinter (void) {
 	}
-#elif useCarbon
+#elif cocoa || useCarbon
 	static void initPrinter (void) {
 		Boolean result;
 		PMResolution res300 = { 300, 300 }, res600 = { 600, 600 };
@@ -192,7 +192,7 @@ void Printer_nextPage (void) {
 			SetBkMode (theWinDC, TRANSPARENT);
 			SetTextAlign (theWinDC, TA_LEFT | TA_BASELINE | TA_NOUPDATECP);
 		}
-	#elif useCarbon
+	#elif cocoa || useCarbon
 		PMSessionEndPage (theMacPrintSession);
 		PMSessionBeginPage (theMacPrintSession, theMacPageFormat, NULL);
 		PMSessionGetGraphicsContext (theMacPrintSession, kPMGraphicsContextQuickdraw, (void **) & theMacPort);
@@ -204,7 +204,7 @@ void Printer_nextPage (void) {
 int Printer_pageSetup (void) {
 	#if cocoa
 	#elif defined (_WIN32)
-	#elif useCarbon
+	#elif cocoa || useCarbon
 		Boolean accepted;
 		initPrinter ();
 		PMSessionPageSetupDialog (theMacPrintSession, theMacPageFormat, & accepted);
@@ -405,7 +405,7 @@ int Printer_print (void (*draw) (void *boss, Graphics g), void *boss) {
 			}
 			EnableWindow ((HWND) XtWindow (theCurrentPraatApplication -> topShell -> d_xmShell), TRUE);
 			DeleteDC (theWinDC), theWinDC = NULL;
-		#elif useCarbon
+		#elif cocoa || useCarbon
 			Boolean result;
 			initPrinter ();
 			if (Melder_backgrounding) {
@@ -457,7 +457,7 @@ int Printer_print (void (*draw) (void *boss, Graphics g), void *boss) {
 		return 1;
 	} catch (MelderError) {
 		#if cocoa
-		#elif useCarbon
+		#elif cocoa || useCarbon
 			if (theMacPort) {
 				PMSessionEndPage (theMacPrintSession);
 				PMSessionEndDocument (theMacPrintSession);

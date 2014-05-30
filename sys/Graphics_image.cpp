@@ -356,8 +356,8 @@ static void _GraphicsScreen_cellArrayOrImage (GraphicsScreen me, double **z_floa
 				bits, (CONST BITMAPINFO *) & bitmapInfo, DIB_RGB_COLORS);
 		#elif mac
 			CGImageRef image;
-//			CGColorSpaceRef colourSpace = CGColorSpaceCreateWithName (kCGColorSpaceGenericRGB);   // used to be kCGColorSpaceUserRGB
-//			Melder_assert (colourSpace != NULL);
+			CGColorSpaceRef colourSpace = CGColorSpaceCreateDeviceRGB();   // used to be kCGColorSpaceUserRGB
+			Melder_assert (colourSpace != NULL);
 			if (1) {
 				CGDataProviderRef dataProvider = CGDataProviderCreateWithData (NULL,
 					imageData,
@@ -366,25 +366,25 @@ static void _GraphicsScreen_cellArrayOrImage (GraphicsScreen me, double **z_floa
 						// because in PDF files the imageData has to stay available through EndPage
 				);
 				Melder_assert (dataProvider != NULL);
-//				image = CGImageCreate (clipx2 - clipx1, numberOfRows,
-//					8, 32, bytesPerRow, colourSpace, kCGImageAlphaNone, dataProvider, NULL, false, kCGRenderingIntentDefault);
-//				CGDataProviderRelease (dataProvider);
+				image = CGImageCreate (clipx2 - clipx1, numberOfRows,
+					8, 32, bytesPerRow, colourSpace, kCGImageAlphaNone, dataProvider, NULL, false, kCGRenderingIntentDefault);
+				CGDataProviderRelease (dataProvider);
 			} else if (0) {
 				Melder_assert (CGBitmapContextCreate != NULL);
-//				CGContextRef bitmaptest = CGBitmapContextCreate (imageData, 100, 100,
-//					8, 800, colourSpace, 0);
-//				Melder_assert (bitmaptest != NULL);
-//				CGContextRef bitmap = CGBitmapContextCreate (NULL/*imageData*/, clipx2 - clipx1, numberOfRows,
-//					8, bytesPerRow, colourSpace, kCGImageAlphaLast);
-//				Melder_assert (bitmap != NULL);
-//				image = CGBitmapContextCreateImage (bitmap);
-//				// release bitmap?
+				CGContextRef bitmaptest = CGBitmapContextCreate (imageData, 100, 100,
+					8, 800, colourSpace, 0);
+				Melder_assert (bitmaptest != NULL);
+				CGContextRef bitmap = CGBitmapContextCreate (NULL/*imageData*/, clipx2 - clipx1, numberOfRows,
+					8, bytesPerRow, colourSpace, kCGImageAlphaLast);
+				Melder_assert (bitmap != NULL);
+				image = CGBitmapContextCreateImage (bitmap);
+				// release bitmap?
 			}
 			Melder_assert (image != NULL);
 			GraphicsQuartz_initDraw (me);
 			CGContextDrawImage (my d_macGraphicsContext, CGRectMake (clipx1, clipy2, clipx2 - clipx1, clipy1 - clipy2), image);
 			GraphicsQuartz_exitDraw (me);
-//			CGColorSpaceRelease (colourSpace);
+			CGColorSpaceRelease (colourSpace);
 			CGImageRelease (image);
 		#endif
 		/*
@@ -675,7 +675,7 @@ static void _GraphicsScreen_imageFromFile (GraphicsScreen me, const wchar_t *rel
 			Gdiplus::Rect rect (x1DC, y2DC, width, height);
 			dcplus. DrawImage (& image, rect);
 		}
-	#elif mac
+	#elif useCarbon || cocoa
 		structMelderFile file;
 		Melder_relativePathToFile (relativeFileName, & file);
 		char utf8 [500];
@@ -683,35 +683,35 @@ static void _GraphicsScreen_imageFromFile (GraphicsScreen me, const wchar_t *rel
 		CFStringRef path = CFStringCreateWithCString (NULL, utf8, kCFStringEncodingUTF8);
 		CFURLRef url = CFURLCreateWithFileSystemPath (NULL, path, kCFURLPOSIXPathStyle, false);
 		CFRelease (path);
-//		CGImageSourceRef imageSource = CGImageSourceCreateWithURL (url, NULL);
-//		CFRelease (url);
-//		if (imageSource != NULL) {
-//			CGImageRef image = CGImageSourceCreateImageAtIndex (imageSource, 0, NULL);
-//			CFRelease (imageSource);
-//			if (image != NULL) {
-//				if (x1 == x2 && y1 == y2) {
-//					width = CGImageGetWidth (image), x1DC -= width / 2, x2DC = x1DC + width;
-//					height = CGImageGetHeight (image), y2DC -= height / 2, y1DC = y2DC + height;
-//				} else if (x1 == x2) {
-//					width = height * (double) CGImageGetWidth (image) / (double) CGImageGetHeight (image);
-//					x1DC -= width / 2, x2DC = x1DC + width;
-//				} else if (y1 == y2) {
-//					height = width * (double) CGImageGetHeight (image) / (double) CGImageGetWidth (image);
-//					y2DC -= height / 2, y1DC = y2DC + height;
-//				}
-//				GraphicsQuartz_initDraw (me);
-//				CGContextSaveGState (my d_macGraphicsContext);
-//                
-//                NSCAssert(my d_macGraphicsContext, @"nil context");
-//
-//				CGContextTranslateCTM (my d_macGraphicsContext, 0, y1DC);
-//				CGContextScaleCTM (my d_macGraphicsContext, 1.0, -1.0);
-//				CGContextDrawImage (my d_macGraphicsContext, CGRectMake (x1DC, 0, width, height), image);
-//				CGContextRestoreGState (my d_macGraphicsContext);
-//				GraphicsQuartz_exitDraw (me);
-//				CGImageRelease (image);
-//			}
-//		}
+		CGImageSourceRef imageSource = CGImageSourceCreateWithURL (url, NULL);
+		CFRelease (url);
+		if (imageSource != NULL) {
+			CGImageRef image = CGImageSourceCreateImageAtIndex (imageSource, 0, NULL);
+			CFRelease (imageSource);
+			if (image != NULL) {
+				if (x1 == x2 && y1 == y2) {
+					width = CGImageGetWidth (image), x1DC -= width / 2, x2DC = x1DC + width;
+					height = CGImageGetHeight (image), y2DC -= height / 2, y1DC = y2DC + height;
+				} else if (x1 == x2) {
+					width = height * (double) CGImageGetWidth (image) / (double) CGImageGetHeight (image);
+					x1DC -= width / 2, x2DC = x1DC + width;
+				} else if (y1 == y2) {
+					height = width * (double) CGImageGetHeight (image) / (double) CGImageGetWidth (image);
+					y2DC -= height / 2, y1DC = y2DC + height;
+				}
+				GraphicsQuartz_initDraw (me);
+				CGContextSaveGState (my d_macGraphicsContext);
+                
+                NSCAssert(my d_macGraphicsContext, @"nil context");
+
+				CGContextTranslateCTM (my d_macGraphicsContext, 0, y1DC);
+				CGContextScaleCTM (my d_macGraphicsContext, 1.0, -1.0);
+				CGContextDrawImage (my d_macGraphicsContext, CGRectMake (x1DC, 0, width, height), image);
+				CGContextRestoreGState (my d_macGraphicsContext);
+				GraphicsQuartz_exitDraw (me);
+				CGImageRelease (image);
+			}
+		}
 	#endif
 }
 

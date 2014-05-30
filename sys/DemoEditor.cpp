@@ -235,11 +235,11 @@ void Demo_waitForInput (Interpreter interpreter) {
 					GuiNextEvent (& event);
 					XtDispatchEvent (& event);
 				} while (! theDemoEditor -> clicked && ! theDemoEditor -> keyPressed && ! theDemoEditor -> userWantsToClose);
-			#elif defined (macintosh)
+			#elif useCarbon
 				do {
-//					XEvent event;
-//					GuiNextEvent (& event);
-//					XtDispatchEvent (& event);
+					XEvent event;
+					GuiNextEvent (& event);
+					XtDispatchEvent (& event);
 				} while (! theDemoEditor -> clicked && ! theDemoEditor -> keyPressed && ! theDemoEditor -> userWantsToClose);
 			#endif
 		} catch (MelderError) {
